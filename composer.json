@@ -1,0 +1,31 @@
+{
+    "name": "iris/phpapi",
+    "type": "library",
+    "description": "Bandwidth's Catapult SDK for PHP",
+    "keywords": ["iris","sdk","php"],
+    "homepage": "http://example.com",
+    "reference": "v0.0.1",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ivan Selchenkov",
+            "email": "ivan.selchenkov@ontarget-group.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+	      "php": ">=5.3.0",
+        "educoder/pest": "1.0.0"
+    },
+    "require-dev": {
+	      "php": ">=5.3.0",
+	      "phpunit/phpunit": "3.7.*",
+        "educoder/pest": "1.0.0"
+    },
+    "autoload": {
+	      "classmap": [
+		        "source/"
+	      ]
+
+    }
+}
