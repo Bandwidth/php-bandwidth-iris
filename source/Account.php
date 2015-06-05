@@ -12,24 +12,49 @@
  */
 namespace Iris;
 
-final class Account {
+
+abstract class RestEntry{
+    
+    private $rest_client = Null;
+    private $entry_name = Null;
+    
+    protected function _init()
+    {
+        $this->rest_client = PestClient($config->login, $config->password);
+        $this->
+        
+    }
+    
+    protected function request() 
+    {
+
+        
+    }
+
+    protected function get_entry_name() {
+        if ($this->entry_name)
+            {
+                return $this->entry_name;
+            }
+        else 
+            {
+                return sprintf('%ss', strtolower(get_class($this)));
+            }
+    }
+}
+
+final class Account extend RestEntry{
 
     /**
-     *
-     * Init forms:
      *
      * GET 
      * Account()
      *
      */
-    public function __construct($data=null) {
-      $data = Ensure::Input($data);
-
-      parent::_init($data, new DependsResource,
-        new LoadsResource(array("primary" => "GET", "id" => "id", "init" => "", "silent" => false)),
-        new SchemaResource(array("fields" => array( "balance", "accountType"), "needs" => array("balance", "accountType")),
-        new SubFunctionResource(array("term" => "transactions", "type" => "get"))
-      ));
+    public function __construct($data=null) 
+    {
+        parent::_init();
+        
     }
 
 
@@ -38,12 +63,8 @@ final class Account {
      * in float
      */
     public function get(account_id) {
-      return $this->client()->get('/accounts/account_id');
-      $pest = new PestXML('https://api.test.inetwork.com/v1.0');
-      $pest->setupAuth('byo_dev', 'yBf7QzGj3Gzsovf');
-      $pest->curl_opts[CURLOPT_FOLLOWLOCATION] = false;
-      $data = $pest->get('/accounts/9500249');
-      print_r($data->xpath('//Account/Contact'));
+        // test 9500249
+        $data = $this->get(account_id);
+        print_r($data->xpath('//Account/Contact'));
     }
 }
-

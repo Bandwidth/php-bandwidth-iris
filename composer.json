@@ -24,8 +24,8 @@
     },
     "autoload": {
 	      "classmap": [
-		        "source/"
+		        "source/",
+            "core/"
 	      ]
-
     }
 }
