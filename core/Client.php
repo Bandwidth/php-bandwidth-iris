@@ -7,6 +7,7 @@
 namespace Iris;
 require_once('./vendor/autoload.php');
 
+/*
 interface iClient
 {
     public function get($url, $callback, $errback);
@@ -14,26 +15,32 @@ interface iClient
     public function put($url, $data, $callback, $errback);
     public function delete($url, $callback, $errback);
 }
+*/
 
-
-final class PestClient implements iClient
+final class PestClient /*implements iClient*/
 {
     
     public function __construct($login, $password, $options=Null)
     {
+        /* TODO:  singleton */
+
         $this->login = $login;
         $this->password = $password;
 
-        $this->pest = new \PestXML($REST_URL);
-        $this->pest->setupAuth($REST_LOGIN, $REST_PASS);
+        /* TODO:  hardcode */
+        $this->url = $options['url'];
+
+        $this->pest = new \PestXML($this->url);
+
+        $this->pest->setupAuth($login, $password);
         $this->pest->curl_opts[CURLOPT_FOLLOWLOCATION] = false;
     }
     
-    public function get($url, $callback, $errback)
+    public function get($url, $options)
     {
-        $data = $this->pest->get($url, $callback, $errback);
-        //return $this->to_array($data);
-        return $data;
+        $full_url = sprintf('%s%s', $this->url, $url);
+        $data = $this->pest->get($full_url);
+        return $this->xml2array($data);
     }
 
     public function set($url, $data, $callback, $errback)
@@ -51,9 +58,12 @@ final class PestClient implements iClient
         
     }
 
-    private function to_array() 
+    function xml2array ($xmlObject, $out = array ())
     {
-        
+        foreach ( (array) $xmlObject as $index => $node )
+            $out[$index] = ( is_object ( $node ) ) ? $this->xml2array ( $node ) : $node;
+
+        return $out;
     }
     
 }

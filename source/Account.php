@@ -12,59 +12,62 @@
  */
 namespace Iris;
 
+/* TODO:  change on autoload compouser*/
+$selfpath = dirname(__FILE__);
+require_once($selfpath . '/RestEntry.php');
 
-abstract class RestEntry{
-    
-    private $rest_client = Null;
-    private $entry_name = Null;
-    
-    protected function _init()
-    {
-        $this->rest_client = PestClient($config->login, $config->password);
-        $this->
-        
-    }
-    
-    protected function request() 
-    {
+/* TODO:  remove build url from methods */
 
-        
-    }
-
-    protected function get_entry_name() {
-        if ($this->entry_name)
-            {
-                return $this->entry_name;
-            }
-        else 
-            {
-                return sprintf('%ss', strtolower(get_class($this)));
-            }
-    }
-}
-
-final class Account extend RestEntry{
+final class Accounts extends RestEntry {
 
     /**
      *
-     * GET 
-     * Account()
      *
      */
-    public function __construct($data=null) 
+    public function __construct($client, $spacename=Null)
     {
-        parent::_init();
-        
+        parent::_init($client, $spacename);
     }
-
 
     /**
-     * Return the balance
-     * in float
+     * Account Info by Id
+     * 
      */
-    public function get(account_id) {
-        // test 9500249
-        $data = $this->get(account_id);
-        print_r($data->xpath('//Account/Contact'));
+    public function get($account_id) 
+    {
+        $data = parent::get($account_id);
+        $this->account_id = $account_id;
+        return $data;
+    }
+
+    public function availableNumbers($filters=Array()){
+        $url = sprintf('%s/%s', $this->account_id, 'avalibleNumbers');
+        $data = parent::get($url);
+        return $data;
+    }
+
+    public function serviceNumbers($filters=Array()){
+        $url = sprintf('%s/%s', $this->account_id, 'serviceNumbers');
+        $data = parent::get($url);
+        return $data;
+    }
+
+    public function orders($filters=Array()){
+        $url = sprintf('%s/%s', $this->account_id, 'orders');
+        $data = parent::get($url);
+        return $data;
+    }
+
+    public function users($filters=Array()){
+        $url = sprintf('%s/%s', $this->account_id, 'users');
+        $data = parent::get($url);
+        return $data;
+    }
+
+    public function products($filters=Array()){
+        $url = sprintf('%s/%s', $this->account_id, 'products');
+        $data = parent::get($url);
+        return $data;
     }
 }
+
