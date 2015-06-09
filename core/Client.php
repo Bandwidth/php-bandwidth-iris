@@ -7,17 +7,17 @@
 namespace Iris;
 require_once('./vendor/autoload.php');
 
-/*
+
 interface iClient
 {
-    public function get($url, $callback, $errback);
+    public function get($url, $options);
     public function set($url, $data, $callback, $errback);
     public function put($url, $data, $callback, $errback);
     public function delete($url, $callback, $errback);
 }
-*/
 
-final class PestClient /*implements iClient*/
+
+final class PestClient implements iClient
 {
     
     public function __construct($login, $password, $options=Null)
@@ -60,6 +60,7 @@ final class PestClient /*implements iClient*/
 
     function xml2array ($xmlObject, $out = array ())
     {
+        /* snippet from: http://stackoverflow.com/questions/6167279/converting-a-simplexml-object-to-an-array */
         foreach ( (array) $xmlObject as $index => $node )
             $out[$index] = ( is_object ( $node ) ) ? $this->xml2array ( $node ) : $node;
 

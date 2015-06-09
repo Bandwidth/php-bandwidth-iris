@@ -9,8 +9,15 @@ abstract class RestEntry{
     
     protected function _init($client, $namespace)
     {
-        
-        $this->client = $client;
+        if (!$client)
+        {
+            /* TODO:  get credentails */
+            $this->client = Iris\PestClient();
+        }
+        else 
+        {
+            $this->client = $client;
+        }
         if ($namespace)
         {    
             $this->namespace = $namespace;

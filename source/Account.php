@@ -18,15 +18,16 @@ require_once($selfpath . '/RestEntry.php');
 
 /* TODO:  remove build url from methods */
 
-final class Accounts extends RestEntry {
+final class Account extends RestEntry {
 
     /**
      *
      *
      */
-    public function __construct($client, $spacename=Null)
+    public function __construct($account_id, $client=Null, $spacename=Null)
     {
         parent::_init($client, $spacename);
+        $this->account_id = $account_id;
     }
 
     /**
