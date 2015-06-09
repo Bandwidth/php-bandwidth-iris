@@ -11,8 +11,7 @@ abstract class RestEntry{
     {
         if (!$client)
         {
-            /* TODO:  get credentails */
-            $this->client = Iris\PestClient();
+            $this->client = new PestClient(Config::REST_LOGIN, Config::REST_PASS, Array('url' => Config::REST_URL));
         }
         else 
         {

@@ -24,9 +24,9 @@ final class Account extends RestEntry {
      *
      *
      */
-    public function __construct($account_id, $client=Null, $spacename=Null)
+    public function __construct($account_id, $client=Null, $namespace='accounts')
     {
-        parent::_init($client, $spacename);
+        parent::_init($client, $namespace);
         $this->account_id = $account_id;
     }
 
@@ -34,40 +34,41 @@ final class Account extends RestEntry {
      * Account Info by Id
      * 
      */
-    public function get($account_id) 
-    {
-        $data = parent::get($account_id);
-        $this->account_id = $account_id;
+    public function get() 
+    {        
+        $data = parent::get($this->account_id);
         return $data;
     }
 
     public function availableNumbers($filters=Array()){
+        /* TODO:  too bad */
+        //print_r(__FUNCTION__); exit;
         $url = sprintf('%s/%s', $this->account_id, 'avalibleNumbers');
-        $data = parent::get($url);
+        $data = parent::get($url, $filters);
         return $data;
     }
 
     public function serviceNumbers($filters=Array()){
         $url = sprintf('%s/%s', $this->account_id, 'serviceNumbers');
-        $data = parent::get($url);
+        $data = parent::get($url, $filters);
         return $data;
     }
 
     public function orders($filters=Array()){
         $url = sprintf('%s/%s', $this->account_id, 'orders');
-        $data = parent::get($url);
+        $data = parent::get($url, $filters);
         return $data;
     }
 
     public function users($filters=Array()){
         $url = sprintf('%s/%s', $this->account_id, 'users');
-        $data = parent::get($url);
+        $data = parent::get($url, $filters);
         return $data;
     }
 
     public function products($filters=Array()){
         $url = sprintf('%s/%s', $this->account_id, 'products');
-        $data = parent::get($url);
+        $data = parent::get($url, $filters);
         return $data;
     }
 }

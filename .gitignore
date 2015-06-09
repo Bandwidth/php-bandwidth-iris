@@ -2,3 +2,4 @@
 vendor/
 selftests/
 config.php
+composer.lock
