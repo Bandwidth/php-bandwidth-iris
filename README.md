@@ -37,3 +37,9 @@ $c = new Iris\PestClient('another rest login','another rest pass', Array('url' =
 $a = new Iris\Account(9500249, $c);
 print_r($a->get());
 ```
+
+or start tests
+
+```
+php phpunit.phar --bootstrap ./vendor/autoload.php tests/
+```
