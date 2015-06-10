@@ -34,7 +34,7 @@ final class Account extends RestEntry {
      * Account Info by Id
      * 
      */
-    public function get() 
+    public function get($url='', $options=Array())
     {        
         $data = parent::get($this->account_id);
         return $data;
