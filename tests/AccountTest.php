@@ -8,17 +8,17 @@
  *
  *
  * commands tested:
- * accounts/9500249
+ * accounts/14
  */
+require_once("lib/Client.php");
 
 class AccountsTest extends PHPUnit_Framework_TestCase {
 
 	public function testGet()
 	{
-		$account = new Iris\Account;
-		$account->get();
-		
-		$this->assertTrue((bool) $account->balance);	
+		$account = new Iris\Account(14, new TestClient('', ''));
+		$response = $account->get();
+		$this->assertEquals("CWI Hosting", $response->Account->CompanyName);
 	}
 
 }
