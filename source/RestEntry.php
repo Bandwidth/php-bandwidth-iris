@@ -3,28 +3,28 @@
 namespace Iris;
 
 abstract class RestEntry{
-    
+
     protected $client = Null;
     protected $namespace = Null;
-    
+
     protected function _init($client, $namespace)
     {
         if (!$client)
         {
             $this->client = new PestClient(Config::REST_LOGIN, Config::REST_PASS, Array('url' => Config::REST_URL));
         }
-        else 
+        else
         {
             $this->client = $client;
         }
         if ($namespace)
-        {    
+        {
             $this->namespace = $namespace;
         }
         else
         {
             $this->namespace = strtolower(get_class($this));
-        }        
+        }
     }
 
     protected function get_url($path)
@@ -32,9 +32,27 @@ abstract class RestEntry{
         return sprintf('%s/%s', $this->namespace, $path);
     }
 
-    protected function get($url, $options=Array())
+    protected function get($url, $options=Array(), $defaults = Array(), $required = Array())
     {
         $url = $this->get_url($url);
+
+        $this->set_defaults($options, $defaults);
+        $this->check_required($options, $required);
+
         return $this->client->get($url, $options);
+    }
+
+    protected function set_defaults(&$options, $defaults) {
+        foreach($defaults as $key => $value) {
+            if(!array_key_exists($key, $options))
+                $options[$key] = $value;
+        }
+    }
+
+    protected function check_required($options, $required) {
+        foreach($required as $key) {
+            if(!array_key_exists($key, $options))
+                throw new ValidateException("Required options '{$key}' should be provided");
+        }
     }
 }

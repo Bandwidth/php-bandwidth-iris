@@ -4,20 +4,15 @@
  * @model Account
  * https://api.test.inetwork.com/v1.0/accounts/
  *
- * 
  *
- * provides: 
+ *
+ * provides:
  * get/0
  *
  */
 namespace Iris;
 
-$selfpath = dirname(__FILE__);
-require_once($selfpath . '/../vendor/autoload.php');
-
-/* TODO:  remove build url from methods */
-
-final class Account extends RestEntry {
+class Account extends RestEntry {
 
     /**
      *
@@ -27,19 +22,22 @@ final class Account extends RestEntry {
     {
         parent::_init($client, $namespace);
         $this->account_id = $account_id;
+        $this->client = $client;
 
-        $this->orders = new Orders($this->account_id);
-        $this->orders = new Portions($this->account_id);
-        //$this->orders = new Disconnect($this->account_id);
-        //$this->orders = new Isrorder($this->account_id);
+        //$this->orders = new Orders($this->account_id);
+        $this->portins = new Portins($this);
+    }
+
+    public function getPortins() {
+      return $this->portins;
     }
 
     /**
      * Account Info by Id
-     * 
+     *
      */
-    public function get($url='', $options=Array())
-    {        
+    public function get($options=Array())
+    {
         $data = parent::get($this->account_id);
         return $data;
     }
@@ -76,5 +74,12 @@ final class Account extends RestEntry {
         $data = parent::get($url, $filters);
         return $data;
     }
-}
 
+    public function get_relative_namespace() {
+      return "accounts/{$this->account_id}";
+    }
+
+    public function get_rest_client() {
+      return $this->client;
+    }
+}
