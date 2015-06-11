@@ -2,9 +2,6 @@
 
 /**
  * @model Portins
- * https://api.test.inetwork.com/v1.0/accounts/orders
- *
- *
  *
  * provides:
  * get/0
@@ -20,7 +17,7 @@ class Portins extends RestEntry {
     }
 
     public function create() {
-        $data = parent::post('portions');
+        $data = parent::post('portins', '');
         return $data;
     }
 
@@ -62,7 +59,7 @@ class Portin extends RestEntry {
 
     public function get() {
         $this->data = parent::get($this->id);
-        return $data;
+        return $this->data;
     }
 
     public function areaCodes()

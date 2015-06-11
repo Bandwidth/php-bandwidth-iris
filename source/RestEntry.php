@@ -42,6 +42,12 @@ abstract class RestEntry{
         return $this->client->get($url, $options);
     }
 
+    protected function post($url, $data, $headers = array())
+    {
+        $url = $this->get_url($url);
+        return $this->client->post($url, $data, $headers);
+    }
+
     protected function set_defaults(&$options, $defaults) {
         foreach($defaults as $key => $value) {
             if(!array_key_exists($key, $options))
