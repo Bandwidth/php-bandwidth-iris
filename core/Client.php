@@ -68,8 +68,9 @@ abstract class iClient
 
 
 final class PestClient extends iClient
+
 {
-    
+
     public function __construct($login, $password, $options=Null)
     {
         /* TODO:  singleton */
@@ -84,11 +85,12 @@ final class PestClient extends iClient
         $this->pest->setupAuth($login, $password);
         $this->pest->curl_opts[CURLOPT_FOLLOWLOCATION] = false;
     }
-    
+
     public function get($url, $options=Array())
     {
         $url = $this->prepare_url($url);
         $full_url = sprintf('%s%s', $this->url, $url);
+
         //echo('--- request url: '. $full_url . ' --- '); 
         $data = $this->pest->get($full_url, $options);
         return $this->xml2object($data);
@@ -96,6 +98,7 @@ final class PestClient extends iClient
 
     public function post($url, $base_node, $data)
     {
+
         $url = $this->prepare_url($url);
         $full_url = sprintf('%s%s', $this->url, $url);
         echo('--- request url: '. $full_url . ' --- '); 
@@ -105,12 +108,12 @@ final class PestClient extends iClient
 
     public function put($url, $data)
     {
-        
+
     }
 
     public function delete($url, $data)
     {
-        
+
     }
 }
 
@@ -138,7 +141,6 @@ final class GuzzleClient extends iClient {
       $response_body_str = $request->getBody()->read(1024);
       $response_body_xml = new \SimpleXMLElement($response_body_str);
       return $this->xml2array($response_body_xml);
-      
     }
     
     public function post($url, $base_node, $data)
@@ -175,6 +177,7 @@ final class GuzzleClient extends iClient {
     {
       
     }
+
     
     public function delete($url, $data)
     {
