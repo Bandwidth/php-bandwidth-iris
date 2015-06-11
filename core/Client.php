@@ -165,12 +165,31 @@ final class GuzzleClient extends iClient {
                                  );
           $result = &$request;
       }
-      catch (\GuzzleHttp\Exception\ClientException $e) {
-          $result = &$e->getResponse();
+      catch (\GuzzleHttp\Exception\ClientException $e) 
+      {
+          $result = $e->getResponse();
       }
-      $response_body_str = $result->getBody()->read(1024);
-      $response_body_xml = new \SimpleXMLElement($response_body_str);
-      return $this->xml2array($response_body_xml);
+      try 
+      {
+          $response_body_str = $result->getBody()->read(1024);
+          /* TODO:  bad defain str or xml */
+          if (substr($response_body_str, 0, 1) == '<')
+          {
+              $response_body_xml = new \SimpleXMLElement($response_body_str);
+              $return_data = $this->xml2array($response_body_xml);
+          }
+          else 
+          {
+            /* TODO:  throws exception */
+            $return_data = '-- Bad request --';
+          }
+          
+      }
+      catch (\Exception $e)
+      {
+        $return_data = $e->getMessage();
+      }
+      return $return_data;
     }
     
     public function put($url, $data)
