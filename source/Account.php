@@ -12,9 +12,8 @@
  */
 namespace Iris;
 
-/* TODO:  change on autoload compouser*/
 $selfpath = dirname(__FILE__);
-require_once($selfpath . '/RestEntry.php');
+require_once($selfpath . '/../vendor/autoload.php');
 
 /* TODO:  remove build url from methods */
 
@@ -28,6 +27,11 @@ final class Account extends RestEntry {
     {
         parent::_init($client, $namespace);
         $this->account_id = $account_id;
+
+        $this->orders = new Orders($this->account_id);
+        $this->orders = new Portions($this->account_id);
+        //$this->orders = new Disconnect($this->account_id);
+        //$this->orders = new Isrorder($this->account_id);
     }
 
     /**
@@ -45,6 +49,7 @@ final class Account extends RestEntry {
         //print_r(__FUNCTION__); exit;
         $url = sprintf('%s/%s', $this->account_id, 'avalibleNumbers');
         $data = parent::get($url, $filters);
+
         return $data;
     }
 
