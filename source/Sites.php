@@ -37,26 +37,41 @@ class Sites extends RestEntry {
     public function get_relative_namespace() {
         return $this->account->get_relative_namespace().'/sites';
     }
+
+    public function create($data) {
+        $site = new Site($this, null);
+        $site->create($data);
+        return $site;
+    }
 }
 
 class Site extends RestEntry {
-    private $fields = array(
-        "Name", "Description", "Address", "CustomerProvidedID", "CustomerName"
+    protected $fields = array(
+        "Name" => "string",
+        "Description" => "string",
+        "Address" => "string",
+        "CustomerProvidedID" => "string",
+        "CustomerName" => "string"
     );
 
-    public function __construct($sites, $data) {
-        $this->id = $data->Id;
-        $this->set_data($data);
+    protected $required = array(
+        "Name"
+    );
+
+    public function __construct($sites, $data = null) {
+        if(!is_null($data)) {
+            $this->id = $data->Id;
+            $this->set_data($data);
+        }
         parent::_init($sites->get_rest_client(), $sites->get_relative_namespace());
     }
 
-    private function set_data($data) {
-        foreach($data as $key => $value) {
-            echo $key;
-            if(in_array($key, $this->fields)) {
-                $this->{$key} = $value;
-            }
+    public function create($data) {
+        try {
+            $res = parent::post(null, array("Site" => array("Name" => "Raleigh")));        
+        } catch(Exception $e) {
+            var_dump($e);
         }
+        var_dump($res);
     }
-
 }

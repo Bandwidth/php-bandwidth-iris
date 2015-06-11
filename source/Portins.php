@@ -16,11 +16,6 @@ class Portins extends RestEntry {
         parent::_init($account->get_rest_client(), $account->get_relative_namespace());
     }
 
-    public function create() {
-        $data = parent::post('portins', '');
-        return $data;
-    }
-
     public function get($filters = Array()) {
         $out = [];
 
