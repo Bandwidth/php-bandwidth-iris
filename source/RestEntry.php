@@ -40,7 +40,6 @@ abstract class RestEntry{
     protected function get($url, $options=Array(), $defaults = Array(), $required = Array())
     {
         $url = $this->get_url($url);
-
         $this->set_defaults($options, $defaults);
         $this->check_required($options, $required);
 
@@ -78,4 +77,13 @@ abstract class RestEntry{
                 throw new ValidateException("Required options '{$key}' should be provided");
         }
     }
+
+    public function get_rest_client() {
+        return $this->parent->get_rest_client();
+    }
+
+    public function get_relative_namespace() {
+        return $this->parent->get_relative_namespace().'/sites';
+    }
+
 }

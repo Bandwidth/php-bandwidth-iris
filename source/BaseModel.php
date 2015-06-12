@@ -30,7 +30,7 @@ trait BaseModel {
 
     public function __get($key) {
         if(!array_key_exists($key, $this->fields))
-            return null;
+            return $this->{$key};
         if(isset($this->dataset[$key]))
             return $this->dataset[$key];
         else
@@ -39,13 +39,13 @@ trait BaseModel {
 
     public function __set($key, $value) {
         if(!array_key_exists($key, $this->fields))
-            throw new FieldNotExistsException($key);
-        if($this->fields[$key]["type"] == "string")
+            $this->{$key} = $value;
+        else if($this->fields[$key]["type"] == "string")
             $this->dataset[$key] = $value;
         else if(!isset($this->dataset[$key]))
             $this->dataset[$key] = $value;
         else
-            $this->dataset[$key]->set_data($value);
+            $this->dataset[$key]->set_data((array)$value);
     }
 
     public function set_data($data) {
@@ -58,7 +58,7 @@ trait BaseModel {
             if($classname === "string") {
                 $this->{$key} = $value;
             } else {
-                $this->{$key} = new $classname($value);
+                $this->{$key} = new $classname((array)$value);
             }
         }
     }

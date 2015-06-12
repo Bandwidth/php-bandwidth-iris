@@ -11,9 +11,9 @@
 namespace Iris;
 
 class Sites extends RestEntry {
-    public function __construct($account) {
-        $this->account = $account;
-        parent::_init($account->get_rest_client(), $account->get_relative_namespace());
+    public function __construct($parent) {
+        $this->parent = $parent;
+        parent::_init($this->parent->get_rest_client(), $this->parent->get_relative_namespace());
     }
 
     public function get($filters = Array()) {
@@ -37,11 +37,11 @@ class Sites extends RestEntry {
     }
 
     public function get_rest_client() {
-        return $this->account->get_rest_client();
+        return $this->parent->get_rest_client();
     }
 
     public function get_relative_namespace() {
-        return $this->account->get_relative_namespace().'/sites';
+        return $this->parent->get_relative_namespace().'/sites';
     }
 
     public function create($data) {
@@ -84,8 +84,10 @@ class Site extends RestEntry {
         }
         $this->set_data($data);
 
-        if(!is_null($sites))
+        if(!is_null($sites)) {
+            $this->parent = $sites;
             parent::_init($sites->get_rest_client(), $sites->get_relative_namespace());
+        }
     }
 
     public function get() {
@@ -110,4 +112,18 @@ class Site extends RestEntry {
             $this->id = end($splitted);
         }
     }
+
+    public function sippeers() {
+        if(!isset($this->sippeers))
+            $this->sippeers = new Sippeers($this);
+        return $this->sippeers;
+    }
+    public function get_rest_client() {
+        return $this->parent->get_rest_client();
+    }
+
+    public function get_relative_namespace() {
+        return $this->parent->get_relative_namespace().'/'.$this->id;
+    }
+
 }

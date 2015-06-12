@@ -22,9 +22,7 @@ class Account extends RestEntry {
     {
         parent::_init($client, $namespace);
         $this->account_id = $account_id;
-        $this->client = $client;
-
-        //$this->orders = new Orders($this->account_id);
+        $this->client = $client;        
     }
 
     public function portins() {

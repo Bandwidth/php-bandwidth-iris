@@ -18,13 +18,19 @@ final class GuzzleClient extends iClient {
 
     public function get($url, $options=Null)
     {
-
       $url = $this->prepare_url($url);
       $full_url = sprintf('%s%s', $this->url, $url);
-      $request = $this->client->get($full_url, ['auth' =>  [$this->login, $this->password]]);
-      $response_body_str = $request->getBody()->read(1024);
-      $response_body_xml = new \SimpleXMLElement($response_body_str);
-      return $this->xml2array($response_body_xml);
+      $response = $this->client->get($full_url, ['auth' =>  [$this->login, $this->password]]);
+      $response_body_str = $response->getBody(true);
+
+      if($response_body_str !== "") {
+          $response_body_xml = new \SimpleXMLElement($response_body_str);
+          $response_array = $this->xml2array($response_body_xml);
+      } else {
+          $response_array = array();
+      }
+
+      return $response_array;
     }
 
     public function make_call($url, $base_node, $data, $method) {
@@ -34,9 +40,6 @@ final class GuzzleClient extends iClient {
         $xml_base_str = sprintf("<%s></%s>", $base_node, $base_node);
         $xml = new \SimpleXMLElement($xml_base_str);
         $this->array2xml($data, $xml);
-
-        // echo $full_url, "\n";
-        // echo $xml->asXML();
 
         try {
             $response = $this->client->{$method}(
@@ -52,7 +55,7 @@ final class GuzzleClient extends iClient {
             throw new \Exception($e);
         }
 
-        $response_body_str = $response->getBody()->read(1024);
+        $response_body_str = $response->getBody(true);
 
         try {
             if($response_body_str == "") {
