@@ -39,39 +39,45 @@ class Sites extends RestEntry {
     }
 
     public function create($data) {
-        $site = new Site($this, null);
-        $site->create($data);
+        $site = new Site($this, $data);
+        $site->save();
         return $site;
     }
 }
 
 class Site extends RestEntry {
+    use BaseModel;
+
     protected $fields = array(
-        "Name" => "string",
-        "Description" => "string",
-        "Address" => "Address",
-        "CustomerProvidedID" => "string",
-        "CustomerName" => "string"
+        "Name" => array(
+            "type" => "string"
+        ),
+        "Description" => array(
+            "type" => "string"
+        ),
+        "Address" => array(
+            "type" => "\Iris\Address"
+        ),
+        "CustomerProvidedID" => array(
+            "type" => "string"
+        ),
+        "CustomerName" => array(
+            "type" => "string"
+        )
     );
 
-    protected $required = array(
-        "Name"
-    );
-
-    public function __construct($sites, $data = null) {
-        if(!is_null($data)) {
+    public function __construct($sites, $data) {
+        if(!isset($data) && isset($data->Id)) {
             $this->id = $data->Id;
-            $this->set_data($data);
         }
+        $this->set_data($data);
         parent::_init($sites->get_rest_client(), $sites->get_relative_namespace());
     }
 
-    public function create($data) {
-        try {
-            $res = parent::post(null, "Site", $data);
-        } catch(Exception $e) {
-            var_dump($e);
-        }
-        var_dump($res);
+    public function save() {
+        if($this->id)
+            parent::put(null, "Site", $this->to_array());
+        else
+            parent::post(null, "Site", $this->to_array());
     }
 }

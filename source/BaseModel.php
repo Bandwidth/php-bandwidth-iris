@@ -1,13 +1,15 @@
 <?php
 
-class FieldRequiredException extends Exception {
+namespace Iris;
+
+class FieldRequiredException extends \Exception {
     public function __construct($key) {
         $this->key = $key;
         parent::__construct("Field {$this->key} is required.");
     }
 }
 
-class FieldValidateInArrayException extends Exception {
+class FieldValidateInArrayException extends \Exception {
     public function __construct($key, $arr) {
         $this->key = $key;
         $this->arr = $arr;

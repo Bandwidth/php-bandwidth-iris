@@ -1,5 +1,7 @@
 <?php
 
+namespace Iris;
+
 class Address {
     use BaseModel;
 
