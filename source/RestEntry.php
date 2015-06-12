@@ -33,7 +33,7 @@ abstract class RestEntry{
     {
         if(is_null($path))
             return $this->namespace;
-        
+
         return sprintf('%s/%s', $this->namespace, $path);
     }
 
@@ -66,13 +66,4 @@ abstract class RestEntry{
                 throw new ValidateException("Required options '{$key}' should be provided");
         }
     }
-
-    protected function set_data($data) {
-        foreach($data as $key => $value) {
-            if(array_key_exists($key, $this->fields)) {
-                $this->{$key} = $value;
-            }
-        }
-    }
-
 }

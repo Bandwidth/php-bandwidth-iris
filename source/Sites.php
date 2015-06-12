@@ -49,7 +49,7 @@ class Site extends RestEntry {
     protected $fields = array(
         "Name" => "string",
         "Description" => "string",
-        "Address" => "string",
+        "Address" => "Address",
         "CustomerProvidedID" => "string",
         "CustomerName" => "string"
     );
@@ -68,7 +68,7 @@ class Site extends RestEntry {
 
     public function create($data) {
         try {
-            $res = parent::post(null, array("Site" => array("Name" => "Raleigh")));        
+            $res = parent::post(null, "Site", $data);
         } catch(Exception $e) {
             var_dump($e);
         }
