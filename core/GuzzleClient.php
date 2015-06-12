@@ -2,7 +2,7 @@
 
 namespace Iris;
 
-final class GuzzleClient2 extends iClient {
+final class GuzzleClient extends iClient {
     public function __construct($login, $password, $options=Null)
     {
         /* TODO:  singleton */
@@ -35,7 +35,8 @@ final class GuzzleClient2 extends iClient {
         $xml = new \SimpleXMLElement($xml_base_str);
         $this->array2xml($data, $xml);
 
-        echo $xml->asXML();
+        // echo $full_url, "\n";
+        // echo $xml->asXML();
 
         try {
             $response = $this->client->{$method}(
@@ -48,34 +49,43 @@ final class GuzzleClient2 extends iClient {
         }
         catch (\GuzzleHttp\Exception\ClientException $e) {
             echo "Response status code: ".$e->getResponse()->getStatusCode();
-            exit;
+            throw new \Exception($e);
         }
 
         $response_body_str = $response->getBody()->read(1024);
 
         try {
-            $response_body_xml = new \SimpleXMLElement($response_body_str);
-            $response_array = $this->xml2array($response_body_xml);
+            if($response_body_str == "") {
+                if($response->hasHeader('Location')) {
+                    $response_array = array("Location" => $response->getHeader('Location')[0]);
+                } else {
+                    $response_array = array();
+                }
+            } else {
+                $response_body_xml = new \SimpleXMLElement($response_body_str);
+                $response_array = $this->xml2array($response_body_xml);
+            }
         } catch(Exception $e) {
             $response_array = array();
         }
         return $response_array;
-
     }
 
     public function post($url, $base_node, $data)
     {
-        $this->make_call($url, $base_node, $data, 'post');
+        return $this->make_call($url, $base_node, $data, 'post');
     }
 
-    public function put($url, $data)
+    public function put($url, $base_node, $data)
     {
-        $this->make_call($url, $base_node, $data, 'put');
+        return $this->make_call($url, $base_node, $data, 'put');
     }
 
 
-    public function delete($url, $data)
+    public function delete($url)
     {
-
+        $url = $this->prepare_url($url);
+        $full_url = sprintf('%s%s', $this->url, $url);
+        $this->client->delete($full_url, ['auth' =>  [$this->login, $this->password]]);
     }
 }

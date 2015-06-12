@@ -27,13 +27,13 @@ class Account extends RestEntry {
         //$this->orders = new Orders($this->account_id);
     }
 
-    public function getPortins() {
+    public function portins() {
         if(!isset($this->portins))
             $this->portins = new Portins($this);
         return $this->portins;
     }
 
-    public function getSites() {
+    public function sites() {
         if(!isset($this->sites))
             $this->sites = new Sites($this);
         return $this->sites;

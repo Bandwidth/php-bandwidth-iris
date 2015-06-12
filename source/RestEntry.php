@@ -47,10 +47,22 @@ abstract class RestEntry{
         return $this->client->get($url, $options);
     }
 
-    protected function post($url, $data, $headers = array())
+    protected function post($url, $base_node, $data)
     {
         $url = $this->get_url($url);
-        return $this->client->post($url, $data, $headers);
+        return $this->client->post($url, $base_node, $data);
+    }
+
+    protected function put($url, $base_node, $data)
+    {
+        $url = $this->get_url($url);
+        return $this->client->put($url, $base_node, $data);
+    }
+
+    protected function delete($url)
+    {
+        $url = $this->get_url($url);
+        $this->client->delete($url);
     }
 
     protected function set_defaults(&$options, $defaults) {

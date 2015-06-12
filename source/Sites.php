@@ -30,6 +30,12 @@ class Sites extends RestEntry {
         return $sites;
     }
 
+    public function get_by_id($id) {
+        $site = new Site($this, array("Id" => $id));
+        $site->get();
+        return $site;
+    }
+
     public function get_rest_client() {
         return $this->account->get_rest_client();
     }
@@ -49,6 +55,9 @@ class Site extends RestEntry {
     use BaseModel;
 
     protected $fields = array(
+        "id" => array(
+            "type" => "string"
+        ),
         "Name" => array(
             "type" => "string"
         ),
@@ -67,17 +76,38 @@ class Site extends RestEntry {
     );
 
     public function __construct($sites, $data) {
-        if(!isset($data) && isset($data->Id)) {
-            $this->id = $data->Id;
+        if(isset($data)) {
+            if(is_object($data) && $data->Id)
+                $this->id = $data->Id;
+            if(is_array($data) && isset($data['Id']))
+                $this->id = $data['Id'];
         }
         $this->set_data($data);
-        parent::_init($sites->get_rest_client(), $sites->get_relative_namespace());
+
+        if(!is_null($sites))
+            parent::_init($sites->get_rest_client(), $sites->get_relative_namespace());
+    }
+
+    public function get() {
+        if(is_null($this->id))
+            throw new \Exception('Id should be provided');
+
+        $data = parent::get($this->id);
+        $this->set_data($data['Site']);
+    }
+    public function delete() {
+        if(is_null($this->id))
+            throw new \Exception('Id should be provided');
+        parent::delete($this->id);
     }
 
     public function save() {
-        if($this->id)
-            parent::put(null, "Site", $this->to_array());
-        else
-            parent::post(null, "Site", $this->to_array());
+        if(!is_null($this->id))
+            parent::put($this->id, "Site", $this->to_array());
+        else {
+            $header = parent::post(null, "Site", $this->to_array());
+            $splitted = split("/", $header['Location']);
+            $this->id = end($splitted);
+        }
     }
 }

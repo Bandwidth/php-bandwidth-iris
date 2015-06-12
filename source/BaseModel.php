@@ -17,8 +17,38 @@ class FieldValidateInArrayException extends \Exception {
     }
 }
 
+class FieldNotExistsException extends \Exception {
+    public function __construct($key) {
+        $this->key = $key;
+        parent::__construct("Field {$this->key} not exists");
+    }
+}
+
 trait BaseModel {
-    protected function set_data($data) {
+
+    private $dataset = array();
+
+    public function __get($key) {
+        if(!array_key_exists($key, $this->fields))
+            return null;
+        if(isset($this->dataset[$key]))
+            return $this->dataset[$key];
+        else
+            return null;
+    }
+
+    public function __set($key, $value) {
+        if(!array_key_exists($key, $this->fields))
+            throw new FieldNotExistsException($key);
+        if($this->fields[$key]["type"] == "string")
+            $this->dataset[$key] = $value;
+        else if(!isset($this->dataset[$key]))
+            $this->dataset[$key] = $value;
+        else
+            $this->dataset[$key]->set_data($value);
+    }
+
+    public function set_data($data) {
         foreach($data as $key => $value) {
             if(!array_key_exists($key, $this->fields))
                 continue;
@@ -27,8 +57,7 @@ trait BaseModel {
 
             if($classname === "string") {
                 $this->{$key} = $value;
-            }
-            else {
+            } else {
                 $this->{$key} = new $classname($value);
             }
         }
@@ -47,7 +76,7 @@ trait BaseModel {
         $out = array();
 
         foreach($this->fields as $key => $rules) {
-            if(property_exists($this, $key)) {
+            if(!is_null($this->{$key})) {
                 $value = $this->{$key};
 
                 if($rules['type'] === "string")

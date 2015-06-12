@@ -6,15 +6,12 @@
 
 namespace Iris;
 
-$selfpath = dirname(__FILE__);
-require_once($selfpath . '/../vendor/autoload.php');
-
 abstract class iClient
 {
     abstract function get($url, $options);
     abstract function post($url, $base_node, $data);
-    abstract function put($url, $data);
-    abstract function delete($url, $data);
+    abstract function put($url, $base_node, $data);
+    abstract function delete($url);
 
     protected function xml2array ($xmlObject, $out = array ())
     {
@@ -105,80 +102,12 @@ class PestClient extends iClient
         return $this->xml2object($data);
     }
 
-    public function put($url, $data)
+    public function put($url, $base_node, $data)
     {
 
     }
 
-    public function delete($url, $data)
-    {
-
-    }
-}
-
-
-final class GuzzleClient extends iClient {
-    public function __construct($login, $password, $options=Null)
-    {
-        /* TODO:  singleton */
-
-        $this->login = $login;
-        $this->password = $password;
-
-        $this->url = $this->prepare_base_url($options['url']);
-
-        $this->client = new \GuzzleHttp\Client();
-
-    }
-
-    public function get($url, $options=Null)
-    {
-
-      $url = $this->prepare_url($url);
-      $full_url = sprintf('%s%s', $this->url, $url);
-      $request = $this->client->get($full_url, ['auth' =>  [$this->login, $this->password]]);
-      $response_body_str = $request->getBody()->read(1024);
-      $response_body_xml = new \SimpleXMLElement($response_body_str);
-      return $this->xml2array($response_body_xml);
-    }
-
-    public function post($url, $base_node, $data)
-    {
-      $url = $this->prepare_url($url);
-      $full_url = sprintf('%s%s', $this->url, $url);
-
-      //prepare data
-      $key = 'Order';
-      $xml_base_str = sprintf("<?xml version=\"1.0\"?><%s></%s>", $base_node, $base_node);
-      $xml = new \SimpleXMLElement($xml_base_str);
-      $this->array2xml($data, $xml);
-      //print $xml->asXML();exit;
-      $result = Null;
-      try {
-          $request = $this->client->post(
-                                 $full_url,
-                                 ['auth' =>  [$this->login, $this->password],
-                                  'body' => $xml->asXML(),
-                                  'headers' => ['Content-Type' => 'application/xml']
-                                  ]
-                                 );
-          $result = &$request;
-      }
-      catch (\GuzzleHttp\Exception\ClientException $e) {
-          $result = &$e->getResponse();
-      }
-      $response_body_str = $result->getBody()->read(1024);
-      $response_body_xml = new \SimpleXMLElement($response_body_str);
-      return $this->xml2array($response_body_xml);
-    }
-
-    public function put($url, $data)
-    {
-
-    }
-
-
-    public function delete($url, $data)
+    public function delete($url)
     {
 
     }
