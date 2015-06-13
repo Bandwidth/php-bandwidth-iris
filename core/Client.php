@@ -34,13 +34,13 @@ abstract class iClient
       return $object;
     }
 
-    protected function array2xml($arr, &$xml) 
+    protected function array2xml($arr, &$xml)
     {
       /* snippet:  http://stackoverflow.com/questions/1397036/how-to-convert-array-to-simplexml */
       foreach($arr as $key => $value) {
         if(is_array($value)) {
           if(!is_numeric($key)){
-                
+
             $subnode = $xml->addChild("$key");
             $this->array2xml($value, $subnode);
           }
@@ -54,7 +54,7 @@ abstract class iClient
         }
       }
     }
-    
+
     protected function prepare_base_url($url)
     {
         return substr($url, -1) != '/' ? $url . '/' : $url;
@@ -67,8 +67,7 @@ abstract class iClient
 }
 
 
-final class PestClient extends iClient
-
+class PestClient extends iClient
 {
 
     public function __construct($login, $password, $options=Null)
@@ -91,7 +90,7 @@ final class PestClient extends iClient
         $url = $this->prepare_url($url);
         $full_url = sprintf('%s%s', $this->url, $url);
 
-        //echo('--- request url: '. $full_url . ' --- '); 
+        //echo('--- request url: '. $full_url . ' --- ');
         $data = $this->pest->get($full_url, $options);
         return $this->xml2object($data);
     }
@@ -101,7 +100,7 @@ final class PestClient extends iClient
 
         $url = $this->prepare_url($url);
         $full_url = sprintf('%s%s', $this->url, $url);
-        echo('--- request url: '. $full_url . ' --- '); 
+        echo('--- request url: '. $full_url . ' --- ');
         $data = $this->pest->post($full_url, $data);
         return $this->xml2object($data);
     }
@@ -138,71 +137,117 @@ final class GuzzleClient extends iClient {
       $url = $this->prepare_url($url);
       $full_url = sprintf('%s%s', $this->url, $url);
       $request = $this->client->get($full_url, ['auth' =>  [$this->login, $this->password]]);
-      $response_body_str = $request->getBody()->read(1024);
+      $response_body_str = $request->getBody()->read(10240);
       $response_body_xml = new \SimpleXMLElement($response_body_str);
       return $this->xml2array($response_body_xml);
     }
-    
+
     public function post($url, $base_node, $data)
     {
-      $url = $this->prepare_url($url);
-      $full_url = sprintf('%s%s', $this->url, $url);
-      
-      //prepare data
-      $key = 'Order';
-      $xml_base_str = sprintf("<?xml version=\"1.0\"?><%s></%s>", $base_node, $base_node);
-      $xml = new \SimpleXMLElement($xml_base_str);
-      $this->array2xml($data, $xml);
-      //print $xml->asXML();exit;
-      $result = Null; 
-      try {
-          $request = $this->client->post(
-                                 $full_url, 
-                                 ['auth' =>  [$this->login, $this->password],
-                                  'body' => $xml->asXML(),
-                                  'headers' => ['Content-Type' => 'application/xml']
-                                  ]
-                                 );
-          $result = &$request;
-      }
-      catch (\GuzzleHttp\Exception\ClientException $e) 
-      {
-          $result = $e->getResponse();
-      }
-      try 
-      {
-          $response_body_str = $result->getBody()->read(1024);
-          /* TODO:  bad defain str or xml */
-          if (substr($response_body_str, 0, 1) == '<')
-          {
-              $response_body_xml = new \SimpleXMLElement($response_body_str);
-              $return_data = $this->xml2array($response_body_xml);
-          }
-          else 
-          {
-            /* TODO:  throws exception */
-            $return_data = '-- Bad request --';
-          }
-          
-      }
-      catch (\Exception $e)
-      {
-        $return_data = $e->getMessage();
-      }
-      return $return_data;
+        $url = $this->prepare_url($url);
+        $full_url = sprintf('%s%s', $this->url, $url);
+
+        //prepare data
+        $key = 'Order';
+        $xml_base_str = sprintf("<?xml version=\"1.0\"?><%s></%s>", $base_node, $base_node);
+        $xml = new \SimpleXMLElement($xml_base_str);
+        $this->array2xml($data, $xml);
+        //print $xml->asXML();exit;
+        $result = Null;
+        try {
+            $request = $this->client->post(
+                                   $full_url,
+                                   ['auth' =>  [$this->login, $this->password],
+                                    'body' => $xml->asXML(),
+                                    'headers' => ['Content-Type' => 'application/xml']
+                                    ]
+                                   );
+            $result = &$request;
+        }
+        catch (\GuzzleHttp\Exception\ClientException $e) 
+        {
+            $result = $e->getResponse();
+        }
+        try 
+        {
+            $response_body_str = $result->getBody()->read(1024);
+            /* TODO:  bad defain str or xml */
+            if (substr($response_body_str, 0, 1) == '<')
+            {
+                $response_body_xml = new \SimpleXMLElement($response_body_str);
+                $return_data = $this->xml2array($response_body_xml);
+            }
+            else 
+            {
+                /* TODO:  throws exception */
+                $return_data = '-- Bad request --';
+            }
+
+        }
+        catch (\Exception $e)
+        {
+            $return_data = $e->getMessage();
+        }
+        return $return_data;
     }
-    
+
     public function put($url, $data)
     {
-      
+        $url = $this->prepare_url($url);
+        $full_url = sprintf('%s%s', $this->url, $url);
+
+        //prepare data
+        $key = 'Order';
+        $xml_base_str = sprintf("<?xml version=\"1.0\"?><%s></%s>", $base_node, $base_node);
+        $xml = new \SimpleXMLElement($xml_base_str);
+        $this->array2xml($data, $xml);
+        //print $xml->asXML();exit;
+        $result = Null;
+        try {
+            $request = $this->client->put(
+                                   $full_url,
+                                   ['auth' =>  [$this->login, $this->password],
+                                    'body' => $xml->asXML(),
+                                    'headers' => ['Content-Type' => 'application/xml']
+                                    ]
+                                   );
+            $result = &$request;
+        }
+        catch (\GuzzleHttp\Exception\ClientException $e) 
+        {
+            $result = $e->getResponse();
+        }
+        try 
+        {
+            $response_body_str = $result->getBody()->read(1024);
+            /* TODO:  bad defain str or xml */
+            if (substr($response_body_str, 0, 1) == '<')
+            {
+                $response_body_xml = new \SimpleXMLElement($response_body_str);
+                $return_data = $this->xml2array($response_body_xml);
+            }
+            else 
+            {
+                /* TODO:  throws exception */
+                $return_data = '-- Bad request --';
+            }
+
+        }
+        catch (\Exception $e)
+        {
+            $return_data = $e->getMessage();
+        }
+        return $return_data;
     }
 
-    
+
     public function delete($url, $data)
     {
-      
+        $url = $this->prepare_url($url);
+        $full_url = sprintf('%s%s', $this->url, $url);
+        $request = $this->client->delete($full_url, ['auth' =>  [$this->login, $this->password]]);
+        $response_body_str = $request->getBody()->read(10240);
+        $response_body_xml = new \SimpleXMLElement($response_body_str);
+        return $this->xml2array($response_body_xml);
     }
 }
-
-
-
