@@ -13,78 +13,161 @@
 
 namespace Iris;
 
-$selfpath = dirname(__FILE__);
-require_once($selfpath . '/../vendor/autoload.php');
-
-
 final class Orders extends RestEntry{
 
-    public function __construct($account_id, $client=Null, $namespace='accounts/{$this->account_id}/orders'){
-        $this->account_id = $account_id;
-        $this->namespace = $namespace;
-        parent::_init($client, $namespace);
+  //_id, $client=Null, $namespace='accounts/{$this->account_id}/orders'
+    public function __construct($parent) {
+        $this->parent = $parent;
+        parent::_init($this->parent->get_rest_client(), $this->parent->get_relative_namespace());
     }
 
-    public function get($order_id, $url='', $options=Array())
-    {        
-        /* try get order by id if get then else self exception */
-        return new Order($this->account_id, $this->order_id);
+    public function get($filters = Array()) {
+        
+        $orders = [];
+
+        $data = parent::get('orders', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
+
+        if($data['ListOrderIdUserIdDate'] && $data['ListOrderIdUserIdDate']['TotalCount']) {
+            foreach($data['ListOrderIdUserIdDate']['OrderIdUserIdDate'] as $order) {
+                $orders[] = new Order($this, $order);
+            }
+        }
+
+        return $orders;
     }
 
-    public function list1($filters)
-    {
-        $data = parent::get($this->account_id);
-        return $data;
+    public function get_by_id($id) {
+        $order = new Order($this, array("Id" => $id));
+        $order->get();
+        return $order;
+    }
+
+    public function get_rest_client() {
+        return $this->parent->get_rest_client();
+    }
+
+    public function get_relative_namespace() {
+        return $this->parent->get_relative_namespace().'/orders';
+    }
+
+    public function create($data) {
+        $order = new Order($this, $data);
+        $order->save();
+        return $order;
     }
 }
 
 final class Order extends RestEntry{
-    public function __construct($account_id, $order_id, $client=Null, $namespace='accounts/{$this->account_id}/orders')
+    use BaseModel;
+
+    protected $fields = array(
+        "orderId" => array(
+            "type" => "string"
+        ),
+        "Quantity" => array(
+            "type" => "string"
+        ),
+        "Name" => array(
+            "type" => "string"
+        ),
+        "CustomerOrderId" => array(
+            "type" => "string"
+        ),
+        "SiteId" => array(
+            "type" => "string"
+        ),
+        "PeerId" => array(
+            "type" => "string"
+        )
+        ,
+        "PartialAllowed" => array(
+            "type" => "string"
+        )
+        ,
+        "BackOrderRequested" => array(
+            "type" => "string"
+         ),
+        "AreaCodeSearchAndOrderType" => array(
+            "type" => "string"
+        )
+    );
+    
+    
+    public function __construct($orders, $data)
     {
-        $this->account_id = $account_id;
-        $this->order_id = $order_id;
-        parent::_init($client, $namespace);
+        if(isset($data)) {
+            if(is_object($data) && $data->Id)
+                $this->id = $data->Id;
+            if(is_array($data) && isset($data['Id']))
+                $this->id = $data['Id'];
+        }
+        $this->set_data($data);
+
+        if(!is_null($orders)) {
+            $this->parent = $orders;
+            parent::_init($orders->get_rest_client(), $orders->get_relative_namespace());
+        }
+        
+    }
+
+    public function get() {
+        if(is_null($this->id))
+            throw new \Exception('Id should be provided');
+
+        $data = parent::get($this->id);
+        $this->set_data($data['Order']);
+    }
+    public function delete() {
+        if(is_null($this->id))
+            throw new \Exception('Id should be provided');
+        parent::delete($this->id);
+    }
+
+    public function save() {
+        if(!is_null($this->id))
+            parent::put($this->id, "Order", $this->to_array());
+        else {
+            $header = parent::post(null, "Order", $this->to_array());
+            $splitted = split("/", $header['Location']);
+            $this->id = end($splitted);
+        }
     }
     
     public function areCodes()
     {
-        $url = sprintf('%s/%s/%s', $this->account_id, $this->order_id,'areCodes');
-        $data = parent::get($url, $filters);
+        $url = sprintf('%s/%s', $this->id, 'areaCodes');
+        $data = parent::get($url);
         return $data;
     }
 
-    public function npaNxx() 
+    public function history()
     {
-        $url = sprintf('%s/%s/%s', $this->account_id, $this->order_id,'npaNxx');
-        $data = parent::get($url, $filters);
+        $url = sprintf('%s/%s', $this->id, 'history');
+        $data = parent::get($url);
         return $data;
     }
-
-    public function totals() 
+    public function npaNxx()
     {
-        $url = sprintf('%s/%s/%s', $this->account_id, $this->order_id,'totals');
-        $data = parent::get($url, $filters);
+        $url = sprintf('%s/%s', $this->id, 'npaNxx');
+        $data = parent::get($url);
         return $data;
     }
-    
-    public function tns() 
+    public function tns()
     {
-        $url = sprintf('%s/%s/%s', $this->account_id, $this->order_id,'tns');
-        $data = parent::get($url, $filters);
+        $url = sprintf('%s/%s', $this->id, 'tns');
+        $data = parent::get($url);
         return $data;
     }
-
-    public function notes() 
+    public function totals()
     {
-        $url = sprintf('%s/%s/%s', $this->account_id, $this->order_id,'notes');
-        $data = parent::get($url, $filters);
+        $url = sprintf('%s/%s', $this->id, 'totals');
+        $data = parent::get($url);
         return $data;
     }
-
-    public function history() 
+    public function notes()
     {
-        $url = sprintf('%s/%s/%s', $this->account_id, $this->order_id,'history');
-        $data = parent::get($url, $filters);
+        $url = sprintf('%s/%s', $this->id, 'notes');
+        $data = parent::get($url);
         return $data;
     }
 }

@@ -22,18 +22,22 @@ class Account extends RestEntry {
     {
         parent::_init($client, $namespace);
         $this->account_id = $account_id;
-        $this->client = $client;
-
-        //$this->orders = new Orders($this->account_id);
+        $this->client = $client;        
     }
 
-    public function getPortins() {
+    public function orders() {
+        if(!isset($this->orders))
+            $this->orders = new Orders($this);
+        return $this->orders;
+    }
+    
+    public function portins() {
         if(!isset($this->portins))
             $this->portins = new Portins($this);
         return $this->portins;
     }
 
-    public function getSites() {
+    public function sites() {
         if(!isset($this->sites))
             $this->sites = new Sites($this);
         return $this->sites;
@@ -43,7 +47,7 @@ class Account extends RestEntry {
      * Account Info by Id
      *
      */
-    public function get($options=Array())
+    public function get($url, $options=Array(), $defaults = Array(), $required = Array())
     {
         $data = parent::get($this->account_id);
         return $data;
@@ -60,12 +64,6 @@ class Account extends RestEntry {
 
     public function serviceNumbers($filters=Array()){
         $url = sprintf('%s/%s', $this->account_id, 'serviceNumbers');
-        $data = parent::get($url, $filters);
-        return $data;
-    }
-
-    public function orders($filters=Array()){
-        $url = sprintf('%s/%s', $this->account_id, 'orders');
         $data = parent::get($url, $filters);
         return $data;
     }

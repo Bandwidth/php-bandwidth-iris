@@ -13,7 +13,7 @@ abstract class RestEntry{
     {
         if (!$client)
         {
-            $this->client = new PestClient(Config::REST_LOGIN, Config::REST_PASS, Array('url' => Config::REST_URL));
+            $this->client = new GuzzleClient(\Iris\Config::REST_LOGIN, \Iris\Config::REST_PASS, Array('url' => \Iris\Config::REST_URL));
         }
         else
         {
@@ -33,24 +33,35 @@ abstract class RestEntry{
     {
         if(is_null($path))
             return $this->namespace;
-        
+
         return sprintf('%s/%s', $this->namespace, $path);
     }
 
     protected function get($url, $options=Array(), $defaults = Array(), $required = Array())
     {
         $url = $this->get_url($url);
-
         $this->set_defaults($options, $defaults);
         $this->check_required($options, $required);
 
         return $this->client->get($url, $options);
     }
 
-    protected function post($url, $data, $headers = array())
+    protected function post($url, $base_node, $data)
     {
         $url = $this->get_url($url);
-        return $this->client->post($url, $data, $headers);
+        return $this->client->post($url, $base_node, $data);
+    }
+
+    protected function put($url, $base_node, $data)
+    {
+        $url = $this->get_url($url);
+        return $this->client->put($url, $base_node, $data);
+    }
+
+    protected function delete($url)
+    {
+        $url = $this->get_url($url);
+        $this->client->delete($url);
     }
 
     protected function set_defaults(&$options, $defaults) {
@@ -67,12 +78,12 @@ abstract class RestEntry{
         }
     }
 
-    protected function set_data($data) {
-        foreach($data as $key => $value) {
-            if(array_key_exists($key, $this->fields)) {
-                $this->{$key} = $value;
-            }
-        }
+    public function get_rest_client() {
+        return $this->parent->get_rest_client();
+    }
+
+    public function get_relative_namespace() {
+        return $this->parent->get_relative_namespace().'/sites';
     }
 
 }
