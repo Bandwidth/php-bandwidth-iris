@@ -71,7 +71,18 @@ final class GuzzleClient extends iClient {
             throw new \Exception($e);
         }
 
-        $response_body_str = $response->getBody(true);
+        $body = $response->getBody(true);
+        if ($body instanceof \GuzzleHttp\Psr7\Stream) 
+          {
+            while(!$body->eof())
+              {
+                $response_body_str .= $body->read(1024);
+              }
+          }
+        else 
+          {
+            $response_body_str = $body;
+          }
 
         try {
             if($response_body_str == "") {
