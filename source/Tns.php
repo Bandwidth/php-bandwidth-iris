@@ -2,13 +2,6 @@
 
 namespace Iris;
 
-/* TODO:  change on autoload compouser*/
-$selfpath = dirname(__FILE__);
-require_once($selfpath . '/RestEntry.php');
-
-
-/* TODO:  remove build url from methods */
-
 final class Tns extends RestEntry {
 
     /**

@@ -18,31 +18,31 @@ final class GuzzleClient extends iClient {
 
     public function get($url, $options=Null)
     {
-      $url = $this->prepare_url($url, $options);
-      $full_url = sprintf('%s%s', $this->url, $url);
-      //print_r($full_url); exit;
-      $response = $this->client->get($full_url, ['auth' =>  [$this->login, $this->password]]);
-      $response_body_str = '';
-      $body = $response->getBody(true);
-      if ($body instanceof \GuzzleHttp\Psr7\Stream) 
-      {
-        while(!$body->eof())
+        $url = $this->prepare_url($url, $options);
+        $full_url = sprintf('%s%s', $this->url, $url);
+        //print_r($full_url); exit;
+        $response = $this->client->get($full_url, ['auth' =>  [$this->login, $this->password]]);
+        $response_body_str = '';
+        $body = $response->getBody(true);
+        if ($body instanceof \GuzzleHttp\Psr7\Stream) 
         {
-            $response_body_str .= $body->read(1024);
+          while(!$body->eof())
+          {
+              $response_body_str .= $body->read(1024);
+          }
         }
-      }
-      else 
-      {
-          $response_body_str = $body;
-      }
-      if($response_body_str !== "") {
-          $response_body_xml = new \SimpleXMLElement($response_body_str);
-          $response_array = $this->xml2array($response_body_xml);
-      } else {
-          $response_array = array();
-      }
+        else 
+        {
+            $response_body_str = $body;
+        }
+        if($response_body_str !== "") {
+            $response_body_xml = new \SimpleXMLElement($response_body_str);
+            $response_array = $this->xml2array($response_body_xml);
+        } else {
+            $response_array = array();
+        }
 
-      return $response_array;
+        return $response_array;
     }
 
     public function make_call($url, $base_node, $data, $method) {
