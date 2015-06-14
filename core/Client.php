@@ -24,13 +24,15 @@ abstract class iClient
       foreach ($xml as $element) {
         $tag = $element->getName();
         $e = get_object_vars($element);
-        if (!empty($e))
-          $res = $element instanceof SimpleXMLElement ? $this->xml2array($element) : $e;
-        else
+        if (!empty($e)) {
+          $res = $element instanceof \SimpleXMLElement ? $this->xml2array($element) : $e;
+        }
+        else {
           $res = trim($element);
+        }
 
         if(isset($arr[$tag])) {
-            if(!is_array($arr[$tag]) || isAssoc($arr[$tag])) {
+            if(!is_array($arr[$tag]) || $this->isAssoc($arr[$tag])) {
                 $tmp = $arr[$tag];
                 $arr[$tag] = [];
                 $arr[$tag][] = $tmp;
