@@ -43,7 +43,7 @@ abstract class iClient
           }
           else{
             $subnode = $xml->addChild("item$key");
-            array_to_xml($value, $subnode);
+            $this->array2xml($value, $subnode);
           }
         }
         else {

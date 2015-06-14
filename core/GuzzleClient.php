@@ -23,25 +23,16 @@ final class GuzzleClient extends iClient {
         //print_r($full_url); exit;
         $response = $this->client->get($full_url, ['auth' =>  [$this->login, $this->password]]);
         $response_body_str = '';
-        $body = $response->getBody(true);
-        if ($body instanceof \GuzzleHttp\Psr7\Stream) 
-        {
-          while(!$body->eof())
-          {
-              $response_body_str .= $body->read(1024);
-          }
-        }
-        else 
-        {
-            $response_body_str = $body;
-        }
+
+        $string_or_stream_body = $response->getBody(true);
+        $response_body_str = $this->get_body($string_or_stream_body);
+
         if($response_body_str !== "") {
             $response_body_xml = new \SimpleXMLElement($response_body_str);
             $response_array = $this->xml2array($response_body_xml);
         } else {
             $response_array = array();
         }
-
         return $response_array;
     }
 
@@ -71,18 +62,8 @@ final class GuzzleClient extends iClient {
             throw new \Exception($e);
         }
 
-        $body = $response->getBody(true);
-        if ($body instanceof \GuzzleHttp\Psr7\Stream) 
-          {
-            while(!$body->eof())
-              {
-                $response_body_str .= $body->read(1024);
-              }
-          }
-        else 
-          {
-            $response_body_str = $body;
-          }
+        $string_or_stream_body = $response->getBody(true);
+        $response_body_str = $this->get_body($string_or_stream_body);
 
         try {
             if($response_body_str == "") {
@@ -117,5 +98,23 @@ final class GuzzleClient extends iClient {
         $url = $this->prepare_url($url);
         $full_url = sprintf('%s%s', $this->url, $url);
         $this->client->delete($full_url, ['auth' =>  [$this->login, $this->password]]);
+    }
+
+    protected function get_body($body)
+    {
+        $body_str = '';
+        if ($body instanceof \GuzzleHttp\Psr7\Stream) 
+        {
+            while(!$body->eof())
+            {
+                $body_str .= $body->read(1024);
+            }
+        }
+        else 
+        {
+            $body_str = $body;
+        }
+
+        return $body_str;
     }
 }
