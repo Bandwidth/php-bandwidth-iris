@@ -78,12 +78,4 @@ abstract class RestEntry{
         }
     }
 
-    public function get_rest_client() {
-        return $this->parent->get_rest_client();
-    }
-
-    public function get_relative_namespace() {
-        return $this->parent->get_relative_namespace().'/sites';
-    }
-
 }

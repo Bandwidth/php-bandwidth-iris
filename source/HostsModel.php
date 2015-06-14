@@ -6,7 +6,8 @@ class Hosts {
     use BaseModel;
 
     protected $fields = array(
-        "Host" => array("type" => "\Iris\Host")
+        "Host" => array("type" => "\Iris\Host"),
+        "TerminationHost" => array("type" => "\Iris\Host")
     );
 
     public function __construct($data) {
