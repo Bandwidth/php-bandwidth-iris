@@ -13,13 +13,34 @@ abstract class iClient
     abstract function put($url, $base_node, $data);
     abstract function delete($url);
 
-    protected function xml2array ($xmlObject, $out = array ())
+    protected function isAssoc($array)
     {
-      /* snippet: http://stackoverflow.com/questions/6167279/converting-a-simplexml-object-to-an-array */
-      foreach ( (array) $xmlObject as $index => $node )
-        $out[$index] = ( is_object ( $node ) ) ? $this->xml2array ( $node ) : $node;
+        $array = array_keys($array); return ($array !== array_keys($array));
+    }
 
-      return $out;
+    protected function xml2array ($xml)
+    {
+      $arr = array();
+      foreach ($xml as $element) {
+        $tag = $element->getName();
+        $e = get_object_vars($element);
+        if (!empty($e))
+          $res = $element instanceof SimpleXMLElement ? $this->xml2array($element) : $e;
+        else
+          $res = trim($element);
+
+        if(isset($arr[$tag])) {
+            if(!is_array($arr[$tag]) || isAssoc($arr[$tag])) {
+                $tmp = $arr[$tag];
+                $arr[$tag] = [];
+                $arr[$tag][] = $tmp;
+            }
+            $arr[$tag][] = $res;
+        } else
+            $arr[$tag] = $res;
+
+      }
+      return $arr;
     }
 
     protected function xml2object($xmlObject)
@@ -57,16 +78,9 @@ abstract class iClient
         return substr($url, -1) != '/' ? $url . '/' : $url;
     }
 
-    protected function prepare_url($url, $options)
+    protected function prepare_url($url)
     {
-        $res = substr($url, 0, 1) == '/' ? substr($url, 1) : $url;
-        $res .= isset($options) ? '?' : '';
-        foreach($options as $key => $val)
-        {
-          if (substr($res, -1) == '?'){$res .=  "$key=$val";}
-          else{$res .= "&$key=$val";}
-        }
-        return $res;
+        return substr($url, 0, 1) == '/' ? substr($url, 1) : $url;
     }
 }
 

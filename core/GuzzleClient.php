@@ -16,22 +16,21 @@ final class GuzzleClient extends iClient {
 
     }
 
-    public function get($url, $options=Null)
+    public function get($url, $options=array())
     {
-        $url = $this->prepare_url($url, $options);
+        $url = $this->prepare_url($url);
         $full_url = sprintf('%s%s', $this->url, $url);
-        //print_r($full_url); exit;
-        $response = $this->client->get($full_url, ['auth' =>  [$this->login, $this->password]]);
+        $response = $this->client->get($full_url, ['query' => $options, 'auth' =>  [$this->login, $this->password]]);
         $response_body_str = '';
         $body = $response->getBody(true);
-        if ($body instanceof \GuzzleHttp\Psr7\Stream) 
+        if ($body instanceof \GuzzleHttp\Psr7\Stream)
         {
           while(!$body->eof())
           {
               $response_body_str .= $body->read(1024);
           }
         }
-        else 
+        else
         {
             $response_body_str = $body;
         }
@@ -48,12 +47,12 @@ final class GuzzleClient extends iClient {
     public function make_call($url, $base_node, $data, $method) {
         $url = $this->prepare_url($url);
         $full_url = sprintf('%s%s', $this->url, $url);
-        
+
         $xml_base_str = sprintf("<%s></%s>", $base_node, $base_node);
         $xml = new \SimpleXMLElement($xml_base_str);
         //print_r($data); exit;
         $this->array2xml($data, $xml);
-        print_r($xml->asXML()); 
+        print_r($xml->asXML());
 
         try {
             $response = $this->client->{$method}(
@@ -72,14 +71,17 @@ final class GuzzleClient extends iClient {
         }
 
         $body = $response->getBody(true);
-        if ($body instanceof \GuzzleHttp\Psr7\Stream) 
+
+        $response_body_str = '';
+
+        if ($body instanceof \GuzzleHttp\Psr7\Stream)
           {
             while(!$body->eof())
               {
                 $response_body_str .= $body->read(1024);
               }
           }
-        else 
+        else
           {
             $response_body_str = $body;
           }

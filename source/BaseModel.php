@@ -45,7 +45,7 @@ trait BaseModel {
         else if(!isset($this->dataset[$key]))
             $this->dataset[$key] = $value;
         else
-            $this->dataset[$key]->set_data((array)$value);
+            $this->dataset[$key]->set_data($value);
     }
 
     public function set_data($data) {
@@ -58,7 +58,7 @@ trait BaseModel {
             if($classname === "string") {
                 $this->{$key} = $value;
             } else {
-                $this->{$key} = new $classname((array)$value);
+                $this->{$key} = new $classname($value);
             }
         }
     }
