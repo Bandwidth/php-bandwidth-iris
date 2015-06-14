@@ -15,7 +15,6 @@ namespace Iris;
 
 final class Orders extends RestEntry{
 
-  //_id, $client=Null, $namespace='accounts/{$this->account_id}/orders'
     public function __construct($parent) {
         $this->parent = $parent;
         parent::_init($this->parent->get_rest_client(), $this->parent->get_relative_namespace());
