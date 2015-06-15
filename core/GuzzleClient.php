@@ -35,6 +35,7 @@ final class GuzzleClient extends iClient {
         $full_url = sprintf('%s%s', $this->url, $url);
 
         try {
+            $response = $this->client->get($full_url, ['query' => $options, 'auth' =>  [$this->login, $this->password]]);
             $response_body_str = '';
             $string_or_stream_body = $response->getBody(true);
             $response_body_str = $this->get_body($string_or_stream_body);

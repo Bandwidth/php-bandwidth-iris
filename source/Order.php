@@ -117,11 +117,6 @@ final class Order extends RestEntry{
         $data = parent::get($this->id);
         $this->set_data($data['Order']);
     }
-    public function delete($url='') {
-        if(is_null($this->id))
-            throw new \Exception('Id should be provided');
-        parent::delete($this->id);
-    }
 
     public function save() {
         if(!is_null($this->id))
