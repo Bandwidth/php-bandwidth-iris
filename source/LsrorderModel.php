@@ -28,7 +28,7 @@ final class Lsrorders extends RestEntry{
         print_r($data); exit;
         if($data['ListOrderIdUserIdDate'] && $data['ListOrderIdUserIdDate']['TotalCount']) {
             foreach($data['ListOrderIdUserIdDate']['OrderIdUserIdDate'] as $order) {
-                $orders[] = new Order($this, $order);
+                $orders[] = new Lsrorder($this, $order);
             }
         }
 
@@ -56,7 +56,7 @@ final class Lsrorders extends RestEntry{
     }
 }
 
-final class Order extends RestEntry{
+final class Lsrorder extends RestEntry{
     use BaseModel;
 
     protected $fields = array(

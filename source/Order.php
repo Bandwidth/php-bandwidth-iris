@@ -20,7 +20,7 @@ final class Orders extends RestEntry{
         parent::_init($this->parent->get_rest_client(), $this->parent->get_relative_namespace());
     }
 
-    public function get($filters = Array()) {
+    public function get($url, $options = Array(), $defaults = Array(), $required = Array()) {
         
         $orders = [];
 
@@ -59,6 +59,8 @@ final class Orders extends RestEntry{
 final class Order extends RestEntry{
     use BaseModel;
 
+    public $id = Null;
+    
     protected $fields = array(
         "orderId" => array(
             "type" => "string"
@@ -106,17 +108,16 @@ final class Order extends RestEntry{
             $this->parent = $orders;
             parent::_init($orders->get_rest_client(), $orders->get_relative_namespace());
         }
-        
     }
 
-    public function get() {
+    public function get($url='', $options = Array(), $defaults = Array(), $required = Array()) {
         if(is_null($this->id))
             throw new \Exception('Id should be provided');
 
         $data = parent::get($this->id);
         $this->set_data($data['Order']);
     }
-    public function delete() {
+    public function delete($url='') {
         if(is_null($this->id))
             throw new \Exception('Id should be provided');
         parent::delete($this->id);
@@ -127,8 +128,7 @@ final class Order extends RestEntry{
             parent::put($this->id, "Order", $this->to_array());
         else {
             $header = parent::post(null, "Order", $this->to_array());
-            $splitted = split("/", $header['Location']);
-            $this->id = end($splitted);
+            $this->id = $header['Order']['id'];
         }
     }
     

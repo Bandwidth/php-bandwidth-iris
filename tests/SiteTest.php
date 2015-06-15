@@ -6,7 +6,8 @@ class SiteTest extends PHPUnit_Framework_TestCase {
 		$this->sites = $this->account->sites();
 	}
 	/**
-     * @expectedException GuzzleHttp\Exception\ClientException
+     * @expectedException Iris\ResponseException
+	 * @expectedExceptionCode 12016
      */
 	public function testSiteModel()
 	{
