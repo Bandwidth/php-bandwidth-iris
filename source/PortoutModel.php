@@ -4,9 +4,9 @@
  * @model Portout
  * https://api.test.inetwork.com/v1.0/accounts/portouts
  *
- * 
  *
- * provides: 
+ *
+ * provides:
  * get/0
  *
  */
@@ -33,20 +33,15 @@ final class Portouts extends RestEntry{
         return $tns;
     }
 
-    public function get_by_id($id) 
+    public function get_by_id($id)
     {
         $url = sprintf('%s/%s', 'portouts', $id);
         $data = parent::get($url);
         return $data;
     }
 
-    public function get_rest_client() 
-    {
-        return $this->parent->get_rest_client();
+    public function get_appendix() {
+        return '/portouts';
     }
 
-    public function get_relative_namespace() 
-    {
-        return $this->parent->get_relative_namespace().'/portouts';
-    }
 }

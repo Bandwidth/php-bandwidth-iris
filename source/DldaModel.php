@@ -4,9 +4,9 @@
  * @model Dldas
  * https://api.test.inetwork.com/v1.0/accounts/dldas
  *
- * 
  *
- * provides: 
+ *
+ * provides:
  * get/0
  *
  */
@@ -21,12 +21,12 @@ final class Dldas extends RestEntry{
     }
 
     public function get($filters = Array()) {
-        
+
         $dldas = [];
 
         $data = parent::get('dldas', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
         print_r($data); exit;
-        
+
         /* TODO:  correct structure */
         if($data['ListOrderIdUserIdDate'] && $data['ListOrderIdUserIdDate']['TotalCount']) {
             foreach($data['ListOrderIdUserIdDate']['OrderIdUserIdDate'] as $dlda) {
@@ -43,12 +43,8 @@ final class Dldas extends RestEntry{
         return $order;
     }
 
-    public function get_rest_client() {
-        return $this->parent->get_rest_client();
-    }
-
-    public function get_relative_namespace() {
-        return $this->parent->get_relative_namespace().'/orders';
+    public function get_appendix() {
+        return '/orders';
     }
 
     public function create($data) {
@@ -67,7 +63,7 @@ final class Dlda extends RestEntry{
             "type" => "string"
         ),
     );
-    
+
     public function __construct($libds, $data)
     {
         if(isset($data)) {

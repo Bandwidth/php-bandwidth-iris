@@ -4,9 +4,9 @@
  * @model Order
  * https://api.test.inetwork.com/v1.0/accounts/orders
  *
- * 
  *
- * provides: 
+ *
+ * provides:
  * get/0
  *
  */
@@ -21,7 +21,7 @@ final class Orders extends RestEntry{
     }
 
     public function get($url, $options = Array(), $defaults = Array(), $required = Array()) {
-        
+
         $orders = [];
 
         $data = parent::get('orders', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
@@ -41,12 +41,8 @@ final class Orders extends RestEntry{
         return $order;
     }
 
-    public function get_rest_client() {
-        return $this->parent->get_rest_client();
-    }
-
-    public function get_relative_namespace() {
-        return $this->parent->get_relative_namespace().'/orders';
+    public function get_appendix() {
+        return '/orders';
     }
 
     public function create($data) {
@@ -60,7 +56,7 @@ final class Order extends RestEntry{
     use BaseModel;
 
     public $id = Null;
-    
+
     protected $fields = array(
         "orderId" => array(
             "type" => "string"
@@ -92,8 +88,8 @@ final class Order extends RestEntry{
             "type" => "string"
         )
     );
-    
-    
+
+
     public function __construct($orders, $data)
     {
         if(isset($data)) {
@@ -126,7 +122,7 @@ final class Order extends RestEntry{
             $this->id = $header['Order']['id'];
         }
     }
-    
+
     public function areCodes()
     {
         $url = sprintf('%s/%s', $this->id, 'areaCodes');

@@ -4,9 +4,9 @@
  * @model Discnumbers
  * https://api.test.inetwork.com/v1.0/accounts/discnumbers
  *
- * 
  *
- * provides: 
+ *
+ * provides:
  * get/0
  *
  */
@@ -21,7 +21,7 @@ final class Discnumbers extends RestEntry{
     }
 
     public function get($filters = Array()) {
-        
+
         $discnumbers = [];
 
         $data = parent::get('discnumbers', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
@@ -35,12 +35,8 @@ final class Discnumbers extends RestEntry{
         return $discnumbers;
     }
 
-    public function get_rest_client() {
-        return $this->parent->get_rest_client();
-    }
-
-    public function get_relative_namespace() {
-        return $this->parent->get_relative_namespace().'/discnumbers';
+    public function get_appendix() {
+        return '/discnumbers';
     }
 
     public function totals()

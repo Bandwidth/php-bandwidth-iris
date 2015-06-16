@@ -36,12 +36,8 @@ class Sites extends RestEntry {
         return $site;
     }
 
-    public function get_rest_client() {
-        return $this->parent->get_rest_client();
-    }
-
-    public function get_relative_namespace() {
-        return $this->parent->get_relative_namespace().'/sites';
+    public function get_appendix() {
+        return '/sites';
     }
 
     public function create($data) {
@@ -118,12 +114,8 @@ class Site extends RestEntry {
             $this->sippeers = new Sippeers($this);
         return $this->sippeers;
     }
-    public function get_rest_client() {
-        return $this->parent->get_rest_client();
-    }
 
-    public function get_relative_namespace() {
-        return $this->parent->get_relative_namespace().'/'.$this->id;
+    public function get_appendix() {
+        return '/'.$this->id;
     }
-
 }

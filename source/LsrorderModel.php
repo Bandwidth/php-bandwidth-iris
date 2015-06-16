@@ -4,9 +4,9 @@
  * @model Lsrorder
  * https://api.test.inetwork.com/v1.0/accounts/lsrorders
  *
- * 
  *
- * provides: 
+ *
+ * provides:
  * get/0
  *
  */
@@ -21,7 +21,7 @@ final class Lsrorders extends RestEntry{
     }
 
     public function get($filters = Array()) {
-        
+
         $orders = [];
 
         $data = parent::get('lsrorders', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
@@ -41,12 +41,8 @@ final class Lsrorders extends RestEntry{
         return $order;
     }
 
-    public function get_rest_client() {
-        return $this->parent->get_rest_client();
-    }
-
-    public function get_relative_namespace() {
-        return $this->parent->get_relative_namespace().'/orders';
+    public function get_appendix() {
+        return '/orders';
     }
 
     public function create($data) {
@@ -65,10 +61,10 @@ final class Lsrorder extends RestEntry{
         "orderId" => array(
             "type" => "string"
         ),
-        
+
     );
-    
-    
+
+
     public function __construct($orders, $data)
     {
         if(isset($data)) {
@@ -83,7 +79,7 @@ final class Lsrorder extends RestEntry{
             $this->parent = $orders;
             parent::_init($orders->get_rest_client(), $orders->get_relative_namespace());
         }
-        
+
     }
 
     public function get() {
@@ -103,7 +99,7 @@ final class Lsrorder extends RestEntry{
             $this->id = end($splitted);
         }
     }
-    
+
     public function history()
     {
         $url = sprintf('%s/%s', $this->id, 'history');

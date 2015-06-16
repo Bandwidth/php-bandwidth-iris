@@ -12,7 +12,7 @@ namespace Iris;
 
 class Portins extends RestEntry {
     public function __construct($account) {
-        $this->account = $account;
+        $this->parent = $account;
         parent::_init($account->get_rest_client(), $account->get_relative_namespace());
     }
 
@@ -37,12 +37,8 @@ class Portins extends RestEntry {
         return $data;
     }
 
-    public function get_rest_client() {
-        return $this->account->get_rest_client();
-    }
-
-    public function get_relative_namespace() {
-        return $this->account->get_relative_namespace().'/portins';
+    public function get_appendix() {
+        return '/portins';
     }
 }
 

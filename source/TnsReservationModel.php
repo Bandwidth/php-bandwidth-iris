@@ -4,9 +4,9 @@
  * @model Tnsreserv
  * https://api.test.inetwork.com/v1.0/accounts/tnsreservation
  *
- * 
  *
- * provides: 
+ *
+ * provides:
  * get/0
  *
  */
@@ -26,12 +26,8 @@ final class Tnsreservations extends RestEntry{
         return $order;
     }
 
-    public function get_rest_client() {
-        return $this->parent->get_rest_client();
-    }
-
-    public function get_relative_namespace() {
-        return $this->parent->get_relative_namespace().'/subscriptions';
+    public function get_appendix() {
+        return '/subscriptions';
     }
 
     public function create($data) {
@@ -49,9 +45,9 @@ final class Tnsreservation extends RestEntry{
         "orderId" => array(
             "type" => "string"
         ),
-        
+
     );
-    
+
     public function __construct($tnreservations, $data)
     {
         if(isset($data)) {

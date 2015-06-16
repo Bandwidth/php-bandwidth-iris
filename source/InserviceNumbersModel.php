@@ -4,9 +4,9 @@
  * @model Order
  * https://api.test.inetwork.com/v1.0/accounts/orders
  *
- * 
  *
- * provides: 
+ *
+ * provides:
  * get/0
  *
  */
@@ -20,7 +20,7 @@ final class InserviceNumbers extends RestEntry{
         parent::_init($this->parent->get_rest_client(), $this->parent->get_relative_namespace());
     }
 
-    public function get($filters = Array()) 
+    public function get($filters = Array())
     {
         $tns = [];
 
@@ -38,21 +38,15 @@ final class InserviceNumbers extends RestEntry{
         return $data['Count'];
     }
 
-    public function get_by_tn($tn) 
+    public function get_by_tn($tn)
     {
         $url = sprintf('%s/%s', 'inserviceNumbers', $tn);
         $data = parent::get($url);
         return $data;
     }
 
-    public function get_rest_client() 
-    {
-        return $this->parent->get_rest_client();
-    }
-
-    public function get_relative_namespace() 
-    {
-        return $this->parent->get_relative_namespace().'/inserviceNumbers';
+    public function get_appendix() {
+        return '/inserviceNumbers';
     }
 
 }

@@ -4,9 +4,9 @@
  * @model Order
  * https://api.test.inetwork.com/v1.0/accounts/orders
  *
- * 
  *
- * provides: 
+ *
+ * provides:
  * get/0
  *
  */
@@ -40,21 +40,15 @@ final class Disconnects extends RestEntry{
         return $data['Count'];
     }
 
-    public function get_by_tn($tn) 
+    public function get_by_tn($tn)
     {
         $url = sprintf('%s/%s', 'inserviceNumbers', $tn);
         $data = parent::get($url);
         return $data;
     }
 
-    public function get_rest_client() 
-    {
-        return $this->parent->get_rest_client();
-    }
-
-    public function get_relative_namespace() 
-    {
-        return $this->parent->get_relative_namespace().'/inserviceNumbers';
+    public function get_appendix() {
+        return '/inserviceNumbers';
     }
 
     public function create($data) {
@@ -94,9 +88,9 @@ final class DisconnectOrder extends RestEntry {
             $this->parent = $disconnect_orders;
             parent::_init($disconnect_orders->get_rest_client(), $disconnect_orders->get_relative_namespace());
         }
-        
+
     }
-    
+
     public function save() {
         if(!is_null($this->id))
             parent::put($this->id, "Order", $this->to_array());

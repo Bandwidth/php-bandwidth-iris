@@ -4,9 +4,9 @@
  * @model Subsction
  * https://api.test.inetwork.com/v1.0/accounts/subscriptions
  *
- * 
  *
- * provides: 
+ *
+ * provides:
  * get/0
  *
  */
@@ -21,7 +21,7 @@ final class Subscriptions extends RestEntry{
     }
 
     public function get($filters = Array()) {
-        
+
         $subscriptions = [];
 
         $data = parent::get('subscriptions', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
@@ -41,12 +41,8 @@ final class Subscriptions extends RestEntry{
         return $order;
     }
 
-    public function get_rest_client() {
-        return $this->parent->get_rest_client();
-    }
-
-    public function get_relative_namespace() {
-        return $this->parent->get_relative_namespace().'/subscriptions';
+    public function get_appendix() {
+        return '/subscriptions';
     }
 
     public function create($data) {
@@ -64,10 +60,10 @@ final class Subscription extends RestEntry{
         "orderId" => array(
             "type" => "string"
         ),
-        
+
     );
-    
-    
+
+
     public function __construct($subscriptions, $data)
     {
         if(isset($data)) {
@@ -82,7 +78,7 @@ final class Subscription extends RestEntry{
             $this->parent = $subscriptions;
             parent::_init($subscriptions->get_rest_client(), $subscriptions->get_relative_namespace());
         }
-        
+
     }
 
     public function get() {

@@ -33,12 +33,8 @@ class Sippeers extends RestEntry {
         return $sipper;
     }
 
-    public function get_rest_client() {
-        return $this->parent->get_rest_client();
-    }
-
-    public function get_relative_namespace() {
-        return $this->parent->get_relative_namespace().'/sippeers';
+    public function get_appendix() {
+        return '/sippeers';
     }
 
     public function create($data) {
@@ -103,12 +99,7 @@ class Sippeer extends RestEntry {
         parent::delete($this->PeerId);
     }
 
-    public function get_rest_client() {
-        return $this->parent->get_rest_client();
+    public function get_appendix() {
+        return '/'.$this->PeerId;
     }
-
-    public function get_relative_namespace() {
-        return $this->parent->get_relative_namespace().'/'.$this->PeerId;
-    }
-
 }

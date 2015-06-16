@@ -4,9 +4,9 @@
  * @model Report
  * https://api.test.inetwork.com/v1.0/accounts/reports
  *
- * 
  *
- * provides: 
+ *
+ * provides:
  * get/0
  *
  */
@@ -21,7 +21,7 @@ final class Reports extends RestEntry {
     }
 
     public function get($filters = Array()) {
-        
+
         $reports = [];
 
         $data = parent::get('reports', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
@@ -42,12 +42,8 @@ final class Reports extends RestEntry {
         return $order;
     }
 
-    public function get_rest_client() {
-        return $this->parent->get_rest_client();
-    }
-
-    public function get_relative_namespace() {
-        return $this->parent->get_relative_namespace().'/reports';
+    public function get_appendix() {
+        return '/reports';
     }
 
 }
@@ -61,8 +57,8 @@ final class Report extends RestEntry{
         ),
         /* TODO:  fill fields */
     );
-    
-    
+
+
     public function __construct($reports, $data)
     {
         if(isset($data)) {
@@ -86,7 +82,7 @@ final class Report extends RestEntry{
         $data = parent::get($this->id);
         $this->set_data($data['Order']);
     }
-    
+
     public function areCodes()
     {
         $url = sprintf('%s/%s', $this->id, 'areaCodes');
@@ -120,8 +116,8 @@ final class ReportInstance extends RestEntry{
         ),
         /* TODO:  fill fields */
     );
-    
-    
+
+
     public function __construct($report, $data)
     {
         if(isset($data)) {
