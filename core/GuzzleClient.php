@@ -14,8 +14,13 @@ final class GuzzleClient extends iClient {
 
         $this->url = $this->prepare_base_url($options['url']);
 
-        $this->client = new \GuzzleHttp\Client();
+        $client_options = array();
 
+        if($options['handler']) {
+            $client_options['handler'] = $options['handler'];
+        }
+
+        $this->client = new \GuzzleHttp\Client($options);
     }
 
     private function parse_exception_response($e) {
@@ -60,6 +65,12 @@ final class GuzzleClient extends iClient {
 
         $this->array2xml($data, $xml);
 
+        echo "**** send ****\n";
+        echo $xml->asXML()."\n";
+        echo $method.": ".$full_url."\n";
+        echo "**** *** ****\n";
+
+
         try {
             $response = $this->client->{$method}(
                                    $full_url,
@@ -93,6 +104,24 @@ final class GuzzleClient extends iClient {
         return $response_array;
     }
 
+    public function raw_post($url, $body, $headers = array())
+    {
+        $url = $this->prepare_url($url);
+        $full_url = sprintf('%s%s', $this->url, $url);
+
+        echo "RAW POST: ".$full_url."\n";
+        return $this->client->post($full_url, ['body' => $body, 'headers' => $headers]);
+    }
+
+    public function raw_put($url, $body, $headers = array())
+    {
+        $url = $this->prepare_url($url);
+        $full_url = sprintf('%s%s', $this->url, $url);
+
+        echo "RAW PUT: ".$full_url."\n";
+        return $this->client->put($full_url, ['body' => $body, 'headers' => $headers]);
+    }
+
     public function post($url, $base_node, $data)
     {
         return $this->make_call($url, $base_node, $data, 'post');
@@ -120,14 +149,14 @@ final class GuzzleClient extends iClient {
     protected function get_body($body)
     {
         $body_str = '';
-        if ($body instanceof \GuzzleHttp\Psr7\Stream) 
+        if ($body instanceof \GuzzleHttp\Psr7\Stream)
         {
             while(!$body->eof())
             {
                 $body_str .= $body->read(1024);
             }
         }
-        else 
+        else
         {
             $body_str = $body;
         }

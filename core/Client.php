@@ -58,9 +58,8 @@ abstract class iClient
     {
       /* snippet:  http://stackoverflow.com/questions/1397036/how-to-convert-array-to-simplexml */
       foreach($arr as $key => $value) {
-        if(is_array($value)) {
+        if(is_array($value) && $this->isAssoc($value)) {
           if(!is_numeric($key)){
-
             $subnode = $xml->addChild("$key");
             $this->array2xml($value, $subnode);
           }
@@ -68,6 +67,10 @@ abstract class iClient
             $subnode = $xml->addChild("item$key");
             $this->array2xml($value, $subnode);
           }
+        } else if(is_array($value) && !$this->isAssoc($value)) {
+            foreach($value as $item) {
+                $xml->addChild("$key",htmlspecialchars("$item"));
+            }
         }
         else {
           $xml->addChild("$key",htmlspecialchars("$value"));
