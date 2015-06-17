@@ -13,7 +13,7 @@
 
 namespace Iris;
 
-final class Disconnects extends RestEntry{
+class Disconnects extends RestEntry{
 
     public function __construct($parent) {
         $this->parent = $parent;
@@ -32,72 +32,40 @@ final class Disconnects extends RestEntry{
         }
         return $tns;
     }
-
-    public function totals()
-    {
-        $url = sprintf('%s/%s', 'inserviceNumbers', 'totals');
-        $data = parent::get($url);
-        return $data['Count'];
-    }
-
-    public function get_by_tn($tn)
-    {
-        $url = sprintf('%s/%s', 'inserviceNumbers', $tn);
-        $data = parent::get($url);
-        return $data;
+    public function create($data) {
+        $disconnect = new Disconnect($this, $data);
+        $disconnect->save();
+        return $disconnect;
     }
 
     public function get_appendix() {
-        return '/inserviceNumbers';
+        return '/disconnects';
     }
 
-    public function create($data) {
-        $disconnect_order = new DisconnectOrder($this, $data);
-        $disconnect_order->save();
-        return $order;
-    }
 }
 
 
-final class DisconnectOrder extends RestEntry {
+class Disconnect extends RestEntry {
     use BaseModel;
 
     protected $fields = array(
-        "id" => array(
-            "type" => "string"
-        ),
-        "name" => array(
-            "type" => "string"
-        ),
-        "DisconnectTelephoneNumberOrderType" => array(
-            "type" => "string"
-        ),
+        "OrderId" => array("type" => "string"),
+        "name" => array("type" => "string"),
+        "CustomerOrderId" => array("type" => "string"),
+        "DisconnectTelephoneNumberOrderType" => array("type" => "\Iris\TelephoneNumberList"),
+        "OrderStatus" => array("type" => "\Iris\OrderRequestStatus")
     );
 
-    public function __construct($disconnect_orders, $data)
+    public function __construct($parent, $data)
     {
-        if(isset($data)) {
-            if(is_object($data) && $data->Id)
-                $this->id = $data->Id;
-            if(is_array($data) && isset($data['Id']))
-                $this->id = $data['Id'];
-        }
+        $this->parent = $parent;
+        parent::_init($parent->get_rest_client(), $parent->get_relative_namespace());
         $this->set_data($data);
-
-        if(!is_null($disconnect_orders)) {
-            $this->parent = $disconnect_orders;
-            parent::_init($disconnect_orders->get_rest_client(), $disconnect_orders->get_relative_namespace());
-        }
-
     }
 
     public function save() {
-        if(!is_null($this->id))
-            parent::put($this->id, "Order", $this->to_array());
-        else {
-            $header = parent::post(null, "DisconnectTelephoneNumberOrder", $this->to_array());
-            $splitted = split("/", $header['Location']);
-            $this->id = end($splitted);
-        }
+        $data = parent::post(null, "DisconnectTelephoneNumberOrder", $this->to_array());
+        $this->OrderStatus = new OrderRequestStatus($data);
+        $this->OrderId = $this->OrderStatus->orderRequest->id;
     }
 }
