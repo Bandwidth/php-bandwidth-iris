@@ -38,17 +38,22 @@ trait BaseModel {
     }
 
     public function __set($key, $value) {
-        if(!array_key_exists($key, $this->fields))
+        if(!array_key_exists($key, $this->fields)) {
             $this->{$key} = $value;
-        else if($this->fields[$key]["type"] == "string")
+        } else if($this->fields[$key]["type"] == "string") {
             $this->dataset[$key] = $value;
-        else if(!isset($this->dataset[$key]))
+        } else if(!isset($this->dataset[$key])) {
             $this->dataset[$key] = $value;
-        else
+        } else {
             $this->dataset[$key]->set_data($value);
+        }
     }
 
     public function set_data($data) {
+        if(!is_array($data)) {
+            return;
+        }
+
         foreach($data as $key => $value) {
             if(!array_key_exists($key, $this->fields))
                 continue;

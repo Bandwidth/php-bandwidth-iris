@@ -53,7 +53,7 @@ class Portin extends RestEntry {
 
     protected $fields = array(
         "OrderId" => array("type" => "string"),
-        "Status" => array("type" => "string"),
+        "Status" => array("type" => "Iris\Status"),
         "Errors" => array("type" => "string"),
         "ProcessingStatus" => array("type" => "string"),
         "RequestedFocDate" => array("type" => "string"),
@@ -76,23 +76,70 @@ class Portin extends RestEntry {
     }
 
     public function save() {
-        $data = parent::post(null, "LnpOrder", $this->to_array());
+        if(is_null($this->OrderId)) {
+            $data = parent::post(null, "LnpOrder", $this->to_array());
+        } else {
+            $data = parent::put($this->get_id(), "LnpOrderSupp", $this->to_array());
+        }
         $this->set_data($data);
+    }
+
+    public function delete() {
+        parent::delete($this->get_id());
     }
 
     public function loas_send($file) {
         $body = fopen($file, 'r');
         $url = sprintf('%s/%s', $this->get_id(), 'loas');
-        $data = parent::raw_post($url, $body);
+        parent::raw_post($url, $body);
     }
     public function loas_update($file, $filename) {
         $body = fopen($file, 'r');
         $url = sprintf('%s/%s/%s', $this->get_id(), 'loas', $filename);
-        $data = parent::raw_put($url, $body);
+        parent::raw_put($url, $body);
     }
     public function loas_delete($filename) {
         $url = sprintf('%s/%s/%s', $this->get_id(), 'loas', $filename);
-        $data = parent::delete($url);
+        parent::delete($url);
+    }
+
+    public function get_loas($metadata) {
+        $url = sprintf('%s/%s', $this->get_id(), 'loas');
+        $query = array();
+
+        if($metadata) {
+            $query['metadata'] = 'true';
+        }
+
+        return (object)parent::get($url, $query);
+    }
+
+    public function get_metadata($filename) {
+        $url = sprintf('%s/%s/%s/metadata', $this->get_id(), 'loas', $filename);
+        $data = parent::get($url);
+        return new FileMetaData($data);
+    }
+
+    public function set_metadata($filename, FileMetaData $meta) {
+        $url = sprintf('%s/%s/%s/metadata', $this->get_id(), 'loas', $filename);
+        parent::put($url, "FileMetaData", $meta->to_array());
+    }
+
+    public function delete_metadata($filename) {
+        $url = sprintf('%s/%s/%s/metadata', $this->get_id(), 'loas', $filename);
+        parent::delete($url);
+    }
+
+    public function get_activation_status() {
+        $url = sprintf('%s/%s', $this->get_id(), 'activationStatus');
+        $data = parent::get($url);
+        return new ActivationStatus($data['ActivationStatus']);
+    }
+
+    public function set_activation_status(ActivationStatus $data) {
+        $url = sprintf('%s/%s', $this->get_id(), 'activationStatus');
+        $data = parent::post($url, "ActivationStatus", $data->to_array());
+        return new ActivationStatus($data['ActivationStatus']);
     }
 
     public function get() {

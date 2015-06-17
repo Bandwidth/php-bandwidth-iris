@@ -6,10 +6,11 @@ class Phones {
     use BaseModel;
 
     protected $fields = array(
-        "PhoneNumber" => array("type" => "string")
+        "PhoneNumber" => array("type" => "string"),
+        "TelephoneNumber" => array("type" => "string")
     );
 
     public function __construct($data) {
-        $this->set_data($data);
+        $this->set_data($data, true);
     }
 }
