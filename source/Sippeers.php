@@ -14,7 +14,7 @@ class Sippeers extends RestEntry {
         $data = parent::get('sippeers');
 
         if(isset($data['SipPeers']) && isset($data['SipPeers']['SipPeer'])) {
-            if(!is_array($data['SipPeers']['SipPeer']))
+            if($this->is_assoc($data['SipPeers']['SipPeer']))
                 $peers = [ $data['SipPeers']['SipPeer'] ];
             else
                 $peers = $data['SipPeers']['SipPeer'];
@@ -27,7 +27,7 @@ class Sippeers extends RestEntry {
         return $sippeers;
     }
 
-    public function get_by_id($id) {
+    public function sippeer($id) {
         $sipper = new Sippeer($this, array("PeerId" => $id));
         $sipper->get();
         return $sipper;
@@ -39,7 +39,6 @@ class Sippeers extends RestEntry {
 
     public function create($data) {
         $sipper = new Sippeer($this, $data);
-        $sipper->save();
         return $sipper;
     }
 }
