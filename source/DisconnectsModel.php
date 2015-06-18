@@ -25,7 +25,7 @@ class Disconnects extends RestEntry{
         }
         return $tns;
     }
-    
+
     /**
      * Create new disconnect
      * @param type $data
@@ -90,12 +90,16 @@ class Disconnect extends RestEntry {
             throw new Exception("You can't use this function without OrderId");
         return $this->OrderId;
     }
-    
+
+    /**
+    * Get Notes of Entity
+    * @return \Iris\Notes
+    */
     public function notes() {
-        return $this->notes; 
+        return $this->notes;
     }
     /**
-     * Provide path of url
+     * Provide relative url
      * @return string
      */
     public function get_appendix() {

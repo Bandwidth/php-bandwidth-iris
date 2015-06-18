@@ -30,9 +30,13 @@ class Portins extends RestEntry {
         return $out;
     }
 
+    /**
+    * Create new Portin
+    * @params array $data
+    * @return \Iris\Portin
+    */
     public function create($data) {
         $portin = new Portin($this, $data);
-        $portin->save();
         return $portin;
     }
 
@@ -70,9 +74,11 @@ class Portin extends RestEntry {
         "BillingType" => array("type" => "string")
     );
 
-    public function __construct($portins, $data) {
+    public function __construct($parent, $data) {
         $this->set_data($data);
-        parent::_init($portins->get_rest_client(), $portins->get_relative_namespace());
+        $this->parent = $parent;
+        parent::_init($parent->get_rest_client(), $parent->get_relative_namespace());
+        $this->notes = new Notes($this);
     }
 
     public function save() {
@@ -183,18 +189,28 @@ class Portin extends RestEntry {
         $data = parent::get($url);
         return $data;
     }
-    public function notes()
-    {
-        $url = sprintf('%s/%s', $this->id, 'notes');
-        $data = parent::get($url);
-        return $data;
-    }
 
+    /**
+    * Get Notes of Entity
+    * @return \Iris\Notes
+    */
+    public function notes() {
+        return $this->notes;
+    }
+    /**
+     * Get Entity Id
+     * @return type
+     * @throws Exception in case of OrderId is null
+     */
     private function get_id() {
         if(is_null($this->OrderId))
             throw new Exception("You can't use this function without OrderId");
         return $this->OrderId;
     }
+    /**
+     * Provide relative url
+     * @return string
+     */
     public function get_appendix() {
         return '/'.$this->get_id();
     }

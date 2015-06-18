@@ -33,6 +33,15 @@ final class Portouts extends RestEntry{
         return $tns;
     }
 
+    /**
+    * Create new Portin
+    * @params array $data
+    * @return \Iris\Portin
+    */
+    public function create($data) {
+        return new Portout($this, $data);
+    }
+
     public function get_by_id($id)
     {
         $url = sprintf('%s/%s', 'portouts', $id);
@@ -42,6 +51,47 @@ final class Portouts extends RestEntry{
 
     public function get_appendix() {
         return '/portouts';
+    }
+
+}
+
+class Portout extends RestEntry {
+    use BaseModel;
+
+    protected $fields = array(
+        "OrderId" => array("type" => "string")
+    );
+
+    public function __construct($parent, $data) {
+        $this->set_data($data);
+        $this->parent = $parent;
+        parent::_init($parent->get_rest_client(), $parent->get_relative_namespace());
+        $this->notes = new Notes($this);
+    }
+
+    /**
+    * Get Notes of Entity
+    * @return \Iris\Notes
+    */
+    public function notes() {
+        return $this->notes;
+    }
+    /**
+     * Get Entity Id
+     * @return type
+     * @throws Exception in case of OrderId is null
+     */
+    private function get_id() {
+        if(is_null($this->OrderId))
+            throw new Exception("You can't use this function without OrderId");
+        return $this->OrderId;
+    }
+    /**
+     * Provide relative url
+     * @return string
+     */
+    public function get_appendix() {
+        return '/'.$this->get_id();
     }
 
 }

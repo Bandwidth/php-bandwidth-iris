@@ -47,7 +47,6 @@ final class Orders extends RestEntry{
 
     public function create($data) {
         $order = new Order($this, $data);
-        $order->save();
         return $order;
     }
 }
@@ -100,10 +99,10 @@ final class Order extends RestEntry{
         }
         $this->set_data($data);
 
-        if(!is_null($orders)) {
-            $this->parent = $orders;
-            parent::_init($orders->get_rest_client(), $orders->get_relative_namespace());
-        }
+        $this->parent = $orders;
+        parent::_init($orders->get_rest_client(), $orders->get_relative_namespace());
+
+        $this->notes = new Notes($this);
     }
 
     public function get($url='', $options = Array(), $defaults = Array(), $required = Array()) {
@@ -154,10 +153,28 @@ final class Order extends RestEntry{
         $data = parent::get($url);
         return $data;
     }
-    public function notes()
-    {
-        $url = sprintf('%s/%s', $this->id, 'notes');
-        $data = parent::get($url);
-        return $data;
+    /**
+    * Get Notes of Entity
+    * @return \Iris\Notes
+    */
+    public function notes() {
+        return $this->notes;
+    }
+    /**
+     * Provide relative url
+     * @return string
+     */
+    public function get_appendix() {
+        return '/'.$this->get_id();
+    }
+    /**
+     * Get Entity Id
+     * @return type
+     * @throws Exception in case of OrderId is null
+     */
+    private function get_id() {
+        if(is_null($this->id))
+            throw new Exception("You can't use this function without OrderId");
+        return $this->id;
     }
 }
