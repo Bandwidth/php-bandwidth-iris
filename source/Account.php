@@ -1,28 +1,22 @@
 <?php
 
-/**
- * @model Account
- * https://api.test.inetwork.com/v1.0/accounts/
- *
- *
- *
- * provides:
- * get/0
- *
- */
 namespace Iris;
 
 class Account extends RestEntry {
-
-    /**
-     *
-     *
-     */
     public function __construct($account_id, $client=Null, $namespace='accounts')
     {
         parent::_init($client, $namespace);
         $this->account_id = $account_id;
-        $this->client = $client;        
+        $this->client = $client;
+    }
+
+    /**
+    * @params \Iris\TnLineOptions
+    */
+    public function lineOptionOrders(TnLineOptions $data) {
+        $url = sprintf('%s/%s', $this->account_id, 'lineOptionOrders');        
+        $response = parent::post($url, "LineOptionOrder", $data->to_array());
+        return new TnLineOptionOrderResponse($response);
     }
 
     public function inserviceNumbers() {
@@ -30,13 +24,13 @@ class Account extends RestEntry {
             $this->inserviceNumbers = new InserviceNumbers($this);
         return $this->inserviceNumbers;
     }
-    
+
     public function orders() {
         if(!isset($this->orders))
             $this->orders = new Orders($this);
         return $this->orders;
     }
-    
+
     public function portins() {
         if(!isset($this->portins))
             $this->portins = new Portins($this);

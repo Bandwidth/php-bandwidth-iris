@@ -69,7 +69,12 @@ abstract class iClient
           }
         } else if(is_array($value) && !$this->isAssoc($value)) {
             foreach($value as $item) {
-                $xml->addChild("$key",htmlspecialchars("$item"));
+                if(is_array($item)) {
+                    $subnode = $xml->addChild("$key");
+                    $this->array2xml($item, $subnode);
+                } else {
+                    $xml->addChild("$key",htmlspecialchars("$item"));
+                }
             }
         }
         else {
@@ -86,54 +91,5 @@ abstract class iClient
     protected function prepare_url($url)
     {
         return substr($url, 0, 1) == '/' ? substr($url, 1) : $url;
-    }
-}
-
-
-class PestClient extends iClient
-{
-
-    public function __construct($login, $password, $options=Null)
-    {
-        /* TODO:  singleton */
-
-        $this->login = $login;
-        $this->password = $password;
-
-        $this->url = $this->prepare_base_url($options['url']);
-
-        $this->pest = new \PestXML($this->url);
-
-        $this->pest->setupAuth($login, $password);
-        $this->pest->curl_opts[CURLOPT_FOLLOWLOCATION] = false;
-    }
-
-    public function get($url, $options=Array())
-    {
-        $url = $this->prepare_url($url);
-        $full_url = sprintf('%s%s', $this->url, $url);
-
-        //echo('--- request url: '. $full_url . ' --- ');
-        $data = $this->pest->get($full_url, $options);
-        return $this->xml2object($data);
-    }
-
-    public function post($url, $base_node, $data)
-    {
-
-        $url = $this->prepare_url($url);
-        $full_url = sprintf('%s%s', $this->url, $url);
-        echo('--- request url: '. $full_url . ' --- ');
-        $data = $this->pest->post($full_url, $data);
-        return $this->xml2object($data);
-    }
-
-    public function put($url, $base_node, $data)
-    {
-    }
-
-
-    public function delete($url)
-    {
     }
 }

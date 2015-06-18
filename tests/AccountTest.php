@@ -1,43 +1,43 @@
 <?php
 
-/* Unit tests for accounts. These should
- * test the following functions
- * Comparatively to the credential unit tests
- * these run with no try/catching
- *
- *
- *
- * commands tested:
- * accounts/14
- */
-require_once("lib/Client.php");
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Middleware;
 
-class AccountsTest extends PHPUnit_Framework_TestCase {
-	protected function setUp()
-  {
-		$this->client = new TestClient('', '', Array('url' => 'https://api.test.inetwork.com/v1.0/'));
-  	$this->account = new Iris\Account(14, $this->client);
-  }
-	public function testGetAccountInfo()
-	{
-		$this->client->setStringResponse("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><AccountResponse><Account><AccountId>14</AccountId><CompanyName>CWI Hosting</CompanyName><AccountType>Business</AccountType><NenaId></NenaId><Tiers><Tier>0</Tier></Tiers><Address><HouseNumber>60</HouseNumber><HouseSuffix></HouseSuffix><PreDirectional></PreDirectional><StreetName>Pine</StreetName><StreetSuffix>St</StreetSuffix><PostDirectional></PostDirectional><AddressLine2></AddressLine2><City>Denver</City><StateCode>CO</StateCode><Zip>80016</Zip><PlusFour></PlusFour><County></County><Country>United States</Country><AddressType>Service</AddressType></Address><Contact><FirstName>Sanjay</FirstName><LastName>Rao</LastName><Phone>9195441234</Phone><Email>srao@bandwidth.com</Email></Contact><ReservationAllowed>true</ReservationAllowed><LnpEnabled>true</LnpEnabled><AltSpid>X455</AltSpid><SPID>9999</SPID><PortCarrierType>WIRELINE</PortCarrierType></Account></AccountResponse>");
+class AccountTest extends PHPUnit_Framework_TestCase {
+    public static $container;
+    public static $account;
+    public static $index = 0;
 
-		$response = $this->account->get();
+    public static function setUpBeforeClass() {
+        $mock = new MockHandler([
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?> <LineOptionOrderResponse><LineOptions> <CompletedNumbers><TelephoneNumber>2013223685</TelephoneNumber> </CompletedNumbers><Errors><Error><TelephoneNumber>5209072452</TelephoneNumber> <ErrorCode>5071</ErrorCode><Description>Telephone number is not available on the system.</Description></Error> <Error><TelephoneNumber>5209072451</TelephoneNumber> <ErrorCode>13518</ErrorCode><Description>CNAM for telephone number is applied at the Location level and it is notapplicable at the TN level.</Description> </Error></Errors> </LineOptions></LineOptionOrderResponse>"),
+        ]);
 
-		$this->assertEquals("CWI Hosting", $response->Account->CompanyName);
-		$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/14", $this->client->getUrl());
-	}
+        self::$container = [];
+        $history = Middleware::history(self::$container);
+        $handler = HandlerStack::create($mock);
+        $handler->push($history);
 
-	public function testGetAvailableNumbers()
-	{
-		$this->client->setStringResponse("<SearchResult><ResultCount>2</ResultCount><TelephoneNumberDetailList><TelephoneNumberDetail><City>JERSEY CITY</City><LATA>224</LATA><RateCenter>JERSEYCITY</RateCenter><State>NJ</State><TelephoneNumber>2012001555</TelephoneNumber></TelephoneNumberDetail><TelephoneNumberDetail><City>JERSEY CITY</City><LATA>224</LATA><RateCenter>JERSEYCITY</RateCenter><State>NJ</State><TelephoneNumber>123123123</TelephoneNumber></TelephoneNumberDetail></TelephoneNumberDetailList></SearchResult>");
+        $client = new Iris\GuzzleClient(\Iris\Config::REST_LOGIN, \Iris\Config::REST_PASS, Array('url' => \Iris\Config::REST_URL, 'handler' => $handler));
+        self::$account = new Iris\Account(9500249, $client);
+    }
 
-		$response = $this->account->availableNumbers(array("areaCode" => "777"));
+    public function testLineOption() {
+		$TnLineOptions = new \Iris\TnLineOptions(array(
+			"TnLineOptions" => [
+				[ "TelephoneNumber" => "5209072451", "CallingNameDisplay" => "off" ],
+				[ "TelephoneNumber" => "5209072452", "CallingNameDisplay" => "on" ],
+				[ "TelephoneNumber" => "5209072453", "CallingNameDisplay" => "off" ]
+			]
+		));
 
-		$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/14/avalibleNumbers", $this->client->getUrl());
-		$options = $this->client->getOptions();
-		$this->assertArrayHasKey("areaCode", $options);
-		$this->assertEquals("777", $options['areaCode']);
-	}
+        $response = self::$account->lineOptionOrders($TnLineOptions);
+
+        $this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/lineOptionOrders", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
 
 }

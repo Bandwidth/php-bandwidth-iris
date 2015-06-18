@@ -26,28 +26,28 @@ class FieldNotExistsException extends \Exception {
 
 trait BaseModel {
 
-    private $dataset = array();
-
-    public function __get($key) {
-        if(!array_key_exists($key, $this->fields))
-            return $this->{$key};
-        if(isset($this->dataset[$key]))
-            return $this->dataset[$key];
-        else
-            return null;
-    }
-
-    public function __set($key, $value) {
-        if(!array_key_exists($key, $this->fields)) {
-            $this->{$key} = $value;
-        } else if($this->fields[$key]["type"] == "string") {
-            $this->dataset[$key] = $value;
-        } else if(!isset($this->dataset[$key])) {
-            $this->dataset[$key] = $value;
-        } else {
-            $this->dataset[$key]->set_data($value);
-        }
-    }
+    // private $dataset = array();
+    //
+    // public function __get($key) {
+    //     if(!array_key_exists($key, $this->fields))
+    //         return $this->{$key};
+    //     if(isset($this->dataset[$key]))
+    //         return $this->dataset[$key];
+    //     else
+    //         return null;
+    // }
+    //
+    // public function __set($key, $value) {
+    //     if(!array_key_exists($key, $this->fields)) {
+    //         $this->{$key} = $value;
+    //     } else if($this->fields[$key]["type"] == "string") {
+    //         $this->dataset[$key] = $value;
+    //     } else if(!isset($this->dataset[$key])) {
+    //         $this->dataset[$key] = $value;
+    //     } else {
+    //         $this->dataset[$key]->set_data($value);
+    //     }
+    // }
 
     public function set_data($data) {
         if(!is_array($data)) {
@@ -63,12 +63,39 @@ trait BaseModel {
             if($classname === "string") {
                 $this->{$key} = $value;
             } else {
-                if(is_null($this->{$key}))
-                    $this->{$key} = new $classname($value);
-                else
-                    $this->{$key}->set_data($value);
+                if(is_array($value) && $this->is_assoc($value)) { // if assoc array => to object
+                    if(!property_exists($this, $key)) // if not exists create new class
+                        $this->{$key} = new $classname($value);
+                    else // or update existing class
+                        $this->{$key}->set_data($value);
+                } else if(is_array($value)) { // if array[] => array of objects
+                    if(!property_exists($this, $key)) // create an array if not exists
+                        $this->{$key} = [];
+
+                    $field = & $this->{$key};
+                    $count = count($field);
+
+                    for($i = 0; $i < count($value); $i++) {
+                        $item = $value[$i];
+
+                        if($i < $count) {
+                            $field[$i]->set_data($item); // update existing objects
+                        } else {
+                            $field[] = new $classname($item); // create new objects if not exists
+                        }
+                    }
+
+                    if($count > count($value)) {
+                        for($i = count($value); $i < $count; $i++) {
+                            unset($field[$i]);
+                        }
+                    }
+                }
             }
         }
+    }
+    protected function is_assoc($array) {
+        $array = array_keys($array); return ($array !== array_keys($array));
     }
 
     public function validate($key, $value, $validate) {
@@ -89,8 +116,16 @@ trait BaseModel {
 
                 if($rules['type'] === "string")
                     $out[$key] = $value;
-                else
-                    $out[$key] = $value->to_array();
+                else {
+                    if(is_array($value)) {
+                        $out[$key] = [];
+                        foreach($value as $item) {
+                            $out[$key][] = $item->to_array();
+                        }
+                    } else {
+                        $out[$key] = $value->to_array();
+                    }
+                }
             }
             else if(isset($rules['required']) && $rules['required'] === true) {
                 throw new FieldRequiredException($key);
