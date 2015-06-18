@@ -36,8 +36,7 @@ class Portins extends RestEntry {
     * @return \Iris\Portin
     */
     public function create($data) {
-        $portin = new Portin($this, $data);
-        return $portin;
+        return new Portin($this, $data);
     }
 
     public function totals()
@@ -78,7 +77,7 @@ class Portin extends RestEntry {
         $this->set_data($data);
         $this->parent = $parent;
         parent::_init($parent->get_rest_client(), $parent->get_relative_namespace());
-        $this->notes = new Notes($this);
+        $this->notes = null;
     }
 
     public function save() {
@@ -195,6 +194,9 @@ class Portin extends RestEntry {
     * @return \Iris\Notes
     */
     public function notes() {
+        if(is_null($this->notes))
+            $this->notes = new Notes($this);
+
         return $this->notes;
     }
     /**
@@ -204,7 +206,7 @@ class Portin extends RestEntry {
      */
     private function get_id() {
         if(is_null($this->OrderId))
-            throw new Exception("You can't use this function without OrderId");
+            throw new \Exception("You can't use this function without OrderId");
         return $this->OrderId;
     }
     /**
