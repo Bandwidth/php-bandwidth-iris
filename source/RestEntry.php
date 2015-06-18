@@ -29,6 +29,10 @@ abstract class RestEntry{
         }
     }
 
+    protected function is_assoc($array) {
+        $array = array_keys($array); return ($array !== array_keys($array));
+    }
+
     protected function get_url($path)
     {
         if(is_null($path))

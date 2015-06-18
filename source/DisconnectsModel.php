@@ -1,20 +1,13 @@
 <?php
 
 /**
- * @model Order
- * https://api.test.inetwork.com/v1.0/accounts/orders
- *
- *
- *
- * provides:
- * get/0
+ * @model Disconnects
  *
  */
 
 namespace Iris;
 
 class Disconnects extends RestEntry{
-
     public function __construct($parent) {
         $this->parent = $parent;
         parent::_init($this->parent->get_rest_client(), $this->parent->get_relative_namespace());
@@ -32,12 +25,21 @@ class Disconnects extends RestEntry{
         }
         return $tns;
     }
+    
+    /**
+     * Create new disconnect
+     * @param type $data
+     * @return \Iris\Disconnect
+     */
     public function create($data) {
         $disconnect = new Disconnect($this, $data);
-        $disconnect->save();
         return $disconnect;
     }
 
+    /**
+     * Provide path of url
+     * @return string
+     */
     public function get_appendix() {
         return '/disconnects';
     }
@@ -56,16 +58,47 @@ class Disconnect extends RestEntry {
         "OrderStatus" => array("type" => "\Iris\OrderRequestStatus")
     );
 
+    /**
+     * Constructor
+     * @param type $parent
+     * @param type $data
+     */
     public function __construct($parent, $data)
     {
         $this->parent = $parent;
         parent::_init($parent->get_rest_client(), $parent->get_relative_namespace());
         $this->set_data($data);
+        $this->notes = new Notes($this);
     }
 
+    /**
+     * Make POST request
+     */
     public function save() {
         $data = parent::post(null, "DisconnectTelephoneNumberOrder", $this->to_array());
         $this->OrderStatus = new OrderRequestStatus($data);
         $this->OrderId = $this->OrderStatus->orderRequest->id;
+    }
+
+    /**
+     * Get Entity Id
+     * @return type
+     * @throws Exception in case of OrderId is null
+     */
+    private function get_id() {
+        if(is_null($this->OrderId))
+            throw new Exception("You can't use this function without OrderId");
+        return $this->OrderId;
+    }
+    
+    public function notes() {
+        return $this->notes; 
+    }
+    /**
+     * Provide path of url
+     * @return string
+     */
+    public function get_appendix() {
+        return '/'.$this->get_id();
     }
 }
