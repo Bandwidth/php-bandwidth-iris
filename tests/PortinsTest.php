@@ -205,12 +205,17 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
 
 	public function testPortinsUpdate() {
 		$portin = self::$portins->create(array(
-			"OrderId" => "d28b36f7-fa96-49eb-9556-a40fca49f7c6"
+			"OrderId" => "d28b36f7-fa96-49eb-9556-a40fca49f7c6",
+			"Status" => array(
+				"Code" => 0,
+				"Description" => "Empty"
+			)
 		));
 		$portin->RequestedFocDate = "2012-08-30T00:00:00.000Z";
 		$portin->save();
 
 		$this->assertEquals(200, $portin->Status->Code);
+		$this->assertEquals("Supp request received. Please use the order id to check the status of your order later.", $portin->Status->Description);
 		$this->assertEquals("PUT", self::$container[self::$index]['request']->getMethod());
 		$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/portins/d28b36f7-fa96-49eb-9556-a40fca49f7c6", self::$container[self::$index]['request']->getUri());
 		self::$index++;

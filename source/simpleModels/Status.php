@@ -10,7 +10,7 @@ class Status {
         "Description" => array("type" => "string")
     );
 
-    public function __construct($data) {        
+    public function __construct($data) {
         $this->set_data($data);
     }
 }

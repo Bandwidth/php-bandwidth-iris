@@ -63,7 +63,10 @@ trait BaseModel {
             if($classname === "string") {
                 $this->{$key} = $value;
             } else {
-                $this->{$key} = new $classname($value);
+                if(is_null($this->{$key}))
+                    $this->{$key} = new $classname($value);
+                else
+                    $this->{$key}->set_data($value);
             }
         }
     }
