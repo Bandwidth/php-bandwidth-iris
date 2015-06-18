@@ -1,43 +1,94 @@
 <?php
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Middleware;
+
 class SiteTest extends PHPUnit_Framework_TestCase {
-	public function setUp() {
-		$c = new Iris\GuzzleClient(\Iris\Config::REST_LOGIN, \Iris\Config::REST_PASS, Array('url' => \Iris\Config::REST_URL));
-		$this->account = new Iris\Account(9500249, $c);
-		$this->sites = $this->account->sites();
-	}
-	/**
-     * @expectedException Iris\ResponseException
-	 * @expectedExceptionCode 12016
-     */
-	public function testSiteModel()
-	{
-        $site = $this->sites->create(
-		array("Name" => "Test Site",
-            "Address" => array(
-                "City" => "Raleigh",
-                "AddressType" => "Service",
-                "HouseNumber" => "1",
-                "StreetName" => "Avenue",
-                "StateCode" => "NC"
-        )));
+    public static $container;
+    public static $sites;
+    public static $index = 0;
 
-        $this->assertFalse(is_null($site->id), "Id should be present");
+    public static function setUpBeforeClass() {
+        $mock = new MockHandler([
+            new Response(201, ['Location' => 'https://api.test.inetwork.com:443/v1.0/accounts/9500249/sites/2489']),
+			new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><SitesResponse>    <Sites>        <Site>            <Id>2297</Id>            <Name>API Test Site</Name>        </Site>        <Site>            <Id>2301</Id>            <Name>My First Site</Name>            <Description>A Site From Node SDK Examples</Description>        </Site>    </Sites></SitesResponse>"),
+			new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><SitesResponse>    <Sites>        <Site>            <Id>2297</Id>            <Name>API Test Site</Name>        </Site></Sites></SitesResponse>"),
+			new Response(200),
+			new Response(200),
+        ]);
 
-		$site->Address->City = "New York";
+        self::$container = [];
+        $history = Middleware::history(self::$container);
+        $handler = HandlerStack::create($mock);
+        $handler->push($history);
 
-		$this->assertEquals("New York", $site->Address->City, "City should be updated");
+        $client = new Iris\GuzzleClient(\Iris\Config::REST_LOGIN, \Iris\Config::REST_PASS, Array('url' => \Iris\Config::REST_URL, 'handler' => $handler));
+        $account = new Iris\Account(9500249, $client);
+        self::$sites = $account->sites();
+    }
 
-		$site->save();
+    public function testSiteCreate() {
+		$site = self::$sites->create(
+			array("Name" => "Test Site",
+				"Address" => array(
+					"City" => "Raleigh",
+					"AddressType" => "Service",
+					"HouseNumber" => "1",
+					"StreetName" => "Avenue",
+					"StateCode" => "NC"
+			)));
 
-		$id = $site->id;
+        $site->save();
 
-		$site_reloaded = $this->sites->get_by_id($id);
+        $this->assertEquals("2489", $site->Id);
+        $this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
 
-		$this->assertEquals("New York", $site_reloaded->Address->City, "City should be updated for reloaded site");
+	public function testSiteGet() {
+		$sites = self::$sites->get();
 
-		$site_reloaded->delete();
+        $this->assertEquals(2, count($sites));
+		$this->assertEquals("2297", $sites[0]->Id);
+        $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
+	public function testSiteGetOne() {
+		$sites = self::$sites->get();
 
-		$site_reloaded = $this->sites->get_by_id($id);
+        $this->assertEquals(1, count($sites));
+		$this->assertEquals("2297", $sites[0]->Id);
+        $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
+
+
+	public function testSiteUpdate() {
+		$site = self::$sites->create(
+			array("Id" => "2489")
+		);
+
+        $site->save();
+
+        $this->assertEquals("PUT", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites/2489", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
+
+	public function testSiteDelete() {
+		$site = self::$sites->create(
+			array("Id" => "2489")
+		);
+
+		$site->delete();
+
+		$this->assertEquals("DELETE", self::$container[self::$index]['request']->getMethod());
+		$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites/2489", self::$container[self::$index]['request']->getUri());
+		self::$index++;
 	}
 
 }

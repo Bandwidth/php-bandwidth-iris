@@ -21,8 +21,13 @@ class Sites extends RestEntry {
 
         $data = parent::get('sites');
 
-        if(isset($data->Sites) && isset($data->Sites->Site)) {
-            foreach($data->Sites->Site as $site) {
+        if(isset($data["Sites"]) && isset($data["Sites"]["Site"])) {
+            $items = $data["Sites"]["Site"];
+
+            if(is_array($items) && $this->is_assoc($items))
+                $items = [ $items ];
+
+            foreach($items as $site) {
                 $sites[] = new Site($this, $site);
             }
         }
@@ -30,7 +35,7 @@ class Sites extends RestEntry {
         return $sites;
     }
 
-    public function get_by_id($id) {
+    public function site($id) {
         $site = new Site($this, array("Id" => $id));
         $site->get();
         return $site;
@@ -42,7 +47,6 @@ class Sites extends RestEntry {
 
     public function create($data) {
         $site = new Site($this, $data);
-        $site->save();
         return $site;
     }
 }
@@ -51,7 +55,7 @@ class Site extends RestEntry {
     use BaseModel;
 
     protected $fields = array(
-        "id" => array(
+        "Id" => array(
             "type" => "string"
         ),
         "Name" => array(
@@ -74,38 +78,36 @@ class Site extends RestEntry {
     public function __construct($sites, $data) {
         if(isset($data)) {
             if(is_object($data) && $data->Id)
-                $this->id = $data->Id;
+                $this->Id = $data->Id;
             if(is_array($data) && isset($data['Id']))
-                $this->id = $data['Id'];
+                $this->Id = $data['Id'];
         }
         $this->set_data($data);
 
-        if(!is_null($sites)) {
-            $this->parent = $sites;
-            parent::_init($sites->get_rest_client(), $sites->get_relative_namespace());
-        }
+        $this->parent = $sites;
+        parent::_init($sites->get_rest_client(), $sites->get_relative_namespace());
     }
 
     public function get() {
-        if(is_null($this->id))
+        if(!isset($this->Id))
             throw new \Exception('Id should be provided');
 
-        $data = parent::get($this->id);
+        $data = parent::get($this->Id);
         $this->set_data($data['Site']);
     }
     public function delete() {
-        if(is_null($this->id))
+        if(!isset($this->Id))
             throw new \Exception('Id should be provided');
-        parent::delete($this->id);
+        parent::delete($this->Id);
     }
 
     public function save() {
-        if(!is_null($this->id))
-            parent::put($this->id, "Site", $this->to_array());
+        if(isset($this->Id))
+            parent::put($this->Id, "Site", $this->to_array());
         else {
             $header = parent::post(null, "Site", $this->to_array());
             $splitted = split("/", $header['Location']);
-            $this->id = end($splitted);
+            $this->Id = end($splitted);
         }
     }
 
@@ -116,6 +118,6 @@ class Site extends RestEntry {
     }
 
     public function get_appendix() {
-        return '/'.$this->id;
+        return '/'.$this->Id;
     }
 }

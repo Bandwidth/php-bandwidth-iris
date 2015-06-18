@@ -5,7 +5,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Middleware;
 
-class NotesTest extends PHPUnit_Framework_TestCase {
+class NotesRefTest extends PHPUnit_Framework_TestCase {
     public static $container;
     public static $account;
     public static $index = 0;

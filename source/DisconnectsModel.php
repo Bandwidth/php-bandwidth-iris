@@ -86,8 +86,8 @@ class Disconnect extends RestEntry {
      * @throws Exception in case of OrderId is null
      */
     private function get_id() {
-        if(is_null($this->OrderId))
-            throw new Exception("You can't use this function without OrderId");
+        if(!isset($this->OrderId))
+            throw new \Exception("You can't use this function without OrderId");
         return $this->OrderId;
     }
 

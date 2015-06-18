@@ -111,7 +111,7 @@ trait BaseModel {
         $out = array();
 
         foreach($this->fields as $key => $rules) {
-            if(!is_null($this->{$key})) {
+            if(isset($this->{$key})) {
                 $value = $this->{$key};
 
                 if($rules['type'] === "string")
