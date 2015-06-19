@@ -13,6 +13,10 @@ class AccountTest extends PHPUnit_Framework_TestCase {
     public static function setUpBeforeClass() {
         $mock = new MockHandler([
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?> <LineOptionOrderResponse><LineOptions> <CompletedNumbers><TelephoneNumber>2013223685</TelephoneNumber> </CompletedNumbers><Errors><Error><TelephoneNumber>5209072452</TelephoneNumber> <ErrorCode>5071</ErrorCode><Description>Telephone number is not available on the system.</Description></Error> <Error><TelephoneNumber>5209072451</TelephoneNumber> <ErrorCode>13518</ErrorCode><Description>CNAM for telephone number is applied at the Location level and it is notapplicable at the TN level.</Description> </Error></Errors> </LineOptions></LineOptionOrderResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\"?> <SearchResult><ResultCount>1</ResultCount> <TelephoneNumberDetailList><TelephoneNumberDetail> <City>KNIGHTDALE</City> <LATA>426</LATA> <RateCenter>KNIGHTDALE</RateCenter> <State>NC</State> <FullNumber>9192956932</FullNumber> <Tier>0</Tier><VendorId>49</VendorId> <VendorName>Bandwidth CLEC</VendorName></TelephoneNumberDetail> </TelephoneNumberDetailList></SearchResult>"),
+            new Response(200, [], "<?xml version=\"1.0\"?> <SearchResult><ResultCount>2</ResultCount> <TelephoneNumberDetailList><TelephoneNumberDetail> <City>KNIGHTDALE</City> <LATA>426</LATA> <RateCenter>KNIGHTDALE</RateCenter> <State>NC</State> <FullNumber>9192956932</FullNumber> <Tier>0</Tier><VendorId>49</VendorId> <VendorName>Bandwidth CLEC</VendorName></TelephoneNumberDetail><TelephoneNumberDetail> <City>KNIGHTDALE</City> <LATA>426</LATA> <RateCenter>KNIGHTDALE</RateCenter> <State>NC</State> <FullNumber>9192956932</FullNumber> <Tier>0</Tier><VendorId>49</VendorId> <VendorName>Bandwidth CLEC</VendorName></TelephoneNumberDetail> </TelephoneNumberDetailList></SearchResult>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?> <SearchResult><ResultCount>5</ResultCount> <TelephoneNumberList><TelephoneNumber>9194390154</TelephoneNumber> <TelephoneNumber>9194390158</TelephoneNumber> <TelephoneNumber>9194390176</TelephoneNumber> <TelephoneNumber>9194390179</TelephoneNumber> <TelephoneNumber>9194390185</TelephoneNumber></TelephoneNumberList> </SearchResult>"),
+            new Response(400, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?> <SearchResult><Error> <Code>4000</Code> <Description>The area code of telephone numbers can not end with 11. </Description></Error><ResultCount>0</ResultCount> </SearchResult>"),
         ]);
 
         self::$container = [];
@@ -37,6 +41,45 @@ class AccountTest extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/lineOptionOrders", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
+
+    public function testAvailableNumbersSingle() {
+        $response = self::$account->availableNumbers();
+
+        $this->assertEquals("KNIGHTDALE", $response[0]->City);
+        $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/availableNumbers", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
+
+    public function testAvailableNumbers() {
+        $response = self::$account->availableNumbers();
+
+        $this->assertEquals("KNIGHTDALE", $response[1]->City);
+        $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/availableNumbers", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
+
+    public function testAvailableNumbers2() {
+        $response = self::$account->availableNumbers();
+
+        $this->assertEquals("9194390154", $response[0]->TelephoneNumber[0]);
+        $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/availableNumbers", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
+
+    /**
+     * @expectedException \Iris\ResponseException
+     * @expectedExceptionCode 4000
+     */
+    public function testAvailableNumbersError() {
+        $response = self::$account->availableNumbers();
+
+        $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/availableNumbers", self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 

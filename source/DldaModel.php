@@ -73,23 +73,23 @@ final class Dlda extends RestEntry{
                 $this->id = $data['Id'];
         }
         $this->set_data($data);
+        $this->parent = $dldas;
+        parent::_init($orders->get_rest_client(), $orders->get_relative_namespace());
+    }
 
-        if(!is_null($dldas)) {
-            $this->parent = $dldas;
-            parent::_init($orders->get_rest_client(), $orders->get_relative_namespace());
-        }
+    private function get_id() {
+        if(!isset($this->id))
+            throw new \Exception('Id should be provided');
+        return $this->id;
     }
 
     public function get() {
-        if(is_null($this->id))
-            throw new \Exception('Id should be provided');
-
-        $data = parent::get($this->id);
+        $data = parent::get($this->get_id());
         $this->set_data($data['Dlda']);
     }
 
     public function save() {
-        if(!is_null($this->id))
+        if(isset($this->id))
             parent::put($this->id, "Order", $this->to_array());
         else {
             $header = parent::post(null, "Order", $this->to_array());
@@ -100,7 +100,7 @@ final class Dlda extends RestEntry{
 
     public function history()
     {
-        $url = sprintf('%s/%s', $this->id, 'history');
+        $url = sprintf('%s/%s', $this->get_id(), 'history');
         $data = parent::get($url);
         return $data;
     }

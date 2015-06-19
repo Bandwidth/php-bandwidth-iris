@@ -66,7 +66,7 @@ class Portout extends RestEntry {
         $this->set_data($data);
         $this->parent = $parent;
         parent::_init($parent->get_rest_client(), $parent->get_relative_namespace());
-        $this->notes = new Notes($this);
+        $this->notes = null;
     }
 
     /**
@@ -74,6 +74,8 @@ class Portout extends RestEntry {
     * @return \Iris\Notes
     */
     public function notes() {
+        if(is_null($this->notes))
+            $this->notes = new Notes($this);
         return $this->notes;
     }
     /**
@@ -82,7 +84,7 @@ class Portout extends RestEntry {
      * @throws Exception in case of OrderId is null
      */
     private function get_id() {
-        if(is_null($this->OrderId))
+        if(!isset($this->OrderId))
             throw new Exception("You can't use this function without OrderId");
         return $this->OrderId;
     }

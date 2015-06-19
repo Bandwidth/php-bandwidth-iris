@@ -17,6 +17,10 @@ class SippeersTest extends PHPUnit_Framework_TestCase {
 			new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><SipPeerResponse>    <SipPeer>        <PeerId>500651</PeerId>        <PeerName>Something</PeerName>        <IsDefaultPeer>false</IsDefaultPeer>        <ShortMessagingProtocol>SMPP</ShortMessagingProtocol>        <VoiceHosts>            <Host>                <HostName>192.168.181.2</HostName>            </Host>        </VoiceHosts>        <VoiceHostGroups/>        <SmsHosts>            <Host>                <HostName>192.168.181.2</HostName>            </Host>        </SmsHosts>        <TerminationHosts>            <TerminationHost>                <HostName>192.168.181.2</HostName>                <Port>0</Port>                <CustomerTrafficAllowed>DOMESTIC</CustomerTrafficAllowed>                <DataAllowed>true</DataAllowed>            </TerminationHost>        </TerminationHosts>    </SipPeer></SipPeerResponse>"),
 			new Response(200),
 			new Response(200),
+            new Response(200),
+            new Response(200),
+            new Response(200),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><SipPeerTelephoneNumbersResponse>    <SipPeerTelephoneNumbers>        <SipPeerTelephoneNumber>            <FullNumber>8183386251</FullNumber>        </SipPeerTelephoneNumber>        <SipPeerTelephoneNumber>            <FullNumber>8183386252</FullNumber>        </SipPeerTelephoneNumber>        <SipPeerTelephoneNumber>            <FullNumber>8183386249</FullNumber>        </SipPeerTelephoneNumber>        <SipPeerTelephoneNumber>            <FullNumber>8183386247</FullNumber>        </SipPeerTelephoneNumber>    </SipPeerTelephoneNumbers></SipPeerTelephoneNumbersResponse>"),
         ]);
 
         self::$container = [];
@@ -117,5 +121,65 @@ class SippeersTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites/9999/sippeers/2489", self::$container[self::$index]['request']->getUri());
 		self::$index++;
 	}
+
+    public function testMoveTNs() {
+        $sippeer = self::$sippeers->create(
+			array("PeerId" => "2489")
+		);
+
+        $sippeer->movetns(new \Iris\Phones([
+            "FullNumber" => [ "9192000046", "9192000047", "9192000048" ]
+        ]));
+
+        $this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites/9999/sippeers/2489/movetns", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
+
+    public function testTNOptions() {
+        $sippeer = self::$sippeers->create(
+			array("PeerId" => "2489")
+		);
+
+        $sippeer->tns()->create(["FullNumber" => "8183386251"])->set_tn_options(new \Iris\SipPeerTelephoneNumber([
+            "FullNumber" => "8183386251",
+            "CallForward" => "9194394706",
+            "RewriteUser" => "JohnDoe",
+            "NumberFormat" => "10digit",
+            "RPIDFormat" => "e164"
+        ]));
+
+        $this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites/9999/sippeers/2489/tns/8183386251", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
+
+    public function testGetTN() {
+        $sippeer = self::$sippeers->create(
+            array("PeerId" => "2489")
+        );
+
+        $tn = $sippeer->tns()->create(["FullNumber" => "8183386251"]);
+        $tn->get();
+
+        $this->assertEquals("8183386251", $tn->FullNumber);
+        $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites/9999/sippeers/2489/tns/8183386251", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
+
+    public function testGetTNs() {
+        $sippeer = self::$sippeers->create(
+            array("PeerId" => "2489")
+        );
+
+        $tns = $sippeer->tns()->get();
+
+        $this->assertEquals(4, count($tns));
+        $this->assertEquals("8183386251", $tns[0]->FullNumber);
+        $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites/9999/sippeers/2489/tns", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
 
 }

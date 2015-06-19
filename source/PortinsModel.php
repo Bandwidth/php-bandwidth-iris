@@ -81,7 +81,7 @@ class Portin extends RestEntry {
     }
 
     public function save() {
-        if(is_null($this->OrderId)) {
+        if(!isset($this->OrderId)) {
             $data = parent::post(null, "LnpOrder", $this->to_array());
         } else {
             $data = parent::put($this->get_id(), "LnpOrderSupp", $this->to_array());
@@ -148,45 +148,8 @@ class Portin extends RestEntry {
     }
 
     public function get() {
-        $this->data = parent::get($this->id);
+        $this->data = parent::get($this->get_id());
         return $this->data;
-    }
-
-    public function areaCodes()
-    {
-        $url = sprintf('%s/%s', $this->id, 'areaCodes');
-        $data = parent::get($url);
-        return $data;
-    }
-    public function history()
-    {
-        $url = sprintf('%s/%s', $this->id, 'history');
-        $data = parent::get($url);
-        return $data;
-    }
-    public function npaNxx()
-    {
-        $url = sprintf('%s/%s', $this->id, 'npaNxx');
-        $data = parent::get($url);
-        return $data;
-    }
-    public function tns()
-    {
-        $url = sprintf('%s/%s', $this->id, 'tns');
-        $data = parent::get($url);
-        return $data;
-    }
-    public function totals()
-    {
-        $url = sprintf('%s/%s', $this->id, 'totals');
-        $data = parent::get($url);
-        return $data;
-    }
-    public function activationStatus()
-    {
-        $url = sprintf('%s/%s', $this->id, 'activationStatus');
-        $data = parent::get($url);
-        return $data;
     }
 
     /**
@@ -205,7 +168,7 @@ class Portin extends RestEntry {
      * @throws Exception in case of OrderId is null
      */
     private function get_id() {
-        if(is_null($this->OrderId))
+        if(!isset($this->OrderId))
             throw new \Exception("You can't use this function without OrderId");
         return $this->OrderId;
     }

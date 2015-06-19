@@ -68,22 +68,18 @@ class Sippeer extends RestEntry {
         }
         $this->set_data($data);
 
-        if(!is_null($parent)) {
-            $this->parent = $parent;
-            parent::_init($parent->get_rest_client(), $parent->get_relative_namespace());
-        }
+        $this->parent = $parent;
+        parent::_init($parent->get_rest_client(), $parent->get_relative_namespace());
+        $this->tns = null;
     }
 
     public function get() {
-        if(is_null($this->PeerId))
-            throw new \Exception('Id should be provided');
-
-        $data = parent::get($this->PeerId);
+        $data = parent::get($this->get_id());
         $this->set_data($data['SipPeer']);
     }
 
     public function save() {
-        if(!is_null($this->PeerId))
+        if(isset($this->PeerId))
             parent::put($this->PeerId, "SipPeer", $this->to_array());
         else {
             $header = parent::post(null, "SipPeer", $this->to_array());
@@ -93,12 +89,28 @@ class Sippeer extends RestEntry {
     }
 
     public function delete() {
-        if(is_null($this->PeerId))
-            throw new \Exception('Id should be provided');
-        parent::delete($this->PeerId);
+        parent::delete($this->get_id());
     }
 
+    public function movetns(Phones $data) {
+        $url = sprintf("%s/%s", $this->get_id(), "movetns");
+        parent::post($url, "SipPeerTelephoneNumbers", $data);
+    }
+
+    public function tns() {
+        if(is_null($this->tns))
+            $this->tns = new Tns($this);
+        return $this->tns;
+    }
+
+    private function get_id() {
+        if(!isset($this->PeerId))
+            throw new \Exception('Id should be provided');
+        return $this->PeerId;
+    }
+
+
     public function get_appendix() {
-        return '/'.$this->PeerId;
+        return '/'.$this->get_id();
     }
 }

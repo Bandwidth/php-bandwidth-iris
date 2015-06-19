@@ -3,39 +3,74 @@
 namespace Iris;
 
 final class Tns extends RestEntry {
-
-    /**
-     *
-     *
-     */
-    public function __construct($client, $namespace=Null)
+    public function __construct($parent, $client=null, $namespace="")
     {
-        parent::_init($client, $namespace='tns');
+        if($parent) {
+            $this->parent = $parent;
+            parent::_init($this->parent->get_rest_client(), $this->parent->get_relative_namespace());
+        }
+        else {
+            parent::_init($client, $namespace="");
+        }
     }
 
-    public function get($filters = Array()) {
+    public function get_from_sippeer() {
         $tns = [];
-        $data = parent::get('', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
-        if($data['TelephoneNumberCount'] && $data['TelephoneNumbers']) {
-            foreach($data['TelephoneNumbers'] as $tn) {
+        $data = parent::get('tns');
+
+        if($data['SipPeerTelephoneNumbers'] && $data['SipPeerTelephoneNumbers']["SipPeerTelephoneNumber"]) {
+            $items =  $data['SipPeerTelephoneNumbers']["SipPeerTelephoneNumber"];
+
+            if($this->is_assoc($items))
+                $items = [ $items ];
+
+            foreach($items as $tn) {
                 $tns[] = new Tn($this, $tn);
             }
         }
         return $tns;
     }
-    
-    public function get_by_number($id) {
-        $order = new Order($this, array("Id" => $id));
-        $order->get();
-        return $order;
+
+    public function get($filters = Array()) {
+        if(isset($this->parent) && $this->parent instanceof \Iris\Sippeer) {
+            return $this->get_from_sippeer();
+        }
+        $tns = [];
+        $data = parent::get('tns', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
+
+        if($data['TelephoneNumberCount'] && $data['TelephoneNumbers'] && $data['TelephoneNumbers']["TelephoneNumber"]) {
+            $items =  $data['TelephoneNumbers']["TelephoneNumber"];
+
+            if($data['TelephoneNumberCount'] == "1")
+                $items = [ $items ];
+
+            foreach($items as $tn) {
+                $tns[] = new Tn($this, $tn);
+            }
+        }
+        return $tns;
+    }
+
+    public function create($data) {
+        return new Tn($this, $data);
+    }
+
+    public function tn($id) {
+        $tn = new Tn($this, array("FullNumber" => $id));
+        $tn->get();
+        return $tn;
     }
 
     public function get_rest_client() {
-      return $this->client;
+        if(isset($this->parent)) {
+            return $this->parent->client;
+        } else {
+            return $this->client;
+        }
     }
 
     public function get_relative_namespace() {
-        return 'tns';
+        return (isset($this->parent) ? $this->parent->get_relative_namespace() : '').'/tns';
     }
 }
 
@@ -76,72 +111,62 @@ final class Tn extends RestEntry{
         ),
         "LastModified" => array(
             "type" => "string"
-        )
+        ),
+        "OrderCreateDate" => array("type" => "string"),
+        "OrderId" => array("type" => "string"),
+        "OrderType" => array("type" => "string"),
+        "SiteId" =>  array("type" => "string"),
+        "AccountId" => array("type" => "string"),
+        "CallForward" => array("type" => "string")
     );
 
-    public function __construct($tns, $data)
-    {
-          if(isset($data)) {
-              if(is_object($data) && $data->FullNumber)
-                  $this->id = $data->FullNumber;
-              if(is_array($data) && isset($data['FullNumber']))
-                  $this->id = $data['FullNumber'];
-          }
-          $this->set_data($data);
-
-          if(!is_null($tns)) {
-              $this->parent = $tns;
-              parent::_init($tns->get_rest_client(), $tns->get_relative_namespace());
-          }
-
+    public function __construct($tns, $data) {
+        $this->set_data($data);
+        $this->parent = $tns;
+        parent::_init($tns->get_rest_client(), $tns->get_relative_namespace());
     }
-    
-    public function tnsdetails()
-    {
-        $url = sprintf('%s/%s', $this->id, 'tndetails');
+
+    public function get() {
+        $data = parent::get($this->get_id());
+        if(isset($data["SipPeerTelephoneNumber"]))
+            $data = $data['SipPeerTelephoneNumber'];
+        $this->set_data($data);
+    }
+
+    public function site() {
+        if(!isset($this->AccountId))
+            $this->get();
+
+        $url = sprintf("%s/%s", $this->get_id(), "sites");
         $data = parent::get($url);
-        return $data;
+        $account = new Account($this->AccountId, $this->parent->get_rest_client());
+        return $account->sites()->create($data);
     }
 
-    public function sites()
-    {
-        $url = sprintf('%s/%s', $this->id, 'sites');
+    public function sippeer() {
+        if(!isset($this->AccountId) || !isset($this->SiteId))
+            $this->get();
+
+        $url = sprintf("%s/%s", $this->get_id(), "sippeers");
         $data = parent::get($url);
-        return $data;
+        $account = new Account($this->AccountId, $this->parent->get_rest_client());
+        return $account->sites()->create(["Id" => $this->SiteId])->sippeers()->create(["PeerId" => $data["Id"], "PeerName" => $data["Name"]]);
     }
 
-    public function sippeers()
-    {
-        $url = sprintf('%s/%s', $this->id, 'sippeers');
-        $data = parent::get($url);
-        return $data;
+    public function set_tn_options(SipPeerTelephoneNumber $data) {
+        if(!($this->parent->parent instanceof Sippeer))
+            throw new \Exception("You should get TN from sippeer");
+        parent::post($this->get_id(), "SipPeerTelephoneNumbers", $data);
     }
 
-    public function lca()
-    {
-        $url = sprintf('%s/%s', $this->id, 'lca');
-        $data = parent::get($url);
-        return $data;
+    public function get_id() {
+        if(!isset($this->FullNumber))
+            throw new \Exception("You should set FullNumber");
+        return $this->FullNumber;
     }
 
-    public function lata()
-    {
-        $url = sprintf('%s/%s', $this->id, 'lata');
-        $data = parent::get($url);
-        return $data;
+    public function get_appendix() {
+        return '/'.$this->get_id();
     }
 
-    public function history()
-    {
-        $url = sprintf('%s/%s', $this->id, 'history');
-        $data = parent::get($url);
-        return $data;
-    }
-
-    public function tnsreservation()
-    {
-        $url = sprintf('%s/%s', $this->id, 'tnsreservation');
-        $data = parent::get($url);
-        return $data;
-    }
 }

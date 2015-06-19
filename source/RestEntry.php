@@ -19,7 +19,7 @@ abstract class RestEntry{
         {
             $this->client = $client;
         }
-        if ($namespace)
+        if (!is_null($namespace))
         {
             $this->namespace = $namespace;
         }

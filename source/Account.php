@@ -14,7 +14,7 @@ class Account extends RestEntry {
     * @params \Iris\TnLineOptions
     */
     public function lineOptionOrders(TnLineOptions $data) {
-        $url = sprintf('%s/%s', $this->account_id, 'lineOptionOrders');        
+        $url = sprintf('%s/%s', $this->account_id, 'lineOptionOrders');
         $response = parent::post($url, "LineOptionOrder", $data->to_array());
         return new TnLineOptionOrderResponse($response);
     }
@@ -107,13 +107,43 @@ class Account extends RestEntry {
         return $data;
     }
 
-    public function availableNumbers($filters=Array()){
-        /* TODO:  too bad */
-        //print_r(__FUNCTION__); exit;
-        $url = sprintf('%s/%s', $this->account_id, 'avalibleNumbers');
-        $data = parent::get($url, $filters);
+    private function parse_response($data, $level1, $level2, $count, $classname) {
+        $out = [];
+        $items = $level2 ? $data[$level1][$level2]: $data[$level1];
 
-        return $data;
+        if($count == 1 || $this->is_assoc($items))
+            $items = [ $items ];
+
+        foreach($items as $item) {
+            $out[] = new $classname($item);
+        }
+
+        return $out;
+    }
+
+    public function availableNumbers($filters=Array()){
+        $query_fields = ["areaCode", "quantity", "enableTNDetail", "npaNxx", "npaNxxx",
+            "LCA", "enableTNDetail", "rateCenter", "state", "quantity", "tollFreeVanity",
+            "tollFreeWildCardPattern", "city", "zip", "lata" ];
+
+        foreach($filters as $field => $value) {
+            if(!in_array($field, $query_fields))
+                throw new \Exception("Field $filed is not allowed.");
+        }
+
+        $url = sprintf('%s/%s', $this->account_id, 'availableNumbers');
+        $data = parent::get($url, $filters);
+        $count = $data['ResultCount'];
+
+        $types = [
+            ["level1" => "TelephoneNumberDetailList", "level2" => "TelephoneNumberDetail", "classname" => "\Iris\TelephoneNumberDetail"],
+            ["level1" => "TelephoneNumberList", "level2" => false, "classname" => "\Iris\TelephoneNumbers"],
+        ];
+
+        foreach($types as $type) {
+            if(isset($data[$type['level1']]) && (!$type['level2'] || isset($data[$type['level1']][$type['level2']])))
+                return $this->parse_response($data, $type['level1'], $type['level2'], $count, $type['classname']);
+        }
     }
 
     public function serviceNumbers($filters=Array()){

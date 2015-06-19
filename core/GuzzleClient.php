@@ -29,6 +29,8 @@ final class GuzzleClient extends iClient {
 
         if(isset($doc) && isset($doc->ResponseStatus) && isset($doc->ResponseStatus->Description)) {
             throw new ResponseException((string)$doc->ResponseStatus->Description, (int)$doc->ResponseStatus->ErrorCode);
+        } else if(isset($doc) && isset($doc->Error) && isset($doc->Error->Description) && isset($doc->Error->Code)) {
+            throw new ResponseException((string)$doc->Error->Description, (int)$doc->Error->Code);
         } else {
             throw new ResponseException($body, $e->getResponse()->getStatusCode());
         }
