@@ -153,6 +153,16 @@ final class Tn extends RestEntry{
         return $account->sites()->create(["Id" => $this->SiteId])->sippeers()->create(["PeerId" => $data["Id"], "PeerName" => $data["Name"]]);
     }
 
+    public function tnreservation() {
+        if(!isset($this->AccountId) || !isset($this->SiteId))
+            $this->get();
+
+        $url = sprintf("%s/%s", $this->get_id(), "tnreservation");
+        $account = new Account($this->AccountId, $this->parent->get_rest_client());
+        $data = parent::get($url);
+        return $account->tnsreservations()->create($data);
+    }
+
     public function set_tn_options(SipPeerTelephoneNumber $data) {
         if(!($this->parent->parent instanceof Sippeer))
             throw new \Exception("You should get TN from sippeer");

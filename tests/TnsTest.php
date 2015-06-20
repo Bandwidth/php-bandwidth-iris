@@ -16,6 +16,7 @@ class TnsTest extends PHPUnit_Framework_TestCase {
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><TelephoneNumberResponse>    <TelephoneNumber>7576768750</TelephoneNumber>    <Status>PortInPendingFoc</Status>    <LastModifiedDate>2015-06-03T15:10:13.000Z</LastModifiedDate>    <OrderCreateDate>2015-06-03T15:10:12.808Z</OrderCreateDate>    <OrderId>98939562-90b0-40e9-8335-5526432d9741</OrderId>    <OrderType>PORT_NUMBER_ORDER</OrderType>    <SiteId>2297</SiteId>    <AccountId>9500249</AccountId></TelephoneNumberResponse>"),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Site>    <Id>2297</Id>    <Name>API Test Site</Name></Site>"),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><SipPeer>    <Id>500651</Id>    <Name>Something</Name></SipPeer>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><TNReservation><ReservationId>123</ReservationId><AccountId>111</AccountId><ReservationExpires>int (seconds)</ReservationExpires><ReservedTn>6136211234</ReservedTn></TNReservation>"),
         ]);
 
         self::$container = [];
@@ -69,6 +70,18 @@ class TnsTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals("Something", $sippeer->PeerName);
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/tns/7576768750/sippeers", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
+
+    public function testTNReservationGet() {
+        $tn = self::$tns->create([ "FullNumber" => "7576768750", "AccountId" => "9500249", "SiteId" => "2297"]);
+
+        $tnreservation = $tn->tnreservation();
+
+        $json = '{"ReservedTn":"6136211234","ReservationId":"123","ReservationExpires":"int (seconds)","AccountId":"111"}';
+		$this->assertEquals($json, json_encode($tnreservation->to_array()));
+        $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/tns/7576768750/tnreservation", self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 

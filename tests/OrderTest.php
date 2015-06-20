@@ -72,7 +72,7 @@ class OrderTest extends PHPUnit_Framework_TestCase {
 			]
 		]);
 
-		$order->save();
+		$order->post();
 		$this->assertEquals("f30a31a1-1de4-4939-b094-4521bbe5c8df", $order->get_id());
 		$this->assertEquals("RECEIVED", $order->OrderStatus);
 		$this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
@@ -238,5 +238,51 @@ class OrderTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($json, json_encode($order->to_array()));
 	}
+
+	public function testOrderPost() {
+		$order = self::$account->orders()->create([
+			"id" => "f30a31a1-1de4-4939-b094-4521bbe5c8df",
+			"Name" => "Available Telephone Number order",
+			"CustomerOrderId" => "123456789",
+			"CloseOrder" => "true"
+		]);
+
+		$order->put();
+
+		$json = '{"id":"f30a31a1-1de4-4939-b094-4521bbe5c8df","Name":"Available Telephone Number order","CustomerOrderId":"123456789","CloseOrder":"true"}';
+
+		$this->assertEquals($json, json_encode($order->to_array()));
+		$this->assertEquals("PUT", self::$container[self::$index]['request']->getMethod());
+		$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/orders/f30a31a1-1de4-4939-b094-4521bbe5c8df", self::$container[self::$index]['request']->getUri());
+		self::$index++;
+	}
+
+    public function testReservedPost() {
+        $order = self::$account->orders()->create([
+			"Name" => "Available Telephone Number order",
+            "SiteId" => "385",
+			"CustomerOrderId" => "123456789",
+            "ExistingTelephoneNumberOrderType" => [
+				"TelephoneNumberList" => [
+					"TelephoneNumber" => [ "9193752369", "9193752720", "9193752648"]
+				],
+                "ReservationIdList" => [
+                    "ReservationId" => [ "1", "2" ]
+                ]
+			]
+		]);
+
+        $json = '{"Name":"Available Telephone Number order","CustomerOrderId":"123456789","SiteId":"385","ExistingTelephoneNumberOrderType":{"TelephoneNumberList":{"TelephoneNumber":["9193752369","9193752720","9193752648"]},"ReservationIdList":{"ReservationId":["1","2"]}}}';
+
+		$this->assertEquals($json, json_encode($order->to_array()));
+
+// <Name>Available Telephone Number order</Name> <SiteId>385</SiteId> <CustomerOrderId>123456789</CustomerOrderId> <ExistingTelephoneNumberOrderType>
+// <T elephoneNumberList>
+// <T elephoneNumber>9193752369</T elephoneNumber> <T elephoneNumber>9193752720</T elephoneNumber> <T elephoneNumber>9193752648</T elephoneNumber>
+// </T elephoneNumberList> <ReservationIdList>
+// <ReservationId>[GUID]</ReservationId> <ReservationId>[GUID]</ReservationId>
+// </ReservationIdList> </ExistingTelephoneNumberOrderType>
+// </Order>
+    }
 
 }

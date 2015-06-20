@@ -87,7 +87,8 @@ final class Order extends RestEntry{
         "OrderType" => array("type" => "string"),
         "EnableTNDetail" => array("type" => "string"),
         "TelephoneNumberList" => array("type" => "\Iris\TelephoneNumbers"),
-        "ExistingTelephoneNumberOrderType" => array("type" => "\Iris\TelephoneNumberList")
+        "ExistingTelephoneNumberOrderType" => array("type" => "\Iris\TelephoneNumberList"),
+        "CloseOrder"  => array("type" => "string"),
 
     );
 
@@ -107,14 +108,17 @@ final class Order extends RestEntry{
         return $response;
     }
 
-    public function save() {
-        if(!isset($this->orderId) && !isset($this->id)) {
-            $data = parent::post(null, "Order", $this->to_array());
-            $this->set_data($data["Order"]);
-            $this->OrderStatus = $data["OrderStatus"];
-        } else {
-            parent::put($this->id, "Order", $this->to_array());
-        }
+    public function post() {
+        $data = parent::post(null, "Order", $this->to_array());
+        $this->set_data($data["Order"]);
+        $this->OrderStatus = $data["OrderStatus"];
+    }
+
+    public function put() {
+        $arr = $this->to_array();
+        unset($arr['id']);
+        unset($arr['orderId']);
+        parent::put($this->get_id(), "Order", $arr);
     }
 
     /**

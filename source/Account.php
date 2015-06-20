@@ -79,10 +79,10 @@ class Account extends RestEntry {
         return $this->subscriptions;
     }
 
-    public function tnreservation() {
-        if(!isset($this->tnreservation))
-            $this->tnreservation = new Tnreservation($this);
-        return $this->tnreservation;
+    public function tnsreservations() {
+        if(!isset($this->tnsreservations))
+            $this->tnsreservations = new TnsReservations($this);
+        return $this->tnsreservations;
     }
 
     public function sites() {
