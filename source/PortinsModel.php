@@ -59,7 +59,10 @@ class Portin extends RestEntry {
         "Status" => array("type" => "Iris\Status"),
         "Errors" => array("type" => "string"),
         "ProcessingStatus" => array("type" => "string"),
+        "CustomerOrderId" => array("type" => "string"),
         "RequestedFocDate" => array("type" => "string"),
+        "AlternateSpid" => array("type" => "string"),
+
         "WirelessInfo" => array("type" => "Iris\WirelessInfo"),
         "LosingCarrierName" => array("type" => "string"),
         "LastModifiedDate" => array("type" => "string"),

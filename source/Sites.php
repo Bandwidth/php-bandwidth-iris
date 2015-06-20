@@ -76,14 +76,7 @@ class Site extends RestEntry {
     );
 
     public function __construct($sites, $data) {
-        if(isset($data)) {
-            if(is_object($data) && $data->Id)
-                $this->Id = $data->Id;
-            if(is_array($data) && isset($data['Id']))
-                $this->Id = $data['Id'];
-        }
         $this->set_data($data);
-
         $this->parent = $sites;
         parent::_init($sites->get_rest_client(), $sites->get_relative_namespace());
     }

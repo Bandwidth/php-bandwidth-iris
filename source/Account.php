@@ -61,12 +61,6 @@ class Account extends RestEntry {
         return $this->lsrorders;
     }
 
-    public function libds() {
-        if(!isset($this->libds))
-            $this->libds = new Libds($this);
-        return $this->libds;
-    }
-
     public function didas() {
         if(!isset($this->didas))
             $this->didas = new Didas($this);
@@ -95,6 +89,12 @@ class Account extends RestEntry {
         if(!isset($this->reports))
             $this->reports = new Reports($this);
         return $this->reports;
+    }
+
+    public function lidbs() {
+        if(!isset($this->lidbs))
+            $this->lidbs = new Lidbs($this);
+        return $this->lidbs;
     }
 
     /**
