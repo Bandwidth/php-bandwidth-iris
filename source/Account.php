@@ -146,6 +146,18 @@ class Account extends RestEntry {
         }
     }
 
+    public function lnpChecker(NumberPortabilityRequest $data, $fullcheck = false) {
+        if($fullcheck !== false && in_array($fullcheck, ["true", "false", "onnetportability", "offnetportability"])) {
+            $f = "?fullcheck=$fullcheck";
+        } else {
+            $f = "";
+        }
+
+        $url = sprintf('%s/%s%s', $this->account_id, 'lnpchecker', $f);
+        $res = parent::post($url, "NumberPortabilityRequest", $data->to_array());
+        return new NumberPortabilityResponse($res);
+    }
+
     public function serviceNumbers($filters=Array()){
         $url = sprintf('%s/%s', $this->account_id, 'serviceNumbers');
         $data = parent::get($url, $filters);

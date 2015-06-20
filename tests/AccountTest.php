@@ -20,6 +20,8 @@ class AccountTest extends PHPUnit_Framework_TestCase {
             new Response(201, ['Location' => 'https://api.test.inetwork.com:443/v1.0/accounts/9500249/tnsreservation/2489']),
             new Response(200, [], "<?xml version=\"1.0\"?><ReservationResponse><Reservation> <ReservationId>0099ff73-da96-4303-8a0a-00ff316c07aa</ReservationId> <AccountId>14</AccountId> <ReservationExpires>0</ReservationExpires> <ReservedTn>2512027430</ReservedTn></Reservation> </ReservationResponse>"),
             new Response(200, []),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\"?><NumberPortabilityResponse>   <SupportedRateCenters />   <UnsupportedRateCenters>      <RateCenterGroup>         <RateCenter>BALTIMORE</RateCenter>         <City>BALTIMORE</City>         <State>MD</State>         <LATA>238</LATA>         <TnList>            <Tn>4109255199</Tn>            <Tn>4104685864</Tn>         </TnList>      </RateCenterGroup>      <RateCenterGroup>         <RateCenter>SPARKSGLNC</RateCenter>         <City>SPARKS GLENCOE</City>         <State>MD</State>         <LATA>238</LATA>         <TnList>            <Tn>4103431313</Tn>            <Tn>4103431561</Tn>         </TnList>      </RateCenterGroup>   </UnsupportedRateCenters>   <PartnerSupportedRateCenters>      <!-- Only available for fullCheck=offnetportability -->      <RateCenterGroup>         <RateCenter>FT COLLINS</RateCenter>         <City>FORT COLLINS</City>         <State>CO</State>         <LATA>656</LATA>         <Tiers>            <Tier>1</Tier>         </Tiers>         <TnList>            <Tn>4109235436</Tn>         </TnList>      </RateCenterGroup>   </PartnerSupportedRateCenters>   <SupportedLosingCarriers>      <LosingCarrierTnList>         <LosingCarrierSPID>9998</LosingCarrierSPID>         <LosingCarrierName>Test Losing Carrier L3</LosingCarrierName>         <LosingCarrierIsWireless>false</LosingCarrierIsWireless>         <LosingCarrierAccountNumberRequired>false</LosingCarrierAccountNumberRequired>         <LosingCarrierMinimumPortingInterval>5</LosingCarrierMinimumPortingInterval>         <TnList>            <Tn>4109255199</Tn>            <Tn>4104685864</Tn>            <Tn>4103431313</Tn>            <Tn>4103431561</Tn>         </TnList>      </LosingCarrierTnList>   </SupportedLosingCarriers>   <UnsupportedLosingCarriers /></NumberPortabilityResponse>"),
+            new Response(400, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><NumberPortabilityResponse> <Errors><Code>7201</Code><Description>919 is not a valid NANPA telephone number.</Description> </Errors></NumberPortabilityResponse>"),
         ]);
 
         self::$container = [];
@@ -115,6 +117,18 @@ class AccountTest extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals("DELETE", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/tnreservation/0099ff73-da96-4303-8a0a-00ff316c07aa", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
+
+    public function testlnpChecker() {
+        $res = self::$account->lnpChecker(new \Iris\NumberPortabilityRequest(["TnList" => ["Tn" => ["4109255199", "9196190594"] ]]), "true");
+
+        $json = '{"SupportedRateCenters":"","UnsupportedRateCenters":{"RateCenterGroup":[{"RateCenter":"BALTIMORE","City":"BALTIMORE","State":"MD","LATA":"238","TnList":{"Tn":["4109255199","4104685864"]}},{"RateCenter":"SPARKSGLNC","City":"SPARKS GLENCOE","State":"MD","LATA":"238","TnList":{"Tn":["4103431313","4103431561"]}}]},"PartnerSupportedRateCenters":{"RateCenterGroup":{"RateCenter":"FT COLLINS","City":"FORT COLLINS","State":"CO","LATA":"656","TnList":{"Tn":"4109235436"},"Tiers":{"Tier":"1"}}},"SupportedLosingCarriers":{"LosingCarrierTnList":{"LosingCarrierSPID":"9998","LosingCarrierName":"Test Losing Carrier L3","LosingCarrierIsWireless":"false","LosingCarrierAccountNumberRequired":"false","LosingCarrierMinimumPortingInterval":"5","TnList":{"Tn":["4109255199","4104685864","4103431313","4103431561"]}}}}';
+
+		$this->assertEquals($json, json_encode($res->to_array()));
+
+        $this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/lnpchecker?fullcheck=true", self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 
