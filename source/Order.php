@@ -20,14 +20,19 @@ final class Orders extends RestEntry{
         parent::_init($this->parent->get_rest_client(), $this->parent->get_relative_namespace());
     }
 
-    public function get($url, $options = Array(), $defaults = Array(), $required = Array()) {
+    public function get($filters = Array(), $defaults = Array(), $required = Array()) {
 
         $orders = [];
 
         $data = parent::get('orders', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
 
         if($data['ListOrderIdUserIdDate'] && $data['ListOrderIdUserIdDate']['TotalCount']) {
-            foreach($data['ListOrderIdUserIdDate']['OrderIdUserIdDate'] as $order) {
+            $items = $data['ListOrderIdUserIdDate']['OrderIdUserIdDate'];
+
+            if($this->is_assoc($items))
+                $items = [ $items ];
+
+            foreach($items as $order) {
                 $orders[] = new Order($this, $order);
             }
         }
@@ -35,10 +40,9 @@ final class Orders extends RestEntry{
         return $orders;
     }
 
-    public function get_by_id($id) {
-        $order = new Order($this, array("Id" => $id));
-        $order->get();
-        return $order;
+    public function order($id) {
+        $order = new Order($this, array("id" => $id));
+        return $order->get();
     }
 
     public function get_appendix() {
@@ -57,107 +61,71 @@ final class Order extends RestEntry{
     public $id = Null;
 
     protected $fields = array(
-        "orderId" => array(
-            "type" => "string"
-        ),
-        "Quantity" => array(
-            "type" => "string"
-        ),
-        "Name" => array(
-            "type" => "string"
-        ),
-        "CustomerOrderId" => array(
-            "type" => "string"
-        ),
-        "SiteId" => array(
-            "type" => "string"
-        ),
-        "PeerId" => array(
-            "type" => "string"
-        )
-        ,
-        "PartialAllowed" => array(
-            "type" => "string"
-        )
-        ,
-        "BackOrderRequested" => array(
-            "type" => "string"
-         ),
-        "AreaCodeSearchAndOrderType" => array(
-            "type" => "string"
-        )
-    );
+        "id" => array("type" => "string"),
+        "orderId" => array("type" => "string"),
+        "Quantity" => array("type" => "string"),
+        "Name" => array("type" => "string"),
+        "CustomerOrderId" => array("type" => "string"),
+        "SiteId" => array("type" => "string"),
+        "PeerId" => array("type" => "string"),
+        "PartialAllowed" => array("type" => "string"),
+        "BackOrderRequested" => array("type" => "string"),
+        "AreaCodeSearchAndOrderType" => array("type" => "\Iris\SearchOrderType"),
+        "RateCenterSearchAndOrderType" => array("type" => "\Iris\SearchOrderType"),
+        "NPANXXSearchAndOrderType" => array("type" => "\Iris\SearchOrderType"),
+        "TollFreeVanitySearchAndOrderType" => array("type" => "\Iris\SearchOrderType"),
+        "TollFreeWildCharSearchAndOrderType"  => array("type" => "\Iris\SearchOrderType"),
+        "StateSearchAndOrderType" => array("type" => "\Iris\SearchOrderType"),
+        "CitySearchAndOrderType" => array("type" => "\Iris\SearchOrderType"),
+        "ZIPSearchAndOrderType" => array("type" => "\Iris\SearchOrderType"),
+        "LATASearchAndOrderType" => array("type" => "\Iris\SearchOrderType"),
+        "CountOfTNs" => array("type" => "string"),
+        "userId" => array("type" => "string"),
+        "lastModifiedDate" => array("type" => "string"),
+        "OrderDate" => array("type" => "string"),
+        "OrderStatus" => array("type" => "string"),
+        "OrderType" => array("type" => "string"),
+        "EnableTNDetail" => array("type" => "string"),
+        "TelephoneNumberList" => array("type" => "\Iris\TelephoneNumbers"),
+        "ExistingTelephoneNumberOrderType" => array("type" => "\Iris\TelephoneNumberList")
 
+    );
 
     public function __construct($orders, $data)
     {
-        if(isset($data)) {
-            if(is_object($data) && $data->Id)
-                $this->id = $data->Id;
-            if(is_array($data) && isset($data['Id']))
-                $this->id = $data['Id'];
-        }
         $this->set_data($data);
-
         $this->parent = $orders;
         parent::_init($orders->get_rest_client(), $orders->get_relative_namespace());
-
-        $this->notes = new Notes($this);
+        $this->notes = null;
     }
 
-    public function get($url='', $options = Array(), $defaults = Array(), $required = Array()) {
-        if(is_null($this->id))
-            throw new \Exception('Id should be provided');
-
-        $data = parent::get($this->id);
+    public function get() {
+        $data = parent::get($this->get_id());
+        $response = new OrderResponse($data);
         $this->set_data($data['Order']);
+        $response->Order = $this;
+        return $response;
     }
 
     public function save() {
-        if(!is_null($this->id))
+        if(!isset($this->orderId) && !isset($this->id)) {
+            $data = parent::post(null, "Order", $this->to_array());
+            $this->set_data($data["Order"]);
+            $this->OrderStatus = $data["OrderStatus"];
+        } else {
             parent::put($this->id, "Order", $this->to_array());
-        else {
-            $header = parent::post(null, "Order", $this->to_array());
-            $this->id = $header['Order']['id'];
         }
     }
 
-    public function areCodes()
-    {
-        $url = sprintf('%s/%s', $this->id, 'areaCodes');
-        $data = parent::get($url);
-        return $data;
-    }
-
-    public function history()
-    {
-        $url = sprintf('%s/%s', $this->id, 'history');
-        $data = parent::get($url);
-        return $data;
-    }
-    public function npaNxx()
-    {
-        $url = sprintf('%s/%s', $this->id, 'npaNxx');
-        $data = parent::get($url);
-        return $data;
-    }
-    public function tns()
-    {
-        $url = sprintf('%s/%s', $this->id, 'tns');
-        $data = parent::get($url);
-        return $data;
-    }
-    public function totals()
-    {
-        $url = sprintf('%s/%s', $this->id, 'totals');
-        $data = parent::get($url);
-        return $data;
-    }
     /**
     * Get Notes of Entity
     * @return \Iris\Notes
     */
     public function notes() {
+        if(is_null($this->notes)) {
+            $this->notes = new Notes($this);
+        }
+
         return $this->notes;
     }
     /**
@@ -172,9 +140,9 @@ final class Order extends RestEntry{
      * @return type
      * @throws Exception in case of OrderId is null
      */
-    private function get_id() {
-        if(is_null($this->id))
-            throw new Exception("You can't use this function without OrderId");
-        return $this->id;
+    public function get_id() {
+        if(!isset($this->orderId) && !isset($this->id))
+            throw new \Exception("You can't use this function without OrderId or id");
+        return isset($this->orderId) ? $this->orderId : $this->id;
     }
 }
