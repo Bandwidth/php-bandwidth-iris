@@ -24,10 +24,15 @@ final class Subscriptions extends RestEntry{
 
         $subscriptions = [];
 
-        $data = parent::get('subscriptions', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
-        /* TODO:  correct struct */
-        if($data['ListOrderIdUserIdDate'] && $data['ListOrderIdUserIdDate']['TotalCount']) {
-            foreach($data['ListOrderIdUserIdDate']['OrderIdUserIdDate'] as $subscribtion) {
+        $data = parent::get('subscriptions', $filters);
+
+        if($data['Subscriptions'] && $data['Subscriptions']['Subscription']) {
+            $items = $data['Subscriptions']['Subscription'];
+
+            if($this->is_assoc($items))
+                $items = [ $items ];
+
+            foreach($items as $subscription) {
                 $subscriptions[] = new Subscription($this, $subscription);
             }
         }
@@ -35,10 +40,10 @@ final class Subscriptions extends RestEntry{
         return $subscriptions;
     }
 
-    public function get_by_id($id) {
-        $sbc = new Subscription($this, array("Id" => $id));
+    public function subscription($id) {
+        $sbc = new Subscription($this, array("SubscriptionId" => $id));
         $sbc->get();
-        return $order;
+        return $sbc;
     }
 
     public function get_appendix() {
@@ -47,8 +52,7 @@ final class Subscriptions extends RestEntry{
 
     public function create($data) {
         $sbc = new Subscription($this, $data);
-        $sbc->save();
-        return $order;
+        return $sbc;
     }
 }
 
@@ -56,52 +60,41 @@ final class Subscription extends RestEntry{
     use BaseModel;
 
     protected $fields = array(
-        /* TODO:  fill fields */
-        "orderId" => array(
-            "type" => "string"
-        ),
-
+        "SubscriptionId" => array("type" => "string"),
+        "OrderType" => array("type" => "string"),
+        "OrderId" => array("type" => "string"),
+        "EmailSubscription" => array("type" => "\Iris\EmailSubscription"),
     );
 
 
     public function __construct($subscriptions, $data)
     {
-        if(isset($data)) {
-            if(is_object($data) && $data->Id)
-                $this->id = $data->Id;
-            if(is_array($data) && isset($data['Id']))
-                $this->id = $data['Id'];
-        }
         $this->set_data($data);
-
-        if(!is_null($subscriptions)) {
-            $this->parent = $subscriptions;
-            parent::_init($subscriptions->get_rest_client(), $subscriptions->get_relative_namespace());
-        }
-
+        $this->parent = $subscriptions;
+        parent::_init($subscriptions->get_rest_client(), $subscriptions->get_relative_namespace());
     }
 
     public function get() {
-        if(is_null($this->id))
-            throw new \Exception('Id should be provided');
-
-        $data = parent::get($this->id);
-        /* TODO:  correct key*/
-        $this->set_data($data['Subscription']);
+        $data = parent::get($this->get_id());
+        $this->set_data($data['Subscriptions']['Subscription']);
     }
     public function delete() {
-        if(is_null($this->id))
-            throw new \Exception('Id should be provided');
-        parent::delete($this->id);
+        parent::delete($this->get_id());
     }
 
     public function save() {
-        if(!is_null($this->id))
-            parent::put($this->id, "Order", $this->to_array());
+        if(isset($this->SubscriptionId))
+            parent::put($this->get_id(), "Subscription", $this->to_array());
         else {
-            $header = parent::post(null, "Order", $this->to_array());
+            $header = parent::post(null, "Subscription", $this->to_array());
             $splitted = split("/", $header['Location']);
-            $this->id = end($splitted);
+            $this->SubscriptionId = end($splitted);
         }
+    }
+
+    public function get_id() {
+        if(!isset($this->SubscriptionId))
+            throw new \Exception('Id should be provided');
+        return $this->SubscriptionId;
     }
 }
