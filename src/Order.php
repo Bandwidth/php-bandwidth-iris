@@ -26,7 +26,7 @@ final class Orders extends RestEntry{
 
         $data = parent::get('orders', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
 
-        if($data['ListOrderIdUserIdDate'] && $data['ListOrderIdUserIdDate']['TotalCount']) {
+        if(isset($data['ListOrderIdUserIdDate']) && isset($data['ListOrderIdUserIdDate']['OrderIdUserIdDate'])) {
             $items = $data['ListOrderIdUserIdDate']['OrderIdUserIdDate'];
 
             if($this->is_assoc($items))
@@ -40,9 +40,9 @@ final class Orders extends RestEntry{
         return $orders;
     }
 
-    public function order($id) {
+    public function order($id, $tndetail = false) {
         $order = new Order($this, array("id" => $id));
-        return $order->get();
+        return $order->get($tndetail);
     }
 
     public function get_appendix() {
@@ -98,12 +98,20 @@ final class Order extends RestEntry{
         $this->parent = $orders;
         parent::_init($orders->get_rest_client(), $orders->get_relative_namespace());
         $this->notes = null;
+        $this->tns = null;
     }
 
-    public function get() {
-        $data = parent::get($this->get_id());
+    public function get($tndetail) {
+        if($tndetail) {
+            $options = ["tndetail" => "true"];
+        } else {
+            $options = [];
+        }
+
+        $data = parent::get($this->get_id(), $options);
         $response = new OrderResponse($data);
-        $this->set_data($data['Order']);
+        if(isset($data['Order']))
+            $this->set_data($data['Order']);
         $response->Order = $this;
         return $response;
     }
@@ -119,6 +127,12 @@ final class Order extends RestEntry{
         unset($arr['id']);
         unset($arr['orderId']);
         parent::put($this->get_id(), "Order", $arr);
+    }
+
+    public function tns() {
+        if(!isset($this->tns))
+            $this->tns = new Tns($this);
+        return $this->tns;
     }
 
     /**
@@ -146,7 +160,7 @@ final class Order extends RestEntry{
      */
     public function get_id() {
         if(!isset($this->orderId) && !isset($this->id))
-            throw new \Exception("You can't use this function without OrderId or id");
+            throw new \Exception("You can't use this function without orderId or id");
         return isset($this->orderId) ? $this->orderId : $this->id;
     }
 }

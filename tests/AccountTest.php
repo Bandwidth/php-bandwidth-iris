@@ -21,7 +21,11 @@ class AccountTest extends PHPUnit_Framework_TestCase {
             new Response(200, [], "<?xml version=\"1.0\"?><ReservationResponse><Reservation> <ReservationId>0099ff73-da96-4303-8a0a-00ff316c07aa</ReservationId> <AccountId>14</AccountId> <ReservationExpires>0</ReservationExpires> <ReservedTn>2512027430</ReservedTn></Reservation> </ReservationResponse>"),
             new Response(200, []),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\"?><NumberPortabilityResponse>   <SupportedRateCenters />   <UnsupportedRateCenters>      <RateCenterGroup>         <RateCenter>BALTIMORE</RateCenter>         <City>BALTIMORE</City>         <State>MD</State>         <LATA>238</LATA>         <TnList>            <Tn>4109255199</Tn>            <Tn>4104685864</Tn>         </TnList>      </RateCenterGroup>      <RateCenterGroup>         <RateCenter>SPARKSGLNC</RateCenter>         <City>SPARKS GLENCOE</City>         <State>MD</State>         <LATA>238</LATA>         <TnList>            <Tn>4103431313</Tn>            <Tn>4103431561</Tn>         </TnList>      </RateCenterGroup>   </UnsupportedRateCenters>   <PartnerSupportedRateCenters>      <!-- Only available for fullCheck=offnetportability -->      <RateCenterGroup>         <RateCenter>FT COLLINS</RateCenter>         <City>FORT COLLINS</City>         <State>CO</State>         <LATA>656</LATA>         <Tiers>            <Tier>1</Tier>         </Tiers>         <TnList>            <Tn>4109235436</Tn>         </TnList>      </RateCenterGroup>   </PartnerSupportedRateCenters>   <SupportedLosingCarriers>      <LosingCarrierTnList>         <LosingCarrierSPID>9998</LosingCarrierSPID>         <LosingCarrierName>Test Losing Carrier L3</LosingCarrierName>         <LosingCarrierIsWireless>false</LosingCarrierIsWireless>         <LosingCarrierAccountNumberRequired>false</LosingCarrierAccountNumberRequired>         <LosingCarrierMinimumPortingInterval>5</LosingCarrierMinimumPortingInterval>         <TnList>            <Tn>4109255199</Tn>            <Tn>4104685864</Tn>            <Tn>4103431313</Tn>            <Tn>4103431561</Tn>         </TnList>      </LosingCarrierTnList>   </SupportedLosingCarriers>   <UnsupportedLosingCarriers /></NumberPortabilityResponse>"),
-            new Response(400, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><NumberPortabilityResponse> <Errors><Code>7201</Code><Description>919 is not a valid NANPA telephone number.</Description> </Errors></NumberPortabilityResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><SearchResultForAvailableNpaNxx>    <AvailableNpaNxxList>        <AvailableNpaNxx>            <City>COMPTON:COMPTON DA</City>            <Npa>424</Npa>            <Nxx>242</Nxx>            <Quantity>7</Quantity>            <State>CA</State>        </AvailableNpaNxx>        <AvailableNpaNxx>            <City>COMPTON:GARDENA DA</City>            <Npa>424</Npa>            <Nxx>246</Nxx>            <Quantity>5</Quantity>            <State>CA</State>        </AvailableNpaNxx>    </AvailableNpaNxxList></SearchResultForAvailableNpaNxx>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><TNs>    <TotalCount>4</TotalCount>    <Links>        <first>Link=&lt;https://api.test.inetwork.com:443/v1.0/accounts/9500249/inserviceNumbers?size=500&amp;page=1&gt;;rel=\"first\";</first>    </Links>    <TelephoneNumbers>        <Count>4</Count>        <TelephoneNumber>8183386247</TelephoneNumber>        <TelephoneNumber>8183386249</TelephoneNumber>        <TelephoneNumber>8183386251</TelephoneNumber>        <TelephoneNumber>8183386252</TelephoneNumber>    </TelephoneNumbers></TNs>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Quantity><Count>4</Count></Quantity>"),
+            new Response(200, [], "<?xml version=\"1.0\"?><TNs><TotalCount>4</TotalCount><Links><first></first></Links><TelephoneNumbers><Count>2</Count><TelephoneNumber>4158714245</TelephoneNumber><TelephoneNumber>4352154439</TelephoneNumber></TelephoneNumbers></TNs>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Quantity><Count>4</Count></Quantity>"),
         ]);
 
         self::$container = [];
@@ -129,6 +133,52 @@ class AccountTest extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/lnpchecker?fullcheck=true", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
+    public function testNpaGet() {
+        $npas = self::$account->availableNpaNxx(["state" => "CA"]);
+
+        $json = '{"City":"COMPTON:COMPTON DA","Npa":"424","Nxx":"242","Quantity":"7","State":"CA"}';
+        $this->assertEquals($json, json_encode($npas[0]->to_array()));
+        $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/availableNpaNxx?state=CA", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
+    public function testInserviceGet() {
+        $numbers = self::$account->inserviceNumbers(["page"=> "2", "type" => "x"]);
+
+        $json = '{"TelephoneNumber":["8183386247","8183386249","8183386251","8183386252"]}';
+        $this->assertEquals($json, json_encode($numbers->to_array()));
+        $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/inserviceNumbers?page=2&type=x", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
+
+    public function testInserviceTotals() {
+        $numbers = self::$account->inserviceNumbers_totals();
+
+        $this->assertEquals(4, $numbers);
+        $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/inserviceNumbers/totals", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
+
+    public function testDisknumbersGet() {
+        $numbers = self::$account->disnumbers(["page"=> "2", "type" => "x"]);
+
+        $json = '{"TelephoneNumber":["4158714245","4352154439"]}';
+        $this->assertEquals($json, json_encode($numbers->to_array()));
+        $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/discNumbers?page=2&type=x", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
+
+    public function testDisknumbersTotals() {
+        $numbers = self::$account->disnumbers_totals();
+
+        $this->assertEquals(4, $numbers);
+        $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/discNumbers/totals", self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 

@@ -38,10 +38,10 @@ final class Tns extends RestEntry {
         $tns = [];
         $data = parent::get('tns', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
 
-        if($data['TelephoneNumberCount'] && $data['TelephoneNumbers'] && $data['TelephoneNumbers']["TelephoneNumber"]) {
+        if(isset($data['TelephoneNumbers']) && isset($data['TelephoneNumbers']["TelephoneNumber"])) {
             $items =  $data['TelephoneNumbers']["TelephoneNumber"];
 
-            if($data['TelephoneNumberCount'] == "1")
+            if($this->is_assoc($items))
                 $items = [ $items ];
 
             foreach($items as $tn) {
@@ -177,6 +177,30 @@ final class Tn extends RestEntry{
             throw new \Exception("You should get TN from sippeer");
         parent::post($this->get_id(), "SipPeerTelephoneNumbers", $data);
     }
+
+    public function ratecenter() {
+        $url = sprintf("%s/%s", $this->get_id(), "ratecenter");
+        $data = parent::get($url);
+        if($data['TelephoneNumberDetails']) {
+            return new TelephoneNumberDetail($data['TelephoneNumberDetails']);
+        }
+        return null;
+    }
+    public function lata() {
+        $url = sprintf("%s/%s", $this->get_id(), "lata");
+        $data = parent::get($url);
+        if($data['TelephoneNumberDetails']) {
+            return new TelephoneNumberDetail($data['TelephoneNumberDetails']);
+        }
+        return null;
+    }
+
+    public function lca() {
+        $url = sprintf("%s/%s", $this->get_id(), "lca");
+        $data = parent::get($url);
+        return new LcaSearch($data);
+    }
+
 
     public function get_id() {
         if(!isset($this->FullNumber))

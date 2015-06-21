@@ -3,16 +3,26 @@
 namespace Iris;
 
 final class Cities extends RestEntry{
-    use BaseModel;
-
-    public function __construct()
+    public function __construct($client)
     {
-        parent::_init(Null, 'cities');
+        $this->client = $client;
+        parent::_init($client, '');
     }
-    
-    public function get($state)
-    {
-        $data = parent::get(Null);
-        return $data;
+
+    public function get($filters = Array()) {
+        $cities = [];
+        $data = parent::get('cities', $filters, Array(), Array("state"));
+
+        if($data['Cities']) {
+            $items =  $data['Cities']['City'];
+
+            if($this->is_assoc($items))
+                $items = [ $items ];
+
+            foreach($items as $city) {
+                $cities[] = new \Iris\CitiesS($city);
+            }
+        }
+        return $cities;
     }
 }

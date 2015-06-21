@@ -21,6 +21,7 @@ class OrderTest extends PHPUnit_Framework_TestCase {
 			new Response(200, [], ""),
 			new Response(200, [], ""),
 			new Response(200, [], ""),
+            new Response(200, [], ""),
         ]);
 
         self::$container = [];
@@ -43,7 +44,6 @@ class OrderTest extends PHPUnit_Framework_TestCase {
     }
 	public function testGetOrdersSingle() {
 		$orders = self::$account->orders()->get();
-		var_dump($orders[0]->to_array());
 
 		$this->assertEquals(1, count($orders));
 		$this->assertEquals("016c1aef-a873-4a90-8374-60771cba9452", $orders[0]->get_id());
@@ -80,11 +80,11 @@ class OrderTest extends PHPUnit_Framework_TestCase {
 		self::$index++;
 	}
 	public function testOrderGet() {
-		$response = self::$account->orders()->order("f30a31a1-1de4-4939-b094-4521bbe5c8df");
+		$response = self::$account->orders()->order("f30a31a1-1de4-4939-b094-4521bbe5c8df", true);
 
 		$this->assertEquals("f30a31a1-1de4-4939-b094-4521bbe5c8df", $response->Order->get_id());
 		$this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
-		$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/orders/f30a31a1-1de4-4939-b094-4521bbe5c8df", self::$container[self::$index]['request']->getUri());
+		$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/orders/f30a31a1-1de4-4939-b094-4521bbe5c8df?tndetail=true", self::$container[self::$index]['request']->getUri());
 		self::$index++;
 	}
 
@@ -275,14 +275,17 @@ class OrderTest extends PHPUnit_Framework_TestCase {
         $json = '{"Name":"Available Telephone Number order","CustomerOrderId":"123456789","SiteId":"385","ExistingTelephoneNumberOrderType":{"TelephoneNumberList":{"TelephoneNumber":["9193752369","9193752720","9193752648"]},"ReservationIdList":{"ReservationId":["1","2"]}}}';
 
 		$this->assertEquals($json, json_encode($order->to_array()));
-
-// <Name>Available Telephone Number order</Name> <SiteId>385</SiteId> <CustomerOrderId>123456789</CustomerOrderId> <ExistingTelephoneNumberOrderType>
-// <T elephoneNumberList>
-// <T elephoneNumber>9193752369</T elephoneNumber> <T elephoneNumber>9193752720</T elephoneNumber> <T elephoneNumber>9193752648</T elephoneNumber>
-// </T elephoneNumberList> <ReservationIdList>
-// <ReservationId>[GUID]</ReservationId> <ReservationId>[GUID]</ReservationId>
-// </ReservationIdList> </ExistingTelephoneNumberOrderType>
-// </Order>
     }
+
+    public function testOrderTns() {
+		self::$account->orders()->create([
+			"id" => "f30a31a1-1de4-4939-b094-4521bbe5c8df"
+		])->tns()->get();
+
+		$this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+		$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/orders/f30a31a1-1de4-4939-b094-4521bbe5c8df/tns?page=1&size=30", self::$container[self::$index]['request']->getUri());
+		self::$index++;
+	}
+
 
 }

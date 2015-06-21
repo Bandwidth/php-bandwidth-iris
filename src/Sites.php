@@ -82,16 +82,11 @@ class Site extends RestEntry {
     }
 
     public function get() {
-        if(!isset($this->Id))
-            throw new \Exception('Id should be provided');
-
-        $data = parent::get($this->Id);
+        $data = parent::get($this->get_id());
         $this->set_data($data['Site']);
     }
     public function delete() {
-        if(!isset($this->Id))
-            throw new \Exception('Id should be provided');
-        parent::delete($this->Id);
+        parent::delete($this->get_id());
     }
 
     public function save() {
@@ -104,13 +99,30 @@ class Site extends RestEntry {
         }
     }
 
+    public function totaltns() {
+        $url = sprintf('%s/%s', $this->get_id(), "totaltns");
+        $data = parent::get($url);
+        return $data['SiteTNs']['TotalCount'];
+    }
+
     public function sippeers() {
         if(!isset($this->sippeers))
             $this->sippeers = new Sippeers($this);
         return $this->sippeers;
     }
+    public function orders() {
+        if(!isset($this->orders))
+            $this->orders = new Orders($this);
+        return $this->orders;
+    }
+
+    public function get_id() {
+        if(!isset($this->Id))
+            throw new \Exception('Id should be provided');
+        return $this->Id;
+    }
 
     public function get_appendix() {
-        return '/'.$this->Id;
+        return '/'.$this->get_id();
     }
 }

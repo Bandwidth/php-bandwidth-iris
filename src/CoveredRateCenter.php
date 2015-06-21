@@ -3,8 +3,6 @@
 namespace Iris;
 
 final class CoveredRateCenters extends RestEntry{
-    use BaseModel;
-
     public function __construct($client)
     {
         $this->client = $client;

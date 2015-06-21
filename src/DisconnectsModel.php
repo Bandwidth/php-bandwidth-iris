@@ -17,13 +17,25 @@ class Disconnects extends RestEntry{
     {
         $disconnects = [];
 
-        $data = parent::get('disconnects', Array("page"=> 1, "size" => 30), Array("page", "size"));
-        print_r($data); exit;
+        $data = parent::get('disconnects', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
 
-        if($data['TotalCount']) {
-            return $data['TelephoneNumbers']['TelephoneNumber'];
+        if(isset($data['ListOrderIdUserIdDate']) && isset($data['ListOrderIdUserIdDate']['OrderIdUserIdDate'])) {
+            $items = $data['ListOrderIdUserIdDate']['OrderIdUserIdDate'];
+
+            if($this->is_assoc($items))
+                $items = [ $items ];
+
+            foreach($items as $item) {
+                $disconnects[] = new Disconnect($this, $item);
+            }
         }
-        return $tns;
+        return $disconnects;
+    }
+
+    public function disconnect($id, $tndetail = false) {
+        $d = new Disconnect($this, array("OrderId" => $id));
+        $d->get($tndetail);
+        return $d;
     }
 
     /**
@@ -51,11 +63,20 @@ class Disconnect extends RestEntry {
     use BaseModel;
 
     protected $fields = array(
-        "OrderId" => array("type" => "string"),
-        "name" => array("type" => "string"),
-        "CustomerOrderId" => array("type" => "string"),
-        "DisconnectTelephoneNumberOrderType" => array("type" => "\Iris\TelephoneNumberList"),
-        "OrderStatus" => array("type" => "\Iris\OrderRequestStatus")
+        "CountOfTNs" => [ "type" => "string" ],
+        "userId" => [ "type" => "string" ],
+        "lastModifiedDate" => [ "type" => "string" ],
+        "OrderId" => [ "type" => "string" ],
+        "OrderType" => [ "type" => "string" ],
+        "OrderDate" => [ "type" => "string" ],
+        "OrderStatus" => [ "type" => "string" ],
+        "TelephoneNumberDetails" => [ "type" => "\Iris\TelephoneNumberDetail" ],
+        "name" => [ "type" => "string" ],
+        "CustomerOrderId" => [ "type" => "string" ],
+        "DisconnectTelephoneNumberOrderType" => [ "type" => "\Iris\TelephoneNumberList" ],
+        "OrderStatus" => [ "type" => "string" ],
+        "OrderCreateDate" => [ "type" => "string" ],
+
     );
 
     /**
@@ -68,7 +89,21 @@ class Disconnect extends RestEntry {
         $this->parent = $parent;
         parent::_init($parent->get_rest_client(), $parent->get_relative_namespace());
         $this->set_data($data);
-        $this->notes = new Notes($this);
+        $this->notes = null;
+    }
+
+    public function get($tndetail = false) {
+        if($tndetail) {
+            $options = [ "tndetail" => "true" ];
+        } else {
+            $options = [];
+        }
+        $data = parent::get($this->get_id(), $options);
+        $response = new OrderResponse($data);
+        if(isset($data['orderRequest']))
+            $this->set_data($data['orderRequest']);
+        $response->orderRequest = $this;
+        return $response;
     }
 
     /**
@@ -96,6 +131,8 @@ class Disconnect extends RestEntry {
     * @return \Iris\Notes
     */
     public function notes() {
+        if(is_null($this->notes))
+            $this->notes = new Notes($this);
         return $this->notes;
     }
     /**

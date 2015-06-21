@@ -19,10 +19,16 @@ class Account extends RestEntry {
         return new TnLineOptionOrderResponse($response);
     }
 
-    public function inserviceNumbers() {
-        if(!isset($this->inserviceNumbers))
-            $this->inserviceNumbers = new InserviceNumbers($this);
-        return $this->inserviceNumbers;
+    public function inserviceNumbers($filters = array()) {
+        $url = sprintf('%s/%s', $this->account_id, 'inserviceNumbers');
+        $response = parent::get($url, $filters);
+        return new TelephoneNumbers($response['TelephoneNumbers']);
+    }
+
+    public function inserviceNumbers_totals($filters = array()) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'inserviceNumbers', 'totals');
+        $response = parent::get($url, $filters);
+        return $response['Count'];
     }
 
     public function orders() {
@@ -43,10 +49,16 @@ class Account extends RestEntry {
         return $this->disconnects;
     }
 
-    public function disnumbers() {
-        if(!isset($this->disnumbers))
-            $this->disnumbers = new Disnumbers($this);
-        return $this->disnumbers;
+    public function disnumbers($filters = array()) {
+        $url = sprintf('%s/%s', $this->account_id, 'discNumbers');
+        $response = parent::get($url, $filters);
+        return new TelephoneNumbers($response['TelephoneNumbers']);
+    }
+
+    public function disnumbers_totals($filters = array()) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'discNumbers', 'totals');
+        $response = parent::get($url, $filters);
+        return $response['Count'];
     }
 
     public function portouts() {
@@ -116,6 +128,25 @@ class Account extends RestEntry {
 
         foreach($items as $item) {
             $out[] = new $classname($item);
+        }
+
+        return $out;
+    }
+
+    public function availableNpaNxx($filters=Array()) {
+        $url = sprintf('%s/%s', $this->account_id, 'availableNpaNxx');
+        $data = parent::get($url, $filters);
+        $out = [];
+
+        if($data['AvailableNpaNxxList']) {
+            $items =  $data['AvailableNpaNxxList']['AvailableNpaNxx'];
+
+            if($this->is_assoc($items))
+                $items = [ $items ];
+
+            foreach($items as $avNpaNxx) {
+                $out[] = new \Iris\AvailableNpaNxx($avNpaNxx);
+            }
         }
 
         return $out;

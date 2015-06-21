@@ -21,6 +21,7 @@ class SippeersTest extends PHPUnit_Framework_TestCase {
             new Response(200),
             new Response(200),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><SipPeerTelephoneNumbersResponse>    <SipPeerTelephoneNumbers>        <SipPeerTelephoneNumber>            <FullNumber>8183386251</FullNumber>        </SipPeerTelephoneNumber>        <SipPeerTelephoneNumber>            <FullNumber>8183386252</FullNumber>        </SipPeerTelephoneNumber>        <SipPeerTelephoneNumber>            <FullNumber>8183386249</FullNumber>        </SipPeerTelephoneNumber>        <SipPeerTelephoneNumber>            <FullNumber>8183386247</FullNumber>        </SipPeerTelephoneNumber>    </SipPeerTelephoneNumbers></SipPeerTelephoneNumbersResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><SipPeerTelephoneNumbersCountResponse>    <SipPeerTelephoneNumbersCounts>        <SipPeerTelephoneNumbersCount>4</SipPeerTelephoneNumbersCount>    </SipPeerTelephoneNumbersCounts></SipPeerTelephoneNumbersCountResponse>"),
         ]);
 
         self::$container = [];
@@ -179,6 +180,19 @@ class SippeersTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals("8183386251", $tns[0]->FullNumber);
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites/9999/sippeers/2489/tns", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
+
+    public function testTotaltns() {
+        $sippeer = self::$sippeers->create(
+            array("PeerId" => "2489")
+        );
+
+        $count = $sippeer->totaltns();
+
+        $this->assertEquals(4, $count);
+        $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites/9999/sippeers/2489/totaltns", self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 

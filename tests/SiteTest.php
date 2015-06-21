@@ -16,6 +16,10 @@ class SiteTest extends PHPUnit_Framework_TestCase {
 			new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><SitesResponse>    <Sites>        <Site>            <Id>2297</Id>            <Name>API Test Site</Name>        </Site></Sites></SitesResponse>"),
 			new Response(200),
 			new Response(200),
+            new Response(200),
+            new Response(200),
+            new Response(200),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><SiteTNsResponse>    <SiteTNs>        <TotalCount>4</TotalCount>    </SiteTNs></SiteTNsResponse>"),
         ]);
 
         self::$container = [];
@@ -90,5 +94,47 @@ class SiteTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites/2489", self::$container[self::$index]['request']->getUri());
 		self::$index++;
 	}
+
+    public function testSiteOrders() {
+		$orders = self::$sites->create(
+			array("Id" => "2489")
+		)->orders()->get(["status" => "disabled"]);
+
+		$this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+		$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites/2489/orders?status=disabled&page=1&size=30", self::$container[self::$index]['request']->getUri());
+		self::$index++;
+	}
+
+    public function testSiteOrder() {
+		$orders = self::$sites->create(
+			array("Id" => "2489")
+		)->orders()->order("1");
+
+		$this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+		$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites/2489/orders/1", self::$container[self::$index]['request']->getUri());
+		self::$index++;
+	}
+
+    public function testSiteOrderTns() {
+		$orders = self::$sites->create(
+			array("Id" => "2489")
+		)->orders()->create(["orderId" => "1"])->tns()->get();
+
+		$this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+		$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites/2489/orders/1/tns?page=1&size=30", self::$container[self::$index]['request']->getUri());
+		self::$index++;
+	}
+
+    public function testSiteTotalTns() {
+		$count = self::$sites->create(
+			array("Id" => "2489")
+		)->totaltns();
+
+        $this->assertEquals(4, $count);
+		$this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+		$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites/2489/totaltns", self::$container[self::$index]['request']->getUri());
+		self::$index++;
+	}
+
 
 }

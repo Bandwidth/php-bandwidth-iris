@@ -78,6 +78,12 @@ class Sippeer extends RestEntry {
         $this->set_data($data['SipPeer']);
     }
 
+    public function totaltns() {
+        $url = sprintf('%s/%s', $this->get_id(), "totaltns");
+        $data = parent::get($url);
+        return $data['SipPeerTelephoneNumbersCounts']['SipPeerTelephoneNumbersCount'];
+    }
+
     public function save() {
         if(isset($this->PeerId))
             parent::put($this->PeerId, "SipPeer", $this->to_array());
