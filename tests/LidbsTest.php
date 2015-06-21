@@ -39,7 +39,7 @@ class SippeersTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testLidbsPost() {
-        $order = new \Iris\LidbOrder([
+        $order_data = [
             "LidbTnGroups" => [
                 "LidbTnGroup" => [
                     [
@@ -60,14 +60,16 @@ class SippeersTest extends PHPUnit_Framework_TestCase {
                     ]
                 ]
             ]
-        ]);
-        $json = '{"LidbTnGroups":{"LidbTnGroup":[{"TelephoneNumbers":{"TelephoneNumber":"4352154856"},"SubscriberInformation":"Steve","UseType":"RESIDENTIAL","Visibility":"PUBLIC"},{"TelephoneNumbers":{"TelephoneNumber":"4352154855"},"SubscriberInformation":"Steve","UseType":"RESIDENTIAL","Visibility":"PUBLIC"}]}}';
-        $this->assertEquals($json, json_encode($order->to_array()));
+        ];
 
-		$lidb = self::$lidbs->create($order);
+		$lidb = self::$lidbs->create($order_data);
+        $json = '{"LidbTnGroups":{"LidbTnGroup":[{"TelephoneNumbers":{"TelephoneNumber":"4352154856"},"SubscriberInformation":"Steve","UseType":"RESIDENTIAL","Visibility":"PUBLIC"},{"TelephoneNumbers":{"TelephoneNumber":"4352154855"},"SubscriberInformation":"Steve","UseType":"RESIDENTIAL","Visibility":"PUBLIC"}]}}';
+        $this->assertEquals($json, json_encode($lidb->to_array()));
+
+
         $lidb->post();
 
-        $json = '{"orderId":"abe36738-6929-4c6f-926c-88e534e2d46f","accountId":"9999999","CountOfTNs":"0","userId":"team_ua","lastModifiedDate":"2014-02-25T16:02:43.195Z","OrderType":"lidb","OrderDate":"2014-02-25T16:02:43.195Z","OrderStatus":"FAILED"}';
+        $json = '{"CustomerOrderId":"testCustomerOrderId","orderId":"255bda29-fc57-44e8-a6c2-59b45388c6d0","LastModifiedDate":"2014-02-20T19:33:17.600Z","OrderCreateDate":"2014-05-28T14:46:21.724Z","ProcessingStatus":"RECEIVED","CreatedByUser":"jbm","OrderCompleteDate":"2014-02-20T19:33:17.600Z","LidbTnGroups":{"LidbTnGroup":[{"TelephoneNumbers":{"TelephoneNumber":"4082213311"},"SubscriberInformation":"Fred","UseType":"BUSINESS","Visibility":"PRIVATE","FullNumber":"8042105618"},{"TelephoneNumbers":{"TelephoneNumber":["4082212850","4082213310"]},"SubscriberInformation":"Fred","UseType":"RESIDENTIAL","Visibility":"PUBLIC","FullNumber":"8042105760"}]}}';
         $this->assertEquals($json, json_encode($lidb->to_array()));
 
         $this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());

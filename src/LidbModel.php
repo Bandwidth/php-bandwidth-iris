@@ -40,7 +40,7 @@ final class Lidbs extends RestEntry{
         return $libds;
     }
 
-    public function create(LidbOrder $data) {
+    public function create($data) {
         return new Lidb($this, $data);
     }
 

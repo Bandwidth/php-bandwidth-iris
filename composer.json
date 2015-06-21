@@ -25,7 +25,7 @@
     },
     "autoload": {
 	      "classmap": [
-		        "source/",
+		        "src/",
             "core/"
 	      ],
         "files":["config.php"]
