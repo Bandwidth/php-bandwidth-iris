@@ -61,10 +61,10 @@ class Account extends RestEntry {
         return $this->lsrorders;
     }
 
-    public function didas() {
-        if(!isset($this->didas))
-            $this->didas = new Didas($this);
-        return $this->didas;
+    public function dldas() {
+        if(!isset($this->dldas))
+            $this->dldas = new Dldas($this);
+        return $this->dldas;
     }
 
     public function subscriptions() {

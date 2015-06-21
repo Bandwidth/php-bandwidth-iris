@@ -8,7 +8,7 @@ class Subscriber {
     protected $fields = array(
         "SubscriberType" => array("type" => "string"),
         "BusinessName" => array("type" => "string"),
-        "ServiceAddress" => array("type" => "Iris\ServiceAddress"),
+        "ServiceAddress" => array("type" => "\Iris\ServiceAddress"),
     );
 
     public function __construct($data) {

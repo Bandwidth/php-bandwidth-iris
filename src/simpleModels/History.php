@@ -2,27 +2,26 @@
 
 namespace Iris;
 
-class ErrorList {
+class History {
     use BaseModel;
 
     protected $fields = array(
-        "Error" => array("type" => "\Iris\Error")
+        "OrderHistory" => array("type" => "\Iris\OrderHistory")
     );
     public function __construct($data) {
         $this->set_data($data);
     }
 }
 
-class Error {
+class OrderHistory {
     use BaseModel;
 
     protected $fields = array(
-        "TelephoneNumber" => array("type" => "string"),
-        "ErrorCode" => array("type" => "string"),
-        "Code" => array("type" => "string"),
-        "Description" => array("type" => "string")
+        "OrderDate" => array("type" => "string"),
+        "Note" => array("type" => "string"),
+        "Author" => array("type" => "string"),
+        "Status" => array("type" => "string"),
     );
-
     public function __construct($data) {
         $this->set_data($data);
     }

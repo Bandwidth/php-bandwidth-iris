@@ -66,7 +66,7 @@ trait BaseModel {
                 if(is_array($value) && $this->is_assoc($value)) { // if assoc array => to object
                     if(!property_exists($this, $key)) // if not exists create new class
                         $this->{$key} = new $classname($value);
-                    else // or update existing class
+                    else if(is_callable(array($this->{$key}, 'set_data'))) // or update existing class
                         $this->{$key}->set_data($value);
                 } else if(is_array($value)) { // if array[] => array of objects
                     if(!property_exists($this, $key)) // create an array if not exists

@@ -17,6 +17,7 @@ class TnsTest extends PHPUnit_Framework_TestCase {
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Site>    <Id>2297</Id>    <Name>API Test Site</Name></Site>"),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><SipPeer>    <Id>500651</Id>    <Name>Something</Name></SipPeer>"),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><TNReservation><ReservationId>123</ReservationId><AccountId>111</AccountId><ReservationExpires>int (seconds)</ReservationExpires><ReservedTn>6136211234</ReservedTn></TNReservation>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><TelephoneNumberResponse><TelephoneNumberDetails><City>JERSEY CITY</City><Lata>224</Lata><State>NJ</State><FullNumber>2018981023</FullNumber><Tier>0</Tier><VendorId>49</VendorId><VendorName>Bandwidth CLEC</VendorName><RateCenter>JERSEYCITY</RateCenter><Status>Inservice</Status><AccountId>14</AccountId><LastModified>2014-07-30T11:29:37.000Z</LastModified><Features><E911><Status>Success</Status></E911><Lidb><Status>Pending</Status><SubscriberInformation>Fred</SubscriberInformation><UseType>BUSINESS</UseType><Visibility>PUBLIC</Visibility></Lidb><Dlda><Status>Success</Status><SubscriberType>BUSINESS</SubscriberType><ListingType>LISTED</ListingType><ListingName><FirstName>Joe</FirstName><LastName>Smith</LastName></ListingName><ListAddress>true</ListAddress><Address><HouseNumber>12</HouseNumber><StreetName>ELM</StreetName><City>New York</City><StateCode>NY</StateCode><Zip>10007</Zip><Country>United States</Country><AddressType>Dlda</AddressType></Address></Dlda></Features><TnAttributes><TnAttribute>Protected</TnAttribute></TnAttributes></TelephoneNumberDetails></TelephoneNumberResponse>"),
         ]);
 
         self::$container = [];
@@ -84,5 +85,18 @@ class TnsTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals("https://api.test.inetwork.com/v1.0/tns/7576768750/tnreservation", self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
+
+    public function testTnDetails() {
+        $tn = self::$tns->create([ "FullNumber" => "7576768750"]);
+        $tn->tndetails();
+
+        $json = '{"ReservedTn":"6136211234","ReservationId":"123","ReservationExpires":"int (seconds)","AccountId":"111"}';
+		$this->assertEquals($json, json_encode($tn->to_array()));
+
+        $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/tns/7576768750/tndetails", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
+
 
 }

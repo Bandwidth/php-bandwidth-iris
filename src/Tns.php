@@ -117,7 +117,9 @@ final class Tn extends RestEntry{
         "OrderType" => array("type" => "string"),
         "SiteId" =>  array("type" => "string"),
         "AccountId" => array("type" => "string"),
-        "CallForward" => array("type" => "string")
+        "CallForward" => array("type" => "string"),
+        "Features" => array("type" => "\Iris\Features"),
+        "TnAttributes" => array("type" => "\Iris\TnAttributes")
     );
 
     public function __construct($tns, $data) {
@@ -130,6 +132,13 @@ final class Tn extends RestEntry{
         $data = parent::get($this->get_id());
         if(isset($data["SipPeerTelephoneNumber"]))
             $data = $data['SipPeerTelephoneNumber'];
+        $this->set_data($data);
+    }
+
+    public function tndetails() {
+        $url = sprintf("%s/%s", $this->get_id(), "tndetails");
+        $data = parent::get($url);
+        $data = $data['TelephoneNumberDetails'];
         $this->set_data($data);
     }
 

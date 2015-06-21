@@ -24,33 +24,34 @@ final class Dldas extends RestEntry{
 
         $dldas = [];
 
-        $data = parent::get('dldas', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
-        print_r($data); exit;
+        $data = parent::get('dldas');
 
-        /* TODO:  correct structure */
         if($data['ListOrderIdUserIdDate'] && $data['ListOrderIdUserIdDate']['TotalCount']) {
-            foreach($data['ListOrderIdUserIdDate']['OrderIdUserIdDate'] as $dlda) {
+            $items = $data['ListOrderIdUserIdDate']['OrderIdUserIdDate'];
+
+            if($this->is_assoc($items))
+                $items = [ $items ];
+
+            foreach($items as $dlda) {
                 $dldas[] = new Dlda($this, $dlda);
             }
         }
 
-        return $libds;
+        return $dldas;
     }
 
-    public function get_by_id($id) {
-        $order = new Dlda($this, array("Id" => $id));
-        $order->get();
-        return $order;
+    public function dlda($id) {
+        $dlda = new Dlda($this, array("OrderId" => $id));
+        $dlda->get();
+        return $dlda;
     }
 
     public function get_appendix() {
-        return '/orders';
+        return '/dldas';
     }
 
     public function create($data) {
-        $order = new Dlda($this, $data);
-        $order->save();
-        return $order;
+        return new Dlda($this, $data);
     }
 }
 
@@ -58,50 +59,57 @@ final class Dlda extends RestEntry{
     use BaseModel;
 
     protected $fields = array(
-        /* TODO:  fill fields */
-        "orderId" => array(
-            "type" => "string"
-        ),
+        "CustomerOrderId" => array("type" => "string"),
+        "OrderCreateDate" => array("type" => "string"),
+        "AccountId" => array("type" => "string"),
+        "CreatedByUser" => array("type" => "string"),
+        "OrderId" => array("type" => "string"),
+        "LastModifiedDate" => array("type" => "string"),
+        "ProcessingStatus" => array("type" => "string"),
+        "DldaTnGroups" => array("type" => "\Iris\DldaTnGroups"),
+
+        "accountId" => array("type" => "string"),
+        "CountOfTNs" => array("type" => "string"),
+        "userId" => array("type" => "string"),
+        "lastModifiedDate" => array("type" => "string"),
+        "OrderType" => array("type" => "string"),
+        "OrderDate" => array("type" => "string"),
+        "orderId" => array("type" => "string"),
+        "OrderStatus" => array("type" => "string"),
+
     );
 
-    public function __construct($libds, $data)
+    public function __construct($parent, $data)
     {
-        if(isset($data)) {
-            if(is_object($data) && $data->Id)
-                $this->id = $data->Id;
-            if(is_array($data) && isset($data['Id']))
-                $this->id = $data['Id'];
-        }
         $this->set_data($data);
-        $this->parent = $dldas;
-        parent::_init($orders->get_rest_client(), $orders->get_relative_namespace());
+        $this->parent = $parent;
+        parent::_init($parent->get_rest_client(), $parent->get_relative_namespace());
     }
 
-    private function get_id() {
-        if(!isset($this->id))
+    public function get_id() {
+        if(!isset($this->OrderId) && !isset($this->orderId))
             throw new \Exception('Id should be provided');
-        return $this->id;
+        return isset($this->OrderId) ? $this->OrderId: $this->orderId;
     }
 
     public function get() {
         $data = parent::get($this->get_id());
-        $this->set_data($data['Dlda']);
+        $this->set_data($data['DldaOrder']);
     }
 
-    public function save() {
-        if(isset($this->id))
-            parent::put($this->id, "Order", $this->to_array());
-        else {
-            $header = parent::post(null, "Order", $this->to_array());
-            $splitted = split("/", $header['Location']);
-            $this->id = end($splitted);
-        }
+    public function post() {
+        $data = parent::post(null, "DldaOrder", $this->to_array());
+        return new Dlda($this->parent, $data['DldaOrder']);
     }
 
-    public function history()
-    {
-        $url = sprintf('%s/%s', $this->get_id(), 'history');
+    public function put() {
+        parent::put($this->get_id(), "DldaOrder", $this->to_array());
+    }
+
+    public function history() {
+        $url = sprintf("%s/%s", $this->get_id(), "history");
         $data = parent::get($url);
-        return $data;
+        return new History($data);
     }
+
 }

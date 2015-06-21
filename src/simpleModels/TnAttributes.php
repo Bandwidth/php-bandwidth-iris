@@ -2,15 +2,12 @@
 
 namespace Iris;
 
-class Status {
+class TnAttributes {
     use BaseModel;
 
     protected $fields = array(
-        "Code" => array("type" => "string"),
-        "Description" => array("type" => "string"),
-        "Status" => array("type" => "string"),
+        "TnAttribute" => array("type" => "string")
     );
-
     public function __construct($data) {
         $this->set_data($data);
     }

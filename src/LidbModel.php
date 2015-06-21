@@ -40,6 +40,12 @@ final class Lidbs extends RestEntry{
         return $libds;
     }
 
+    public function lidb($id) {
+        $lidb = new Lidb($this, ["orderId" => $id]);
+        $lidb->get();
+        return $lidb;
+    }
+
     public function create($data) {
         return new Lidb($this, $data);
     }
@@ -80,9 +86,14 @@ final class Lidb extends RestEntry{
         $this->set_data($data);
     }
 
+    public function get() {
+        $data = parent::get($this->get_id());
+        $this->set_data($data);
+    }
+
     public function post() {
         $data = parent::post(null, "LidbOrder", $this->to_array());
-        $this->set_data($data['LidbOrder']);
+        $this->set_data($data);
     }
 
     public function get_id() {
