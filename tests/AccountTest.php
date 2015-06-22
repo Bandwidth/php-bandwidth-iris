@@ -26,6 +26,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Quantity><Count>4</Count></Quantity>"),
             new Response(200, [], "<?xml version=\"1.0\"?><TNs><TotalCount>4</TotalCount><Links><first></first></Links><TelephoneNumbers><Count>2</Count><TelephoneNumber>4158714245</TelephoneNumber><TelephoneNumber>4352154439</TelephoneNumber></TelephoneNumbers></TNs>"),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Quantity><Count>4</Count></Quantity>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><BdrCreationResponse><Info>Your BDR archive is currently being constructed</Info> </BdrCreationResponse>")
         ]);
 
         self::$container = [];
@@ -179,6 +180,18 @@ class AccountTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(4, $numbers);
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/discNumbers/totals", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
+
+    public function testBdr() {
+        $response = self::$account->bdrs(new \Iris\Bdr([
+            "StartDate" => "xx-yy-zzzz",
+            "EndDate" => "xx-yy-zzzz",
+        ]));
+
+        $this->assertEquals("Your BDR archive is currently being constructed", $response->Info);
+        $this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/bdrs", self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 

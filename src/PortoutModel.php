@@ -20,17 +20,24 @@ final class Portouts extends RestEntry{
         parent::_init($this->parent->get_rest_client(), $this->parent->get_relative_namespace());
     }
 
-    public function get($filters = Array())
-    {
-        $disconnects = [];
+    public function get($filters = Array()) {
+        $out = [];
 
-        $data = parent::get('portouts', Array("page"=> 1, "size" => 30), Array("page", "size"));
-        print_r($data); exit;
+        $portouts = parent::get('portouts', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
 
-        if($data['TotalCount']) {
-            return $data['TelephoneNumbers']['TelephoneNumber'];
+        if($portouts['lnpPortInfoForGivenStatus']) {
+            $items = $portouts['lnpPortInfoForGivenStatus'];
+
+            if($this->is_assoc($items)) {
+                $items = [ $items ];
+            }
+
+            foreach($items as $portout) {
+                $out[] = new Portin($this, $portout);
+            }
         }
-        return $tns;
+
+        return $out;
     }
 
     /**
@@ -42,11 +49,11 @@ final class Portouts extends RestEntry{
         return new Portout($this, $data);
     }
 
-    public function get_by_id($id)
+    public function portout($id)
     {
-        $url = sprintf('%s/%s', 'portouts', $id);
-        $data = parent::get($url);
-        return $data;
+        $portouts = new Portout($this, ["OrderId" => $id]);
+        $portouts->get();
+        return $portouts;
     }
 
     public function get_appendix() {
@@ -59,7 +66,40 @@ class Portout extends RestEntry {
     use BaseModel;
 
     protected $fields = array(
-        "OrderId" => array("type" => "string")
+        "CountOfTNs" => [ "type" => "string"],
+        "lastModifiedDate" => [ "type" => "string"],
+        "OrderDate" => [ "type" => "string"],
+        "OrderType" => [ "type" => "string"],
+        "LNPLosingCarrierId" => [ "type" => "string"],
+        "LNPLosingCarrierName" => [ "type" => "string"],
+        "RequestedFOCDate" => [ "type" => "string"],
+        "VendorId" => [ "type" => "string"],
+        "VendorName" => [ "type" => "string"],
+        "PON" => [ "type" => "string"],
+        "AccountId" => [ "type" => "string"],
+        "PeerId" => [ "type" => "string"],
+        "OrderCreateDate" => [ "type" => "string"],
+        "LastModifiedBy"  => [ "type" => "string"],
+        "PartialPort"  => [ "type" => "string"],
+        "Immediately" =>  [ "type" => "string"],
+        "OrderId" => array("type" => "string"),
+        "Status" => array("type" => "\Iris\Status"),
+        "Errors" => array("type" => "string"),
+        "ProcessingStatus" => array("type" => "string"),
+        "CustomerOrderId" => array("type" => "string"),
+        "RequestedFocDate" => array("type" => "string"),
+        "AlternateSpid" => array("type" => "string"),
+        "WirelessInfo" => array("type" => "\Iris\WirelessInfo"),
+        "LosingCarrierName" => array("type" => "string"),
+        "LastModifiedDate" => array("type" => "string"),
+        "userId" => array("type" => "string"),
+        "BillingTelephoneNumber" => array("type" => "string"),
+        "Subscriber" => array("type" => "\Iris\Subscriber"),
+        "LoaAuthorizingPerson" => array("type" => "string"),
+        "ListOfPhoneNumbers" => array("type" => "\Iris\Phones"),
+        "SiteId" => array("type" => "string"),
+        "Triggered" => array("type" => "string"),
+        "BillingType" => array("type" => "string")
     );
 
     public function __construct($parent, $data) {
@@ -68,6 +108,18 @@ class Portout extends RestEntry {
         parent::_init($parent->get_rest_client(), $parent->get_relative_namespace());
         $this->notes = null;
     }
+
+    public function get() {
+        $data = parent::get($this->get_id());
+        $this->set_data($data);
+    }
+
+    public function totals($filters = array()) {
+        $url = sprintf('%s/%s', $this->get_id(), 'totals');
+        $response = parent::get($url, $filters);
+        return $response['Count'];
+    }
+
 
     /**
     * Get Notes of Entity

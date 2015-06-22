@@ -207,6 +207,18 @@ class Account extends RestEntry {
         return $data;
     }
 
+    public function bdrs(Bdr $bdr) {
+        $url = sprintf('%s/%s', $this->account_id, 'bdrs');
+        $data = parent::post($url, 'Bdr', $bdr->to_array());
+        return new BdrCreationResponse($data);
+    }
+    public function bdr($id) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'bdrs', $id);
+        $data = parent::post($url, 'Bdr', $bdr->to_array());
+        return new BdrCreationResponse($data);
+    }
+
+
     public function get_relative_namespace() {
       return "accounts/{$this->account_id}";
     }
