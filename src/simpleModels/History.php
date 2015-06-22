@@ -21,6 +21,7 @@ class OrderHistory {
         "Note" => array("type" => "string"),
         "Author" => array("type" => "string"),
         "Status" => array("type" => "string"),
+        "Difference" => array("type" => "string"),
     );
     public function __construct($data) {
         $this->set_data($data);

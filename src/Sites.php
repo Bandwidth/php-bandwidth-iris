@@ -110,6 +110,13 @@ class Site extends RestEntry {
             $this->sippeers = new Sippeers($this);
         return $this->sippeers;
     }
+
+    public function portins() {
+        if(!isset($this->portins))
+            $this->portins = new Portins($this);
+        return $this->portins;
+    }
+
     public function orders() {
         if(!isset($this->orders))
             $this->orders = new Orders($this);

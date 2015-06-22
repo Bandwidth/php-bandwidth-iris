@@ -178,8 +178,6 @@ class DldasTest extends PHPUnit_Framework_TestCase {
 
         $history = $dlda->history();
 
-        echo json_encode($history);
-
         $this->assertEquals(3, count($history->OrderHistory));
         $this->assertEquals("COMPLETE", $history->OrderHistory[2]->Status);
 

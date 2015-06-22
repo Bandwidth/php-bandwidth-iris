@@ -21,8 +21,14 @@ class Portins extends RestEntry {
 
         $portins = parent::get('portins', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
 
-        if($portins->lnpPortInfoForGivenStatus && is_array($portins->lnpPortInfoForGivenStatus)) {
-            foreach($portins->lnpPortInfoForGivenStatus as $portin) {
+        if($portins['lnpPortInfoForGivenStatus']) {
+            $items = $portins['lnpPortInfoForGivenStatus'];
+
+            if($this->is_assoc($items)) {
+                $items = [ $items ];
+            }
+
+            foreach($items as $portin) {
                 $out[] = new Portin($this, $portin);
             }
         }
@@ -55,22 +61,37 @@ class Portin extends RestEntry {
     use BaseModel;
 
     protected $fields = array(
+        "CountOfTNs" => [ "type" => "string"],
+        "lastModifiedDate" => [ "type" => "string"],
+        "OrderDate" => [ "type" => "string"],
+        "OrderType" => [ "type" => "string"],
+        "LNPLosingCarrierId" => [ "type" => "string"],
+        "LNPLosingCarrierName" => [ "type" => "string"],
+        "RequestedFOCDate" => [ "type" => "string"],
+        "VendorId" => [ "type" => "string"],
+        "VendorName" => [ "type" => "string"],
+        "PON" => [ "type" => "string"],
+        "AccountId" => [ "type" => "string"],
+        "PeerId" => [ "type" => "string"],
+        "OrderCreateDate" => [ "type" => "string"],
+        "LastModifiedBy"  => [ "type" => "string"],
+        "PartialPort"  => [ "type" => "string"],
+        "Immediately" =>  [ "type" => "string"],
         "OrderId" => array("type" => "string"),
-        "Status" => array("type" => "Iris\Status"),
+        "Status" => array("type" => "\Iris\Status"),
         "Errors" => array("type" => "string"),
         "ProcessingStatus" => array("type" => "string"),
         "CustomerOrderId" => array("type" => "string"),
         "RequestedFocDate" => array("type" => "string"),
         "AlternateSpid" => array("type" => "string"),
-
-        "WirelessInfo" => array("type" => "Iris\WirelessInfo"),
+        "WirelessInfo" => array("type" => "\Iris\WirelessInfo"),
         "LosingCarrierName" => array("type" => "string"),
         "LastModifiedDate" => array("type" => "string"),
         "userId" => array("type" => "string"),
         "BillingTelephoneNumber" => array("type" => "string"),
-        "Subscriber" => array("type" => "Iris\Subscriber"),
+        "Subscriber" => array("type" => "\Iris\Subscriber"),
         "LoaAuthorizingPerson" => array("type" => "string"),
-        "ListOfPhoneNumbers" => array("type" => "Iris\Phones"),
+        "ListOfPhoneNumbers" => array("type" => "\Iris\Phones"),
         "SiteId" => array("type" => "string"),
         "Triggered" => array("type" => "string"),
         "BillingType" => array("type" => "string")
@@ -151,8 +172,20 @@ class Portin extends RestEntry {
     }
 
     public function get() {
-        $this->data = parent::get($this->get_id());
-        return $this->data;
+        $data = parent::get($this->get_id());
+        $this->set_data($data);
+    }
+
+    public function history() {
+        $url = sprintf("%s/%s", $this->get_id(), "history");
+        $data = parent::get($url);
+        return new History($data);
+    }
+
+    public function totals($filters = array()) {
+        $url = sprintf('%s/%s', $this->get_id(), 'totals');
+        $response = parent::get($url, $filters);
+        return $response['Count'];
     }
 
     /**

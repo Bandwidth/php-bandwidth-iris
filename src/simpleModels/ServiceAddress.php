@@ -12,6 +12,7 @@ class ServiceAddress {
         "StateCode" => array("type" => "string", "required" => true),
         "Zip" => array("type" => "string"),
         "Country" => array("type" => "string"),
+        "County" =>  array("type" => "string"),
         "HousePrefix" => array("type" => "string"),
         "HouseSuffix" => array("type" => "string"),
         "PreDirectional" => array("type" => "string"),
