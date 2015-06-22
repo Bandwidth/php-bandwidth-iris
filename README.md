@@ -52,3 +52,46 @@ $account->availableNpaNxx(["state" => "CA"]);
 $cities = new \Iris\Cities($client);
 $items = $cities->get(["state" => "NC"]);
 ```
+
+## Covered Rate Centers
+```PHP
+$rcs = new Iris\CoveredRateCenters($client);
+$rateCenters = $rcs->get(["page" => 1, "size" => 10 ]);
+```
+
+## Disconnected Numbers
+```PHP
+$account->disnumbers(["areaCode" => "919"]);
+```
+
+## Disconnect Numbers
+The Disconnect object is used to disconnect numbers from an account.  Creates a disconnect order that can be tracked
+
+### Create Disconnect
+```PHP
+$disconnect = $account->disconnects()->create([
+    "name" => "test disconnect order 4",
+    "CustomerOrderId" => "Disconnect1234",
+    "DisconnectTelephoneNumberOrderType" => [
+        "TelephoneNumberList" => [
+            "TelephoneNumber" => [ "9192755378", "9192755703" ]
+        ]
+    ]
+]];
+```
+
+### Get Disconnect
+```PHP
+$disconnect = $account->disconnects()->create(["OrderId" => "b902dee1-0585-4258-becd-5c7e51ccf5e1"]);
+$disconnect->get(true); // tnDetails: true
+```
+
+### Add Note to Disconnect
+```PHP
+$disconnect->notes()->create([ "UserId" => "byo_dev", "Description" => "Test Note"])->save();
+```
+
+### Get Notes for Disconnect
+```PHP
+$items = $disconnect->notes()->get();
+```

@@ -164,7 +164,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
         self::$index++;
     }
 
-    public function testDisknumbersGet() {
+    public function testDiscNumbersGet() {
         $numbers = self::$account->disnumbers(["page"=> "2", "type" => "x"]);
 
         $json = '{"TelephoneNumber":["4158714245","4352154439"]}';
