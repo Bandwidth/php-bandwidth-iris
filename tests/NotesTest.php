@@ -22,7 +22,7 @@ class NotesTest extends PHPUnit_Framework_TestCase {
         $handler = HandlerStack::create($mock);
         $handler->push($history);
 
-        $client = new Iris\GuzzleClient(\Iris\Config::REST_LOGIN, \Iris\Config::REST_PASS, Array('url' => \Iris\Config::REST_URL, 'handler' => $handler));
+        $client = new Iris\Client(\Iris\Config::REST_LOGIN, \Iris\Config::REST_PASS, Array('url' => \Iris\Config::REST_URL, 'handler' => $handler));
         $account = new Iris\Account(9500249, $client);
         self::$notes = $account->disconnects()->create(array("OrderId" => "b902dee1-0585-4258-becd-5c7e51ccf5e1"))->notes();
     }

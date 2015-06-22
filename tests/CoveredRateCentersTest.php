@@ -4,7 +4,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Middleware;
 
-class TnsTest extends PHPUnit_Framework_TestCase {
+class CoveredRateCenterTest extends PHPUnit_Framework_TestCase {
     public static $container;
     public static $rcs;
     public static $index = 0;
@@ -20,7 +20,7 @@ class TnsTest extends PHPUnit_Framework_TestCase {
         $handler = HandlerStack::create($mock);
         $handler->push($history);
 
-        $client = new Iris\GuzzleClient(\Iris\Config::REST_LOGIN, \Iris\Config::REST_PASS, Array('url' => \Iris\Config::REST_URL, 'handler' => $handler));
+        $client = new Iris\Client(\Iris\Config::REST_LOGIN, \Iris\Config::REST_PASS, Array('url' => \Iris\Config::REST_URL, 'handler' => $handler));
         self::$rcs = new Iris\CoveredRateCenters($client);
     }
 
