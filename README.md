@@ -1,45 +1,54 @@
 PHP Client library for IRIS / BBS API
 =========================================================
 
+## Install
 
-Installing:
-----------------------------------------------------------------
-1. Install composer https://getcomposer.org/download/
+Run
 
-2. cd iris-php
-
-3. composer update
-
-3. cp ./config.default.php ./config.php
-
-4. Fill empty fields config.php
-
-
-Shell running:
-----------------------------------------------------------------
-```
-php -a
+```bash
+composer require bandwidth/iris
 ```
 
+## Usage
+
+```PHP
+$client = new \Iris\Client($login, $password, ['url' => 'https://api.inetwork.com/v1.0/']);
 
 ```
-include('./vendor/autoload.php');
-$a = new Iris\Account(9500249);
-print_r($a->get());
-print_r($a->users());
-print_r($a->orders());
+
+## API Objects
+### General principles
+In most cases you should use Account object as start point.
+
+```PHP
+$account = new \Iris\Account($your_account_id, $client);
 ```
 
-or
+Account has related entities such Orders, Sites, etc.
 
-```
-$c = new Iris\PestClient('another rest login','another rest pass', Array('url' => 'https://api.test.inetwork.com/v1.0/'));
-$a = new Iris\Account(9500249, $c);
-print_r($a->get());
+Example:
+```PHP
+$sites = $account->sites();
 ```
 
-or start tests
+To get stored Sites you should create $sites object and execute get() method.
 
+```PHP
+$items = $sites->get(); // Array(Site1, Site2)
 ```
-php phpunit.phar --bootstrap ./vendor/autoload.php tests/
+
+## Available Numbers
+```PHP
+$account->availableNumbers([ "areaCode" => "818" ]);
+```
+
+## Available NpaNxx
+```PHP
+$account->availableNpaNxx(["state" => "CA"]);
+```
+
+## Cities
+```PHP
+$cities = new \Iris\Cities($client);
+$items = $cities->get(["state" => "NC"]);
 ```
