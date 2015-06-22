@@ -1,5 +1,5 @@
 {
-    "name": "bandwidth/iris",
+    "name": "bandwidth-temp/iris",
     "type": "library",
     "description": "Bandwidth's Iris SDK for PHP",
     "keywords": ["iris","sdk","php"],
