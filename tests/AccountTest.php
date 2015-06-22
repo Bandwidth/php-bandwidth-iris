@@ -126,7 +126,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testlnpChecker() {
-        $res = self::$account->lnpChecker(new \Iris\NumberPortabilityRequest(["TnList" => ["Tn" => ["4109255199", "9196190594"] ]]), "true");
+        $res = self::$account->lnpChecker(["TnList" => ["Tn" => ["4109255199", "9196190594"] ]], "true");
 
         $json = '{"SupportedRateCenters":"","UnsupportedRateCenters":{"RateCenterGroup":[{"RateCenter":"BALTIMORE","City":"BALTIMORE","State":"MD","LATA":"238","TnList":{"Tn":["4109255199","4104685864"]}},{"RateCenter":"SPARKSGLNC","City":"SPARKS GLENCOE","State":"MD","LATA":"238","TnList":{"Tn":["4103431313","4103431561"]}}]},"PartnerSupportedRateCenters":{"RateCenterGroup":{"RateCenter":"FT COLLINS","City":"FORT COLLINS","State":"CO","LATA":"656","TnList":{"Tn":"4109235436"},"Tiers":{"Tier":"1"}}},"SupportedLosingCarriers":{"LosingCarrierTnList":{"LosingCarrierSPID":"9998","LosingCarrierName":"Test Losing Carrier L3","LosingCarrierIsWireless":"false","LosingCarrierAccountNumberRequired":"false","LosingCarrierMinimumPortingInterval":"5","TnList":{"Tn":["4109255199","4104685864","4103431313","4103431561"]}}}}';
 

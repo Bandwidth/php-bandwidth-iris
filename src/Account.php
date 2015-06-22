@@ -177,7 +177,8 @@ class Account extends RestEntry {
         }
     }
 
-    public function lnpChecker(NumberPortabilityRequest $data, $fullcheck = false) {
+    public function lnpChecker($data, $fullcheck = false) {
+        $obj = new \Iris\NumberPortabilityRequest($data);
         if($fullcheck !== false && in_array($fullcheck, ["true", "false", "onnetportability", "offnetportability"])) {
             $f = "?fullcheck=$fullcheck";
         } else {
@@ -185,7 +186,7 @@ class Account extends RestEntry {
         }
 
         $url = sprintf('%s/%s%s', $this->account_id, 'lnpchecker', $f);
-        $res = parent::post($url, "NumberPortabilityRequest", $data->to_array());
+        $res = parent::post($url, "NumberPortabilityRequest", $obj->to_array());
         return new NumberPortabilityResponse($res);
     }
 
