@@ -172,10 +172,12 @@ final class Tn extends RestEntry{
         return $account->tnsreservations()->create($data);
     }
 
-    public function set_tn_options(SipPeerTelephoneNumber $data) {
+    public function set_tn_options($data) {
+        $data = new \Iris\SipPeerTelephoneNumber($data);
+
         if(!($this->parent->parent instanceof Sippeer))
             throw new \Exception("You should get TN from sippeer");
-        parent::post($this->get_id(), "SipPeerTelephoneNumbers", $data);
+        parent::post($this->get_id(), "SipPeerTelephoneNumbers", $data->to_array());
     }
 
     public function ratecenter() {

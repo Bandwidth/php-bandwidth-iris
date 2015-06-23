@@ -98,7 +98,8 @@ class Sippeer extends RestEntry {
         parent::delete($this->get_id());
     }
 
-    public function movetns(Phones $data) {
+    public function movetns($data) {
+        $data = new \Iris\Phones($data);
         $url = sprintf("%s/%s", $this->get_id(), "movetns");
         parent::post($url, "SipPeerTelephoneNumbers", $data);
     }

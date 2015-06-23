@@ -331,3 +331,110 @@ $portin->delete_metadata('test.txt');
 $rc = new \Iris\RateCenter($client);
 $cities = $rc->get(["state" => "CA", "available" => "true"]);
 ```
+
+## SIP Peers
+### Create SIP Peer
+```PHP
+$sippeer = $account->sippeers()->create(array(
+        "PeerName" => "Test5 Peer",
+        "IsDefaultPeer" => false,
+        "ShortMessagingProtocol" => "SMPP",
+        "VoiceHosts" => array(
+            "Host" => array(
+                "HostName" => "192.168.181.90"
+            )
+        ),
+        "SmsHosts" => array(
+            "Host" => array(
+                "HostName" => "192.168.181.90"
+            )
+        ),
+        "TerminationHosts" => array(
+            "TerminationHost" => array(
+                "HostName" => "192.168.181.90",
+                "Port" => 0,
+                "CustomerTrafficAllowed" => "DOMESTIC",
+                "DataAllowed" => true
+            )
+        )
+));
+
+$sippeer->save();
+```
+### Get SIP Peer
+```PHP
+$sippeer = $account->sippeers->sippeer("500651");
+```
+### List SIP Peers
+```PHP
+$sippeers = $account->sippeers()->get();
+```
+### Delete SIP Peer
+```PHP
+$sippeer->delete();
+```
+### Move TNs
+$sippeer->movetns(new \Iris\Phones([
+    "FullNumber" => [ "9192000046", "9192000047", "9192000048" ]
+]));
+### Get TNs
+$tns = $sippeer->tns()->get();
+
+### Get TN
+$tn = $sippeer->tns()->create(["FullNumber" => "8183386251"])->get();
+
+### Total TNs
+$count = $sippeer->totaltns();
+
+### Set TN Options
+$sippeer->tns()->create(["FullNumber" => "8183386251"])->set_tn_options([
+    "FullNumber" => "8183386251",
+    "CallForward" => "9194394706",
+    "RewriteUser" => "JohnDoe",
+    "NumberFormat" => "10digit",
+    "RPIDFormat" => "e164"
+]);
+
+## Sites
+
+### Create A Site
+```PHP
+$site = $account->sites()->create(
+    array("Name" => "Test Site",
+        "Address" => array(
+            "City" => "Raleigh",
+            "AddressType" => "Service",
+            "HouseNumber" => "1",
+            "StreetName" => "Avenue",
+            "StateCode" => "NC"
+    )));
+
+$site->save();
+```
+
+### Updating a Site
+```PHP
+$site->Name = "New Name";
+$site->save();
+```
+### Deleting a Site
+```PHP
+$site->delete();
+```
+### Listing All Sites
+```PHP
+$sites = $account->sites()->get();
+```
+
+### Orders of a site
+$site->orders()->get(["status" => "disabled"]);
+
+### Total TNs of a site
+$site->totaltns();
+
+### Portins of a site
+$site->portins()->get(["status" => "disabled" ]);
+
+### Sippeers
+$site->sippeers()->create([...])
+[## SIP Peers]

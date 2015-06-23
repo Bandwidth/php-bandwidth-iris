@@ -111,7 +111,7 @@ class SippeersTest extends PHPUnit_Framework_TestCase {
     }
 
 
-	public function testSiteDelete() {
+	public function testSippeerDelete() {
 		$sippeer = self::$sippeers->create(
 			array("PeerId" => "2489")
 		);
@@ -128,9 +128,9 @@ class SippeersTest extends PHPUnit_Framework_TestCase {
 			array("PeerId" => "2489")
 		);
 
-        $sippeer->movetns(new \Iris\Phones([
+        $sippeer->movetns([
             "FullNumber" => [ "9192000046", "9192000047", "9192000048" ]
-        ]));
+        ]);
 
         $this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites/9999/sippeers/2489/movetns", self::$container[self::$index]['request']->getUri());
@@ -142,13 +142,13 @@ class SippeersTest extends PHPUnit_Framework_TestCase {
 			array("PeerId" => "2489")
 		);
 
-        $sippeer->tns()->create(["FullNumber" => "8183386251"])->set_tn_options(new \Iris\SipPeerTelephoneNumber([
+        $sippeer->tns()->create(["FullNumber" => "8183386251"])->set_tn_options([
             "FullNumber" => "8183386251",
             "CallForward" => "9194394706",
             "RewriteUser" => "JohnDoe",
             "NumberFormat" => "10digit",
             "RPIDFormat" => "e164"
-        ]));
+        ]);
 
         $this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites/9999/sippeers/2489/tns/8183386251", self::$container[self::$index]['request']->getUri());
