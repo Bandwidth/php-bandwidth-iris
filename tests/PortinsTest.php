@@ -130,10 +130,10 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
 			"OrderId" => "d28b36f7-fa96-49eb-9556-a40fca49f7c6"
 		));
 
-		$meta_new = new \Iris\FileMetaData(array(
+		$meta_new = array(
 			"DocumentName" => "text.txt",
 			"DocumentType" => "INVOICE"
-		));
+		);
 		$portin->set_metadata('test.txt', $meta_new);
 
 		$this->assertEquals("PUT", self::$container[self::$index]['request']->getMethod());
@@ -197,9 +197,9 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
 			"OrderId" => "d28b36f7-fa96-49eb-9556-a40fca49f7c6"
 		));
 
-		$status = $portin->set_activation_status(new \Iris\ActivationStatus(array(
+		$status = $portin->set_activation_status([
 			"AutoActivationDate" => "2014-08-30T18:30:00+03:00"
-		)));
+		]);
 
 		$this->assertEquals("6052609021", $status->ActivatedTelephoneNumbersList->TelephoneNumber[0]);
 		$this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());

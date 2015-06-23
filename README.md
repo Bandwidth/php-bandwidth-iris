@@ -37,6 +37,11 @@ To get stored Sites you should create $sites object and execute get() method.
 $items = $sites->get(); // Array(Site1, Site2)
 ```
 
+To reflect object structure:
+```PHP
+echo json_encode($site->to_array());
+```
+
 ## Available Numbers
 ```PHP
 $account->availableNumbers([ "areaCode" => "818" ]);
@@ -250,4 +255,79 @@ $order->notes()->create([ "UserId" => "byo_dev", "Description" => "Test Note"])-
 ### Get all Tns for an order
 ```PHP
 $order->tns()->get();
+```
+## Port Ins
+### Create PortIn
+```PHP
+$portin = $account->portins()->create(array(
+    "BillingTelephoneNumber" => "6882015002",
+    "Subscriber" => array(
+        "SubscriberType" => "BUSINESS",
+        "BusinessName" => "Acme Corporation",
+        "ServiceAddress" => array(
+            "HouseNumber" => "1623",
+            "StreetName" => "Brockton Ave",
+            "City" => "Los Angeles",
+            "StateCode" => "CA",
+            "Zip" => "90025",
+            "Country" => "USA"
+        )
+    ),
+    "LoaAuthorizingPerson" => "John Doe",
+    "ListOfPhoneNumbers" => array(
+        "PhoneNumber" => array("9882015025", "9882015026")
+    ),
+    "SiteId" => "365",
+    "Triggered" => "false"
+));
+
+$portin->save();
+```
+
+## Get PortIn
+```PHP
+$portin = $account->portins()->create(array(
+    "OrderId" => "d28b36f7-fa96-49eb-9556-a40fca49f7c6"
+));
+
+$portin->get();
+```
+## List PortIns
+```PHP
+$portins = $account->portins()->get(["pon" => "a pon" ]);
+```
+### PortIn Instance methods
+```PHP
+$portin->save();
+$portin->delete();
+$portin->get_activation_status();
+$status = $portin->set_activation_status([
+    "AutoActivationDate" => "2014-08-30T18:30:00+03:00"
+]);
+$portin->history();
+$portin->totals();
+$portin->notes()->get();
+```
+
+### PortIn File Management
+```PHP
+
+$portin->get_loas(true); // metadata = true
+$portin->loas_send("./1.txt");
+$portin->loas_update("./1.txt", "1.txt");
+$portin->loas_delete("1.txt");
+$portin->get_metadata("1.txt");
+$meta_new = array(
+    "DocumentName" => "text.txt",
+    "DocumentType" => "INVOICE"
+);
+$portin->set_metadata('test.txt', $meta_new);
+$portin->delete_metadata('test.txt');
+```
+
+## Rate Centers
+### List Ratecenters
+```PHP
+$rc = new \Iris\RateCenter($client);
+$cities = $rc->get(["state" => "CA", "available" => "true"]);
 ```

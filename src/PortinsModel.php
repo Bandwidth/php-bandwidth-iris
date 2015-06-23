@@ -149,7 +149,8 @@ class Portin extends RestEntry {
         return new FileMetaData($data);
     }
 
-    public function set_metadata($filename, FileMetaData $meta) {
+    public function set_metadata($filename, $meta) {
+        $meta = new \Iris\FileMetaData($meta);
         $url = sprintf('%s/%s/%s/metadata', $this->get_id(), 'loas', $filename);
         parent::put($url, "FileMetaData", $meta->to_array());
     }
@@ -165,10 +166,11 @@ class Portin extends RestEntry {
         return new ActivationStatus($data['ActivationStatus']);
     }
 
-    public function set_activation_status(ActivationStatus $data) {
+    public function set_activation_status($data) {
+        $obj = new \Iris\ActivationStatus($data);
         $url = sprintf('%s/%s', $this->get_id(), 'activationStatus');
-        $data = parent::post($url, "ActivationStatus", $data->to_array());
-        return new ActivationStatus($data['ActivationStatus']);
+        $res = parent::post($url, "ActivationStatus", $obj->to_array());
+        return new ActivationStatus($res['ActivationStatus']);
     }
 
     public function get() {
