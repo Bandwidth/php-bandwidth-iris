@@ -427,14 +427,89 @@ $sites = $account->sites()->get();
 ```
 
 ### Orders of a site
+```PHP
 $site->orders()->get(["status" => "disabled"]);
-
+```
 ### Total TNs of a site
+```PHP
 $site->totaltns();
-
+```
 ### Portins of a site
+```PHP
 $site->portins()->get(["status" => "disabled" ]);
-
+```
 ### Sippeers
+```PHP
 $site->sippeers()->create([...])
-[## SIP Peers]
+```
+[see SIP Peers]
+
+## Subscriptions
+### Create Subscription
+```PHP
+$subscription = $account->subscriptions()->create([
+    "OrderType" => "portins",
+    "OrderId" => "98939562-90b0-40e9-8335-5526432d9741",
+    "EmailSubscription" => [
+        "Email" => "test@test.com",
+        "DigestRequested" => "DAILY"
+    ]
+]);
+
+$subscription->save();
+```
+### Get Subscription
+```PHP
+$subscription = $account->subscriptions()->subscription($id);
+```
+### List Subscriptions
+```PHP
+$account->subscriptions()->get(["orderType" => "portins"]);
+```
+### Update
+```PHP
+$subscription->OrderType = "portins";
+$subscription->save();
+```
+### DELETE
+```PHP
+$subscription->delete();
+```
+
+## TNs
+### Get TN
+```PHP
+$tns = new Iris\Tns(null, $client);
+$tn = $tns->tn($id);
+```
+### List TNs
+```PHP
+$tns = new Iris\Tns(null, $client);
+$tns_items = $tns->get(["page" => 1, "size" => 10 ]);
+```
+### TN Instance Methods
+```PHP
+$tn = $tns->create([ "FullNumber" => "7576768750"]);
+$site = $tn->site();
+$sippeer = $tn->sippeer();
+$tnreservation = $tn->tnreservation();
+$tn->tndetails();
+$rc = $tn->ratecenter();
+$lata = $tn->lata();
+$lca = $tn->lca();
+```
+## TN Reservation
+### Create TN Reservation
+```PHP
+$resertation = $account->tnsreservations()->create(["ReservedTn" => "2512027430"]);
+$resertation->send();
+```
+### Get TN Reservation
+```PHP
+$resertation = $account->tnsreservations()->tnsreservation("0099ff73-da96-4303-8a0a-00ff316c07aa");
+```
+### Delete TN Reservation
+```PHP
+$resertation = $account->tnsreservations()->create(["ReservationId" => "0099ff73-da96-4303-8a0a-00ff316c07aa"]);
+$resertation->delete();
+```
