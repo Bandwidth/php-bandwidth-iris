@@ -374,19 +374,27 @@ $sippeers = $account->sippeers()->get();
 $sippeer->delete();
 ```
 ### Move TNs
+```PHP
 $sippeer->movetns(new \Iris\Phones([
     "FullNumber" => [ "9192000046", "9192000047", "9192000048" ]
 ]));
+```
 ### Get TNs
+```PHP
 $tns = $sippeer->tns()->get();
-
+```
 ### Get TN
+```PHP
 $tn = $sippeer->tns()->create(["FullNumber" => "8183386251"])->get();
+```
 
 ### Total TNs
+```PHP
 $count = $sippeer->totaltns();
+```
 
 ### Set TN Options
+```PHP
 $sippeer->tns()->create(["FullNumber" => "8183386251"])->set_tn_options([
     "FullNumber" => "8183386251",
     "CallForward" => "9194394706",
@@ -394,6 +402,7 @@ $sippeer->tns()->create(["FullNumber" => "8183386251"])->set_tn_options([
     "NumberFormat" => "10digit",
     "RPIDFormat" => "e164"
 ]);
+```
 
 ## Sites
 
