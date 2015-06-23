@@ -223,6 +223,7 @@ final class Client extends iClient {
 
         if(CONFIG::DEBUG) {
             echo "RAW PUT: ".$full_url."\n";
+            echo "RAW BODY: ".$body."\n";
         }
         return $this->client->put($full_url, ['body' => $body, 'headers' => $headers]);
     }

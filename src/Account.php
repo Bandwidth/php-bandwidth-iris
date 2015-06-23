@@ -97,6 +97,12 @@ class Account extends RestEntry {
         return $this->sites;
     }
 
+    public function users() {
+        if(!isset($this->users))
+            $this->users = new Users($this);
+        return $this->users;
+    }
+
     public function reports() {
         if(!isset($this->reports))
             $this->reports = new Reports($this);
@@ -192,12 +198,6 @@ class Account extends RestEntry {
 
     public function serviceNumbers($filters=Array()){
         $url = sprintf('%s/%s', $this->account_id, 'serviceNumbers');
-        $data = parent::get($url, $filters);
-        return $data;
-    }
-
-    public function users($filters=Array()){
-        $url = sprintf('%s/%s', $this->account_id, 'users');
         $data = parent::get($url, $filters);
         return $data;
     }

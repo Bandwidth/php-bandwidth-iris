@@ -241,3 +241,13 @@ $order = $response->Order;
 ```PHP
 $items = $account->orders()->get();
 ```
+
+### Add note to order
+```PHP
+$order->notes()->create([ "UserId" => "byo_dev", "Description" => "Test Note"])->save();
+```
+
+### Get all Tns for an order
+```PHP
+$order->tns()->get();
+```
