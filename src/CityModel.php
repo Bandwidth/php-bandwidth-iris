@@ -9,7 +9,7 @@ final class Cities extends RestEntry{
         parent::_init($client, '');
     }
 
-    public function get($filters = Array()) {
+    public function getList($filters = Array()) {
         $cities = [];
         $data = parent::get('cities', $filters, Array(), Array("state"));
 

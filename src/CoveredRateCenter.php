@@ -9,7 +9,7 @@ final class CoveredRateCenters extends RestEntry{
         parent::_init($client, '');
     }
 
-    public function get($filters = Array()) {
+    public function getList($filters = Array()) {
         $rcs = [];
         $data = parent::get('coveredRateCenters', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
 

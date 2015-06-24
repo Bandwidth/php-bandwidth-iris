@@ -34,7 +34,7 @@ class OrderTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testGetOrders() {
-        $orders = self::$account->orders()->get();
+        $orders = self::$account->orders()->getList();
 
         $this->assertEquals(2, count($orders));
 		$this->assertEquals("016c1aef-a873-4a90-8374-60771cba9452", $orders[0]->get_id());
@@ -43,7 +43,7 @@ class OrderTest extends PHPUnit_Framework_TestCase {
         self::$index++;
     }
 	public function testGetOrdersSingle() {
-		$orders = self::$account->orders()->get();
+		$orders = self::$account->orders()->getList();
 
 		$this->assertEquals(1, count($orders));
 		$this->assertEquals("016c1aef-a873-4a90-8374-60771cba9452", $orders[0]->get_id());
@@ -52,7 +52,7 @@ class OrderTest extends PHPUnit_Framework_TestCase {
 		self::$index++;
 	}
 	public function testGetOrdersEmpty() {
-		$orders = self::$account->orders()->get();
+		$orders = self::$account->orders()->getList();
 
 		$this->assertEquals(0, count($orders));
 		$this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
@@ -71,8 +71,6 @@ class OrderTest extends PHPUnit_Framework_TestCase {
 				]
 			]
 		]);
-
-		$order->post();
 		$this->assertEquals("f30a31a1-1de4-4939-b094-4521bbe5c8df", $order->get_id());
 		$this->assertEquals("RECEIVED", $order->OrderStatus);
 		$this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
@@ -98,7 +96,7 @@ class OrderTest extends PHPUnit_Framework_TestCase {
 				"AreaCode" => "617",
 				"Quantity" => "1"
 			]
-		]);
+		], false);
 
 		$json = '{"Name":"Available Telephone Number order","CustomerOrderId":"123456789","SiteId":"2297","BackOrderRequested":"false","AreaCodeSearchAndOrderType":{"AreaCode":"617","Quantity":"1"}}';
 
@@ -116,7 +114,7 @@ class OrderTest extends PHPUnit_Framework_TestCase {
 				"State" => "NC",
 				"Quantity" => "1"
 			]
-		]);
+		], false);
 
 		$json = '{"Name":"Available Telephone Number order","CustomerOrderId":"123456789","SiteId":"2297","BackOrderRequested":"false","RateCenterSearchAndOrderType":{"RateCenter":"RALEIGH","State":"NC","Quantity":"1"}}';
 
@@ -135,7 +133,7 @@ class OrderTest extends PHPUnit_Framework_TestCase {
 				"EnableLCA" => "false",
 				"Quantity" => "1"
 			]
-		]);
+		], false);
 
 		$json = '{"Name":"Available Telephone Number order","CustomerOrderId":"123456789","SiteId":"2297","BackOrderRequested":"false","NPANXXSearchAndOrderType":{"NpaNxx":"919439","EnableTNDetail":"true","EnableLCA":"false","Quantity":"1"}}';
 
@@ -151,7 +149,7 @@ class OrderTest extends PHPUnit_Framework_TestCase {
 				"TollFreeVanity" => "newcars",
 				"Quantity" => "1"
 			]
-		]);
+		], false);
 
 		$json = '{"Name":"Available Telephone Number order","CustomerOrderId":"123456789","SiteId":"2297","BackOrderRequested":"false","TollFreeVanitySearchAndOrderType":{"TollFreeVanity":"newcars","Quantity":"1"}}';
 
@@ -167,7 +165,7 @@ class OrderTest extends PHPUnit_Framework_TestCase {
 				"TollFreeWildCardPattern" => "8**",
 				"Quantity" => "1"
 			]
-		]);
+		], false);
 
 		$json = '{"Name":"Available Telephone Number order","CustomerOrderId":"123456789","SiteId":"2297","BackOrderRequested":"false","TollFreeWildCharSearchAndOrderType":{"Quantity":"1","TollFreeWildCardPattern":"8**"}}';
 
@@ -183,7 +181,7 @@ class OrderTest extends PHPUnit_Framework_TestCase {
 				"State" => "NC",
 				"Quantity" => "1"
 			]
-		]);
+		], false);
 
 		$json = '{"Name":"Available Telephone Number order","CustomerOrderId":"123456789","SiteId":"2297","BackOrderRequested":"false","StateSearchAndOrderType":{"State":"NC","Quantity":"1"}}';
 
@@ -200,7 +198,7 @@ class OrderTest extends PHPUnit_Framework_TestCase {
 				"City" => "RALEIGH",
 				"Quantity" => "1"
 			]
-		]);
+		], false);
 
 		$json = '{"Name":"Available Telephone Number order","CustomerOrderId":"123456789","SiteId":"2297","BackOrderRequested":"false","CitySearchAndOrderType":{"State":"NC","City":"RALEIGH","Quantity":"1"}}';
 
@@ -216,7 +214,7 @@ class OrderTest extends PHPUnit_Framework_TestCase {
 				"Zip" => "27606",
 				"Quantity" => "1"
 			]
-		]);
+		], false);
 
 		$json = '{"Name":"Available Telephone Number order","CustomerOrderId":"123456789","SiteId":"2297","BackOrderRequested":"false","CitySearchAndOrderType":{"Quantity":"1","Zip":"27606"}}';
 
@@ -232,7 +230,7 @@ class OrderTest extends PHPUnit_Framework_TestCase {
 				"Lata" => "224",
 				"Quantity" => "1"
 			]
-		]);
+		], false);
 
 		$json = '{"Name":"Available Telephone Number order","CustomerOrderId":"123456789","SiteId":"2297","BackOrderRequested":"false","LATASearchAndOrderType":{"Quantity":"1","Lata":"224"}}';
 
@@ -245,9 +243,9 @@ class OrderTest extends PHPUnit_Framework_TestCase {
 			"Name" => "Available Telephone Number order",
 			"CustomerOrderId" => "123456789",
 			"CloseOrder" => "true"
-		]);
+		], false);
 
-		$order->put();
+		$order->update();
 
 		$json = '{"id":"f30a31a1-1de4-4939-b094-4521bbe5c8df","Name":"Available Telephone Number order","CustomerOrderId":"123456789","CloseOrder":"true"}';
 
@@ -270,7 +268,7 @@ class OrderTest extends PHPUnit_Framework_TestCase {
                     "ReservationId" => [ "1", "2" ]
                 ]
 			]
-		]);
+		], false);
 
         $json = '{"Name":"Available Telephone Number order","CustomerOrderId":"123456789","SiteId":"385","ExistingTelephoneNumberOrderType":{"TelephoneNumberList":{"TelephoneNumber":["9193752369","9193752720","9193752648"]},"ReservationIdList":{"ReservationId":["1","2"]}}}';
 
@@ -280,7 +278,7 @@ class OrderTest extends PHPUnit_Framework_TestCase {
     public function testOrderTns() {
 		self::$account->orders()->create([
 			"id" => "f30a31a1-1de4-4939-b094-4521bbe5c8df"
-		])->tns()->get();
+		], false)->tns()->getList();
 
 		$this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
 		$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/orders/f30a31a1-1de4-4939-b094-4521bbe5c8df/tns?page=1&size=30", self::$container[self::$index]['request']->getUri());

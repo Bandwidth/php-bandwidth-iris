@@ -20,7 +20,7 @@ final class Subscriptions extends RestEntry{
         parent::_init($this->parent->get_rest_client(), $this->parent->get_relative_namespace());
     }
 
-    public function get($filters = Array()) {
+    public function getList($filters = Array()) {
 
         $subscriptions = [];
 
@@ -50,8 +50,10 @@ final class Subscriptions extends RestEntry{
         return '/subscriptions';
     }
 
-    public function create($data) {
+    public function create($data, $save = true) {
         $sbc = new Subscription($this, $data);
+        if($save)
+            $sbc->save();
         return $sbc;
     }
 }
@@ -83,13 +85,13 @@ final class Subscription extends RestEntry{
     }
 
     public function save() {
-        if(isset($this->SubscriptionId))
-            parent::put($this->get_id(), "Subscription", $this->to_array());
-        else {
-            $header = parent::post(null, "Subscription", $this->to_array());
-            $splitted = split("/", $header['Location']);
-            $this->SubscriptionId = end($splitted);
-        }
+        $header = parent::post(null, "Subscription", $this->to_array());
+        $splitted = split("/", $header['Location']);
+        $this->SubscriptionId = end($splitted);
+    }
+
+    public function update() {
+        parent::put($this->get_id(), "Subscription", $this->to_array());
     }
 
     public function get_id() {

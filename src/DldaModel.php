@@ -20,7 +20,7 @@ final class Dldas extends RestEntry{
         parent::_init($this->parent->get_rest_client(), $this->parent->get_relative_namespace());
     }
 
-    public function get($filters = Array()) {
+    public function getList($filters = Array()) {
 
         $dldas = [];
 
@@ -50,8 +50,11 @@ final class Dldas extends RestEntry{
         return '/dldas';
     }
 
-    public function create($data) {
-        return new Dlda($this, $data);
+    public function create($data, $save = true) {
+        $dlda = new Dlda($this, $data);
+        if($save)
+            return $dlda->save();
+        return $dlda;
     }
 }
 
@@ -97,12 +100,12 @@ final class Dlda extends RestEntry{
         $this->set_data($data['DldaOrder']);
     }
 
-    public function post() {
+    public function save() {
         $data = parent::post(null, "DldaOrder", $this->to_array());
         return new Dlda($this->parent, $data['DldaOrder']);
     }
 
-    public function put() {
+    public function update() {
         parent::put($this->get_id(), "DldaOrder", $this->to_array());
     }
 

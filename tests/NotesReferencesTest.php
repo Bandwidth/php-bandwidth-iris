@@ -28,27 +28,27 @@ class NotesRefTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testNotesDisconnects() {
-        self::$account->disconnects()->create(array("OrderId" => "b902dee1-0585-4258-becd-5c7e51ccf5e1"))->notes()->get();
+        self::$account->disconnects()->create(array("OrderId" => "b902dee1-0585-4258-becd-5c7e51ccf5e1"), false)->notes()->getList();
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/disconnects/b902dee1-0585-4258-becd-5c7e51ccf5e1/notes", self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 
     public function testNotesOrders() {
-        self::$account->orders()->create(array("orderId" => "b902dee1-0585-4258-becd-5c7e51ccf5e1"))->notes()->get();
+        self::$account->orders()->create(array("orderId" => "b902dee1-0585-4258-becd-5c7e51ccf5e1"), false)->notes()->getList();
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/orders/b902dee1-0585-4258-becd-5c7e51ccf5e1/notes", self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 
     public function testNotesPortins() {
-        self::$account->portins()->create(array("OrderId" => "b902dee1-0585-4258-becd-5c7e51ccf5e1"))->notes()->get();
+        self::$account->portins()->create(array("OrderId" => "b902dee1-0585-4258-becd-5c7e51ccf5e1"), false)->notes()->getList();
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/portins/b902dee1-0585-4258-becd-5c7e51ccf5e1/notes", self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
     public function testNotesPortouts() {
-        self::$account->portouts()->create(array("OrderId" => "b902dee1-0585-4258-becd-5c7e51ccf5e1"))->notes()->get();
+        self::$account->portouts()->create(array("OrderId" => "b902dee1-0585-4258-becd-5c7e51ccf5e1"), false)->notes()->getList();
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/portouts/b902dee1-0585-4258-becd-5c7e51ccf5e1/notes", self::$container[self::$index]['request']->getUri());
         self::$index++;

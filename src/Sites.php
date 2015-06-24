@@ -16,7 +16,7 @@ class Sites extends RestEntry {
         parent::_init($this->parent->get_rest_client(), $this->parent->get_relative_namespace());
     }
 
-    public function get($filters = Array()) {
+    public function getList($filters = Array()) {
         $sites = [];
 
         $data = parent::get('sites');
@@ -45,8 +45,10 @@ class Sites extends RestEntry {
         return '/sites';
     }
 
-    public function create($data) {
+    public function create($data, $save = true) {
         $site = new Site($this, $data);
+        if($save)
+            $site->save();
         return $site;
     }
 }
@@ -90,13 +92,13 @@ class Site extends RestEntry {
     }
 
     public function save() {
-        if(isset($this->Id))
-            parent::put($this->Id, "Site", $this->to_array());
-        else {
-            $header = parent::post(null, "Site", $this->to_array());
-            $splitted = split("/", $header['Location']);
-            $this->Id = end($splitted);
-        }
+        $header = parent::post(null, "Site", $this->to_array());
+        $splitted = split("/", $header['Location']);
+        $this->Id = end($splitted);
+    }
+
+    public function update() {
+        parent::put($this->get_id(), "Site", $this->to_array());
     }
 
     public function totaltns() {

@@ -14,7 +14,7 @@ final class Users extends RestEntry{
         }
     }
 
-    public function get()
+    public function getList()
     {
         $out = [];
         $url = sprintf('%s', 'users');

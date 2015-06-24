@@ -8,7 +8,7 @@ class Sippeers extends RestEntry {
         parent::_init($site->get_rest_client(), $site->get_relative_namespace());
     }
 
-    public function get($filters = Array()) {
+    public function getList($filters = Array()) {
         $sippeers = [];
 
         $data = parent::get('sippeers');
@@ -37,9 +37,11 @@ class Sippeers extends RestEntry {
         return '/sippeers';
     }
 
-    public function create($data) {
-        $sipper = new Sippeer($this, $data);
-        return $sipper;
+    public function create($data, $save = true) {
+        $sippeer = new Sippeer($this, $data);
+        if($save)
+            $sippeer->save();
+        return $sippeer;
     }
 }
 
@@ -85,13 +87,13 @@ class Sippeer extends RestEntry {
     }
 
     public function save() {
-        if(isset($this->PeerId))
-            parent::put($this->PeerId, "SipPeer", $this->to_array());
-        else {
-            $header = parent::post(null, "SipPeer", $this->to_array());
-            $splitted = split("/", $header['Location']);
-            $this->PeerId = end($splitted);
-        }
+        $header = parent::post(null, "SipPeer", $this->to_array());
+        $splitted = split("/", $header['Location']);
+        $this->PeerId = end($splitted);
+    }
+
+    public function update() {
+        parent::put($this->get_id(), "SipPeer", $this->to_array());
     }
 
     public function delete() {

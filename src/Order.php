@@ -20,7 +20,7 @@ final class Orders extends RestEntry{
         parent::_init($this->parent->get_rest_client(), $this->parent->get_relative_namespace());
     }
 
-    public function get($filters = Array(), $defaults = Array(), $required = Array()) {
+    public function getList($filters = Array(), $defaults = Array(), $required = Array()) {
 
         $orders = [];
 
@@ -49,8 +49,10 @@ final class Orders extends RestEntry{
         return '/orders';
     }
 
-    public function create($data) {
+    public function create($data, $save = true) {
         $order = new Order($this, $data);
+        if($save)
+            $order->save();
         return $order;
     }
 }
@@ -116,13 +118,13 @@ final class Order extends RestEntry{
         return $response;
     }
 
-    public function post() {
+    public function save() {
         $data = parent::post(null, "Order", $this->to_array());
         $this->set_data($data["Order"]);
         $this->OrderStatus = $data["OrderStatus"];
     }
 
-    public function put() {
+    public function update() {
         $arr = $this->to_array();
         unset($arr['id']);
         unset($arr['orderId']);

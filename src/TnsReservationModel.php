@@ -20,8 +20,11 @@ final class TnsReservations extends RestEntry{
         parent::_init($this->parent->get_rest_client(), $this->parent->get_relative_namespace());
     }
 
-    public function create($data) {
-        return new TnsReservation($this, $data);
+    public function create($data, $save = true) {
+        $tns_res = new TnsReservation($this, $data);
+        if($save)
+            $tns_res->save();
+        return $tns_res;
     }
 
     public function tnsreservation($id) {
@@ -51,7 +54,7 @@ final class TnsReservation extends RestEntry{
         parent::_init($parent->get_rest_client(), $parent->get_relative_namespace());
     }
 
-    public function send() {
+    public function save() {
         $header = parent::post(null, "Reservation", $this->to_array());
         $splitted = split("/", $header['Location']);
         $this->ReservationId = end($splitted);

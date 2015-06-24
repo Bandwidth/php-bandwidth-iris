@@ -44,8 +44,6 @@ class SiteTest extends PHPUnit_Framework_TestCase {
 					"StateCode" => "NC"
 			)));
 
-        $site->save();
-
         $this->assertEquals("2489", $site->Id);
         $this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites", self::$container[self::$index]['request']->getUri());
@@ -53,7 +51,7 @@ class SiteTest extends PHPUnit_Framework_TestCase {
     }
 
 	public function testSiteGet() {
-		$sites = self::$sites->get();
+		$sites = self::$sites->getList();
 
         $this->assertEquals(2, count($sites));
 		$this->assertEquals("2297", $sites[0]->Id);
@@ -62,7 +60,7 @@ class SiteTest extends PHPUnit_Framework_TestCase {
         self::$index++;
     }
 	public function testSiteGetOne() {
-		$sites = self::$sites->get();
+		$sites = self::$sites->getList();
 
         $this->assertEquals(1, count($sites));
 		$this->assertEquals("2297", $sites[0]->Id);
@@ -74,10 +72,10 @@ class SiteTest extends PHPUnit_Framework_TestCase {
 
 	public function testSiteUpdate() {
 		$site = self::$sites->create(
-			array("Id" => "2489")
+			array("Id" => "2489"), false
 		);
 
-        $site->save();
+        $site->update();
 
         $this->assertEquals("PUT", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites/2489", self::$container[self::$index]['request']->getUri());
@@ -86,7 +84,7 @@ class SiteTest extends PHPUnit_Framework_TestCase {
 
 	public function testSiteDelete() {
 		$site = self::$sites->create(
-			array("Id" => "2489")
+			array("Id" => "2489"), false
 		);
 
 		$site->delete();
@@ -98,8 +96,8 @@ class SiteTest extends PHPUnit_Framework_TestCase {
 
     public function testSiteOrders() {
 		$orders = self::$sites->create(
-			array("Id" => "2489")
-		)->orders()->get(["status" => "disabled"]);
+			array("Id" => "2489"), false
+		)->orders()->getList(["status" => "disabled"]);
 
 		$this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
 		$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites/2489/orders?status=disabled&page=1&size=30", self::$container[self::$index]['request']->getUri());
@@ -108,7 +106,7 @@ class SiteTest extends PHPUnit_Framework_TestCase {
 
     public function testSiteOrder() {
 		$orders = self::$sites->create(
-			array("Id" => "2489")
+			array("Id" => "2489"), false
 		)->orders()->order("1");
 
 		$this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
@@ -118,8 +116,8 @@ class SiteTest extends PHPUnit_Framework_TestCase {
 
     public function testSiteOrderTns() {
 		$orders = self::$sites->create(
-			array("Id" => "2489")
-		)->orders()->create(["orderId" => "1"])->tns()->get();
+			array("Id" => "2489"), false
+		)->orders()->create(["orderId" => "1"], false)->tns()->getList();
 
 		$this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
 		$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites/2489/orders/1/tns?page=1&size=30", self::$container[self::$index]['request']->getUri());
@@ -128,7 +126,7 @@ class SiteTest extends PHPUnit_Framework_TestCase {
 
     public function testSiteTotalTns() {
 		$count = self::$sites->create(
-			array("Id" => "2489")
+			array("Id" => "2489"), false
 		)->totaltns();
 
         $this->assertEquals(4, $count);
@@ -139,8 +137,8 @@ class SiteTest extends PHPUnit_Framework_TestCase {
 
     public function testPortinsGet() {
 		$portins = self::$sites->create(
-			array("Id" => "2489")
-		)->portins()->get(["status" => "x" ]);
+			array("Id" => "2489"), false
+		)->portins()->getList(["status" => "x" ]);
 
 		$this->assertEquals(2, count($portins));
 		$json = '{"CountOfTNs":"1","lastModifiedDate":"2015-06-03T15:06:36.234Z","OrderDate":"2015-06-03T15:06:35.533Z","OrderType":"port_in","LNPLosingCarrierId":"1537","LNPLosingCarrierName":"Test Losing Carrier L3","RequestedFOCDate":"2015-06-03T15:30:00.000Z","VendorId":"49","VendorName":"Bandwidth CLEC","PON":"BWC1433343996123","OrderId":"535ba91e-5363-474e-8c97-c374a4aa6a02","ProcessingStatus":"SUBMITTED","userId":"System","BillingTelephoneNumber":"9193491234"}';

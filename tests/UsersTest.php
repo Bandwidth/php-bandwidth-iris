@@ -26,7 +26,7 @@ class UsersTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testUsersGet() {
-        $users = self::$account->users()->get();
+        $users = self::$account->users()->getList();
 
         $json = '{"Username":"byo_dev","FirstName":"test","LastName":"test","EmailAddress":"jsommerset@bandwidth.com","TelephoneNumber":"5413637598","Roles":{"Role":[{"RoleName":"ROLE_USER","Permissions":{"Permission":[{"PermissionName":"UPDATE"},{"PermissionName":"VIEW"}]}},{"RoleName":"ROLE_BDR","Permissions":{"Permission":[{"PermissionName":"UPDATE"},{"PermissionName":"VIEW"}]}},{"RoleName":"ROLE_API_HISTORY","Permissions":{"Permission":[{"PermissionName":"UPDATE"},{"PermissionName":"VIEW"}]}},{"RoleName":"ROLE_API_SITE","Permissions":{"Permission":[{"PermissionName":"UPDATE"},{"PermissionName":"VIEW"}]}},{"RoleName":"ROLE_API_SEARCH","Permissions":{"Permission":{"PermissionName":"VIEW"}}},{"RoleName":"ROLE_API_ORDERING","Permissions":{"Permission":[{"PermissionName":"UPDATE"},{"PermissionName":"VIEW"}]}},{"RoleName":"ROLE_API_PROFILE","Permissions":{"Permission":[{"PermissionName":"UPDATE"},{"PermissionName":"VIEW"}]}},{"RoleName":"ROLE_API_LNP","Permissions":{"Permission":[{"PermissionName":"UPDATE"},{"PermissionName":"VIEW"}]}},{"RoleName":"ROLE_API_ACCOUNT","Permissions":{"Permission":{"PermissionName":"VIEW"}}},{"RoleName":"ROLE_API_DLDA","Permissions":{"Permission":[{"PermissionName":"UPDATE"},{"PermissionName":"VIEW"}]}},{"RoleName":"ROLE_API_CNAMLIDB","Permissions":{"Permission":[{"PermissionName":"UPDATE"},{"PermissionName":"VIEW"}]}}]}}';
         $this->assertEquals($json, json_encode($users[0]->to_array()));

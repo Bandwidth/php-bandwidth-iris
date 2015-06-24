@@ -9,7 +9,7 @@ final class RateCenter extends RestEntry{
         parent::_init($client, '');
     }
 
-    public function get($filters = Array()) {
+    public function getList($filters = Array()) {
         $rcs = [];
         $data = parent::get('rateCenters', $filters, Array(), Array("state"));
 

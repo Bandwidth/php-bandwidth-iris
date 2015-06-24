@@ -16,7 +16,14 @@ class Portins extends RestEntry {
         parent::_init($account->get_rest_client(), $account->get_relative_namespace());
     }
 
-    public function get($filters = Array()) {
+    public function portin($id) {
+        $portin = new Portin($this, array("OrderId" => $id));
+        $portin->get();
+        return $portin;
+    }
+
+
+    public function getList($filters = Array()) {
         $out = [];
 
         $portins = parent::get('portins', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
@@ -41,8 +48,11 @@ class Portins extends RestEntry {
     * @params array $data
     * @return \Iris\Portin
     */
-    public function create($data) {
-        return new Portin($this, $data);
+    public function create($data, $save = true) {
+        $portin = new Portin($this, $data);
+        if($save)
+            $portin->save();
+        return $portin;
     }
 
     public function totals()
@@ -105,11 +115,12 @@ class Portin extends RestEntry {
     }
 
     public function save() {
-        if(!isset($this->OrderId)) {
-            $data = parent::post(null, "LnpOrder", $this->to_array());
-        } else {
-            $data = parent::put($this->get_id(), "LnpOrderSupp", $this->to_array());
-        }
+        $data = parent::post(null, "LnpOrder", $this->to_array());
+        $this->set_data($data);
+    }
+
+    public function update() {
+        $data = parent::put($this->get_id(), "LnpOrderSupp", $this->to_array());
         $this->set_data($data);
     }
 
@@ -132,7 +143,7 @@ class Portin extends RestEntry {
         parent::delete($url);
     }
 
-    public function get_loas($metadata) {
+    public function list_loas($metadata) {
         $url = sprintf('%s/%s', $this->get_id(), 'loas');
         $query = array();
 

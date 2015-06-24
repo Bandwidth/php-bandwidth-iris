@@ -95,7 +95,6 @@ class AccountTest extends PHPUnit_Framework_TestCase {
 
     public function testTnReservation() {
         $resertation = self::$account->tnsreservations()->create(["ReservedTn" => "2512027430"]);
-        $resertation->send();
 
         self::$index++;
         $json = '{"ReservedTn":"2512027430","ReservationId":"2489"}';
@@ -117,7 +116,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
         self::$index++;
     }
     public function testDeleteTnReservation() {
-        $resertation = self::$account->tnsreservations()->create(["ReservationId" => "0099ff73-da96-4303-8a0a-00ff316c07aa"]);
+        $resertation = self::$account->tnsreservations()->create(["ReservationId" => "0099ff73-da96-4303-8a0a-00ff316c07aa"], false);
         $resertation->delete();
 
         $this->assertEquals("DELETE", self::$container[self::$index]['request']->getMethod());

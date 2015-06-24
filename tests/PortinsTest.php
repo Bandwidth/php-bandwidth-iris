@@ -62,12 +62,32 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
             ),
             "SiteId" => "365",
             "Triggered" => "false"
-        ));
+        ), false);
 
 		$this->assertEquals("9882015026", $portin->ListOfPhoneNumbers->PhoneNumber[1]);
 		$this->assertEquals("Brockton Ave", $portin->Subscriber->ServiceAddress->StreetName);
 
-		$portin->save();
+		$portin = self::$portins->create(array(
+            "BillingTelephoneNumber" => "6882015002",
+            "Subscriber" => array(
+                "SubscriberType" => "BUSINESS",
+                "BusinessName" => "Acme Corporation",
+                "ServiceAddress" => array(
+                    "HouseNumber" => "1623",
+                    "StreetName" => "Brockton Ave",
+                    "City" => "Los Angeles",
+                    "StateCode" => "CA",
+                    "Zip" => "90025",
+                    "Country" => "USA"
+                )
+            ),
+            "LoaAuthorizingPerson" => "John Doe",
+            "ListOfPhoneNumbers" => array(
+                "PhoneNumber" => array("9882015025", "9882015026")
+            ),
+            "SiteId" => "365",
+            "Triggered" => "false"
+        ));
 
 		$this->assertEquals("d28b36f7-fa96-49eb-9556-a40fca49f7c6", $portin->OrderId);
 
@@ -80,7 +100,7 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
 	{
 		$portin = self::$portins->create(array(
 			"OrderId" => "d28b36f7-fa96-49eb-9556-a40fca49f7c6"
-		));
+		), false);
 		$portin->loas_send(__DIR__."/test.txt", array("Content-Type" => "application/pdf"));
 		$this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
 		$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/portins/d28b36f7-fa96-49eb-9556-a40fca49f7c6/loas", self::$container[self::$index]['request']->getUri());
@@ -91,7 +111,7 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
 	{
 		$portin = self::$portins->create(array(
 			"OrderId" => "d28b36f7-fa96-49eb-9556-a40fca49f7c6"
-		));
+		), false);
 		$portin->loas_update(__DIR__."/test.txt", 'test.txt', array("Content-Type" => "application/pdf"));
 		$this->assertEquals("PUT", self::$container[self::$index]['request']->getMethod());
 		$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/portins/d28b36f7-fa96-49eb-9556-a40fca49f7c6/loas/test.txt", self::$container[self::$index]['request']->getUri());
@@ -102,7 +122,7 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
 	{
 		$portin = self::$portins->create(array(
 			"OrderId" => "d28b36f7-fa96-49eb-9556-a40fca49f7c6"
-		));
+		), false);
 		$portin->loas_delete('test.txt');
 		$this->assertEquals("DELETE", self::$container[self::$index]['request']->getMethod());
 		$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/portins/d28b36f7-fa96-49eb-9556-a40fca49f7c6/loas/test.txt", self::$container[self::$index]['request']->getUri());
@@ -113,7 +133,7 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
 	{
 		$portin = self::$portins->create(array(
 			"OrderId" => "d28b36f7-fa96-49eb-9556-a40fca49f7c6"
-		));
+		), false);
 		$meta = $portin->get_metadata('test.txt');
 
 		$this->assertEquals("test.txt", $meta->DocumentName);
@@ -128,7 +148,7 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
 	{
 		$portin = self::$portins->create(array(
 			"OrderId" => "d28b36f7-fa96-49eb-9556-a40fca49f7c6"
-		));
+		), false);
 
 		$meta_new = array(
 			"DocumentName" => "text.txt",
@@ -145,7 +165,7 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
 	{
 		$portin = self::$portins->create(array(
 			"OrderId" => "d28b36f7-fa96-49eb-9556-a40fca49f7c6"
-		));
+		), false);
 
 		$portin->delete_metadata('test.txt');
 
@@ -158,9 +178,9 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
 	{
 		$portin = self::$portins->create(array(
 			"OrderId" => "d28b36f7-fa96-49eb-9556-a40fca49f7c6"
-		));
+		), false);
 
-		$portin->get_loas(true);
+		$portin->list_loas(true);
 
 		$this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
 		$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/portins/d28b36f7-fa96-49eb-9556-a40fca49f7c6/loas?metadata=true", self::$container[self::$index]['request']->getUri());
@@ -170,7 +190,7 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
 	public function testPortinsDelete() {
 		$portin = self::$portins->create(array(
 			"OrderId" => "d28b36f7-fa96-49eb-9556-a40fca49f7c6"
-		));
+		), false);
 
 		$portin->delete();
 
@@ -182,7 +202,7 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
 	public function testPortinsGetActivationStatus() {
 		$portin = self::$portins->create(array(
 			"OrderId" => "d28b36f7-fa96-49eb-9556-a40fca49f7c6"
-		));
+		), false);
 
 		$status = $portin->get_activation_status();
 
@@ -195,7 +215,7 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
 	public function testPortinsSetActivationStatus() {
 		$portin = self::$portins->create(array(
 			"OrderId" => "d28b36f7-fa96-49eb-9556-a40fca49f7c6"
-		));
+		), false);
 
 		$status = $portin->set_activation_status([
 			"AutoActivationDate" => "2014-08-30T18:30:00+03:00"
@@ -214,9 +234,9 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
 				"Code" => 0,
 				"Description" => "Empty"
 			)
-		));
+		), false);
 		$portin->RequestedFocDate = "2012-08-30T00:00:00.000Z";
-		$portin->save();
+		$portin->update();
 
 		$this->assertEquals(200, $portin->Status->Code);
 		$this->assertEquals("Supp request received. Please use the order id to check the status of your order later.", $portin->Status->Description);
@@ -226,7 +246,7 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testPortinsGet() {
-		$portins = self::$portins->get(["status" => "x" ]);
+		$portins = self::$portins->getList(["status" => "x" ]);
 
 		$this->assertEquals(2, count($portins));
 		$json = '{"CountOfTNs":"1","lastModifiedDate":"2015-06-03T15:06:36.234Z","OrderDate":"2015-06-03T15:06:35.533Z","OrderType":"port_in","LNPLosingCarrierId":"1537","LNPLosingCarrierName":"Test Losing Carrier L3","RequestedFOCDate":"2015-06-03T15:30:00.000Z","VendorId":"49","VendorName":"Bandwidth CLEC","PON":"BWC1433343996123","OrderId":"535ba91e-5363-474e-8c97-c374a4aa6a02","ProcessingStatus":"SUBMITTED","userId":"System","BillingTelephoneNumber":"9193491234"}';
@@ -238,11 +258,7 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
 
 	public function testPortinGet()
 	{
-		$portin = self::$portins->create(array(
-			"OrderId" => "d28b36f7-fa96-49eb-9556-a40fca49f7c6"
-		));
-
-		$portin->get();
+		$portin = self::$portins->portin("d28b36f7-fa96-49eb-9556-a40fca49f7c6");
 
 		$json = '{"VendorName":"Bandwidth CLEC","PON":"BWC1433343996123","AccountId":"9500249","PeerId":"500655","OrderCreateDate":"2015-06-03T15:06:35.533Z","LastModifiedBy":"System","PartialPort":"false","Immediately":"false","OrderId":"d28b36f7-fa96-49eb-9556-a40fca49f7c6","ProcessingStatus":"SUBMITTED","RequestedFocDate":"2015-06-03T15:30:00Z","LosingCarrierName":"Test Losing Carrier L3","LastModifiedDate":"2015-06-03T15:06:36.234Z","userId":"System","BillingTelephoneNumber":"9193491234","Subscriber":{"SubscriberType":"BUSINESS","BusinessName":"Company","ServiceAddress":{"City":"Raleigh","HouseNumber":"123","StreetName":"EZ Street","StateCode":"NC","Zip":"27615","Country":"United States","County":"Wake","AddressType":"Service"}},"LoaAuthorizingPerson":"Joe Blow","ListOfPhoneNumbers":{"PhoneNumber":"9193491234"},"SiteId":"2297","Triggered":"false"}';
 		$this->assertEquals($json, json_encode($portin->to_array()));
@@ -255,7 +271,7 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
 	public function testPortinsHistory() {
 		$portin = self::$portins->create(array(
 			"OrderId" => "d28b36f7-fa96-49eb-9556-a40fca49f7c6"
-		));
+		), false);
 
         $history = $portin->history();
 
@@ -272,7 +288,7 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
 	public function testTotals() {
         $numbers = self::$portins->create(array(
 			"OrderId" => "d28b36f7-fa96-49eb-9556-a40fca49f7c6"
-		))->totals([ "status" => "x" ]);
+		), false)->totals([ "status" => "x" ]);
 
         $this->assertEquals(4, $numbers);
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());

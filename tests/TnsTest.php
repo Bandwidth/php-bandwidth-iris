@@ -34,7 +34,7 @@ class TnsTest extends PHPUnit_Framework_TestCase {
     }
 
 	public function testTnsGet() {
-		$tns = self::$tns->get(["page" => 1, "size" => 10 ]);
+		$tns = self::$tns->getList(["page" => 1, "size" => 10 ]);
 
         $this->assertEquals(2, count($tns));
 		$this->assertEquals("7576768750", $tns[0]->FullNumber);

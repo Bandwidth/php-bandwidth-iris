@@ -25,7 +25,7 @@ class OtherTest extends PHPUnit_Framework_TestCase {
 
     public function testCitiesGet() {
         $c = new \Iris\Cities(self::$client);
-        $cities = $c->get(["state" => "NC"]);
+        $cities = $c->getList(["state" => "NC"]);
 
         $json = '{"RcAbbreviation":"PINEHURST","Name":"ABERDEEN"}';
         $this->assertEquals($json, json_encode($cities[0]->to_array()));
@@ -36,7 +36,7 @@ class OtherTest extends PHPUnit_Framework_TestCase {
 
     public function testRC() {
         $c = new \Iris\RateCenter(self::$client);
-        $cities = $c->get(["state" => "CA"]);
+        $cities = $c->getList(["state" => "CA"]);
 
         $json = '{"Name":"AGOURA","Abbreviation":"AGOURA"}';
         $this->assertEquals($json, json_encode($cities[0]->to_array()));

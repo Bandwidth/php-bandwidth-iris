@@ -31,7 +31,7 @@ class SippeersTest extends PHPUnit_Framework_TestCase {
 
         $client = new Iris\Client(\Iris\Config::REST_LOGIN, \Iris\Config::REST_PASS, Array('url' => \Iris\Config::REST_URL, 'handler' => $handler));
         $account = new Iris\Account(9500249, $client);
-        $site = $account->sites()->create(["Id" => "9999"]);
+        $site = $account->sites()->create(["Id" => "9999"], false);
 		self::$sippeers = $site->sippeers();
     }
 
@@ -60,8 +60,6 @@ class SippeersTest extends PHPUnit_Framework_TestCase {
 				)
 		));
 
-        $sippeer->save();
-
         $this->assertEquals("9091", $sippeer->PeerId);
         $this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites/9999/sippeers", self::$container[self::$index]['request']->getUri());
@@ -69,7 +67,7 @@ class SippeersTest extends PHPUnit_Framework_TestCase {
     }
 
 	public function testSippeersGet() {
-		$sippeers = self::$sippeers->get();
+		$sippeers = self::$sippeers->getList();
 
         $this->assertEquals(2, count($sippeers));
 		$this->assertEquals("500709", $sippeers[0]->PeerId);
@@ -79,7 +77,7 @@ class SippeersTest extends PHPUnit_Framework_TestCase {
     }
 
 	public function testSippeersGetOne() {
-		$sippeers = self::$sippeers->get();
+		$sippeers = self::$sippeers->getList();
 
         $this->assertEquals(1, count($sippeers));
 		$this->assertEquals("500709", $sippeers[0]->PeerId);
@@ -100,10 +98,10 @@ class SippeersTest extends PHPUnit_Framework_TestCase {
 
 	public function testSippeerUpdate() {
 		$sippeer = self::$sippeers->create(
-			array("PeerId" => "2489")
+			array("PeerId" => "2489"), false
 		);
 
-        $sippeer->save();
+        $sippeer->update();
 
         $this->assertEquals("PUT", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites/9999/sippeers/2489", self::$container[self::$index]['request']->getUri());
@@ -113,7 +111,7 @@ class SippeersTest extends PHPUnit_Framework_TestCase {
 
 	public function testSippeerDelete() {
 		$sippeer = self::$sippeers->create(
-			array("PeerId" => "2489")
+			array("PeerId" => "2489"), false
 		);
 
         $sippeer->delete();
@@ -125,7 +123,7 @@ class SippeersTest extends PHPUnit_Framework_TestCase {
 
     public function testMoveTNs() {
         $sippeer = self::$sippeers->create(
-			array("PeerId" => "2489")
+			array("PeerId" => "2489"), false
 		);
 
         $sippeer->movetns([
@@ -139,10 +137,10 @@ class SippeersTest extends PHPUnit_Framework_TestCase {
 
     public function testTNOptions() {
         $sippeer = self::$sippeers->create(
-			array("PeerId" => "2489")
+			array("PeerId" => "2489"), false
 		);
 
-        $sippeer->tns()->create(["FullNumber" => "8183386251"])->set_tn_options([
+        $sippeer->tns()->create(["FullNumber" => "8183386251"], false)->set_tn_options([
             "FullNumber" => "8183386251",
             "CallForward" => "9194394706",
             "RewriteUser" => "JohnDoe",
@@ -157,11 +155,10 @@ class SippeersTest extends PHPUnit_Framework_TestCase {
 
     public function testGetTN() {
         $sippeer = self::$sippeers->create(
-            array("PeerId" => "2489")
+            array("PeerId" => "2489"), false
         );
 
-        $tn = $sippeer->tns()->create(["FullNumber" => "8183386251"]);
-        $tn->get();
+        $tn = $sippeer->tns()->tn("8183386251");
 
         $this->assertEquals("8183386251", $tn->FullNumber);
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
@@ -171,10 +168,10 @@ class SippeersTest extends PHPUnit_Framework_TestCase {
 
     public function testGetTNs() {
         $sippeer = self::$sippeers->create(
-            array("PeerId" => "2489")
+            array("PeerId" => "2489"), false
         );
 
-        $tns = $sippeer->tns()->get();
+        $tns = $sippeer->tns()->getList();
 
         $this->assertEquals(4, count($tns));
         $this->assertEquals("8183386251", $tns[0]->FullNumber);
@@ -185,7 +182,7 @@ class SippeersTest extends PHPUnit_Framework_TestCase {
 
     public function testTotaltns() {
         $sippeer = self::$sippeers->create(
-            array("PeerId" => "2489")
+            array("PeerId" => "2489"), false
         );
 
         $count = $sippeer->totaltns();

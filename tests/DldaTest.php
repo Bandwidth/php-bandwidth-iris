@@ -74,14 +74,14 @@ class DldasTest extends PHPUnit_Framework_TestCase {
             ]
         ];
 
-		$dlda = self::$dldas->create($order_data);
+		$dlda = self::$dldas->create($order_data, false);
         $json = '{"CustomerOrderId":"123","DldaTnGroups":{"DldaTnGroup":[{"TelephoneNumbers":{"TelephoneNumber":"4352154856"},"AccountType":"RESIDENTIAL","ListingType":"LISTED","ListAddress":"true","ListingName":{"FirstName":"FirstName","FirstName2":"FirstName2","LastName":"LastName","Designation":"Designation","TitleOfLineage":"TitleOfLineage","TitleOfAddress":"TitleOfAddress","TitleOfAddress2":"TitleOfAddress2","TitleOfLineageName2":"TitleOfLineageName2","TitleOfAddressName2":"TitleOfAddressName2","TitleOfAddress2Name2":"TitleOfAddress2Name2","PlaceListingAs":"PlaceListingAs"},"Address":{"City":"City","HouseNumber":"915","StreetName":"StreetName","StateCode":"StateCode","Zip":"Zip","Country":"Country","HousePrefix":"HousePrefix","HouseSuffix":"HouseSuffix","PreDirectional":"PreDirectional","StreetSuffix":"StreetSuffix","PostDirectional":"PostDirectional","AddressLine2":"AddressLine2","PlusFour":"PlusFour","AddressType":"AddressType"}}]}}';
         $this->assertEquals($json, json_encode($dlda->to_array()));
 
-        $response = $dlda->post();
+        $dlda = self::$dldas->create($order_data);
 
         $json = '{"CustomerOrderId":"5a88d16d-f8a9-45c5-a5db-137d700c6a22","OrderCreateDate":"2014-07-10T12:38:11.833Z","AccountId":"14","CreatedByUser":"jbm","OrderId":"ea9e90c2-77a4-4f82-ac47-e1c5bb1311f4","LastModifiedDate":"2014-07-10T12:38:11.833Z","ProcessingStatus":"RECEIVED","DldaTnGroups":{"DldaTnGroup":{"TelephoneNumbers":{"TelephoneNumber":["2053778335","2053865784"]},"AccountType":"BUSINESS","ListingType":"LISTED","ListAddress":"true","ListingName":{"FirstName":"Joe","LastName":"Smith"},"Address":{"City":"New York","HouseNumber":"12","StreetName":"ELM","StateCode":"NY","Zip":"10007","Country":"United States","AddressType":"Dlda"}}}}';
-        $this->assertEquals($json, json_encode($response->to_array()));
+        $this->assertEquals($json, json_encode($dlda->to_array()));
 
         $this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/dldas", self::$container[self::$index]['request']->getUri());
@@ -89,7 +89,7 @@ class DldasTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testDldasGet() {
-		$dldas = self::$dldas->get();
+		$dldas = self::$dldas->getList();
 
         $json = '{"accountId":"14","CountOfTNs":"2","userId":"team_ua","lastModifiedDate":"2014-07-07T10:06:43.427Z","OrderType":"dlda","OrderDate":"2014-07-07T10:06:43.427Z","orderId":"37a6447c-1a0b-4be9-ba89-3f5cb0aea142","OrderStatus":"FAILED"}';
         $this->assertEquals($json, json_encode($dldas[0]->to_array()));
@@ -159,12 +159,12 @@ class DldasTest extends PHPUnit_Framework_TestCase {
             ]
         ];
 
-		$dlda = self::$dldas->create($order_data);
+		$dlda = self::$dldas->create($order_data, false);
 
         $json = '{"CustomerOrderId":"123","OrderId":"7802373f-4f52-4387-bdd1-c5b74833d6e2","DldaTnGroups":{"DldaTnGroup":[{"TelephoneNumbers":{"TelephoneNumber":"4352154856"},"AccountType":"RESIDENTIAL","ListingType":"LISTED","ListAddress":"true","ListingName":{"FirstName":"FirstName","FirstName2":"FirstName2","LastName":"LastName","Designation":"Designation","TitleOfLineage":"TitleOfLineage","TitleOfAddress":"TitleOfAddress","TitleOfAddress2":"TitleOfAddress2","TitleOfLineageName2":"TitleOfLineageName2","TitleOfAddressName2":"TitleOfAddressName2","TitleOfAddress2Name2":"TitleOfAddress2Name2","PlaceListingAs":"PlaceListingAs"},"Address":{"City":"City","HouseNumber":"915","StreetName":"StreetName","StateCode":"StateCode","Zip":"Zip","Country":"Country","HousePrefix":"HousePrefix","HouseSuffix":"HouseSuffix","PreDirectional":"PreDirectional","StreetSuffix":"StreetSuffix","PostDirectional":"PostDirectional","AddressLine2":"AddressLine2","PlusFour":"PlusFour","AddressType":"AddressType"}}]}}';
         $this->assertEquals($json, json_encode($dlda->to_array()));
 
-        $dlda->put();
+        $dlda->update();
 
         $this->assertEquals("PUT", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/dldas/7802373f-4f52-4387-bdd1-c5b74833d6e2", self::$container[self::$index]['request']->getUri());
@@ -174,7 +174,7 @@ class DldasTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testLidbHistory() {
-		$dlda = self::$dldas->create(["OrderId" => "7802373f-4f52-4387-bdd1-c5b74833d6e2"]);
+		$dlda = self::$dldas->create(["OrderId" => "7802373f-4f52-4387-bdd1-c5b74833d6e2"], false);
 
         $history = $dlda->history();
 

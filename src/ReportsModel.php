@@ -20,7 +20,7 @@ final class Reports extends RestEntry {
         parent::_init($this->parent->get_rest_client(), $this->parent->get_relative_namespace());
     }
 
-    public function get($filters = Array()) {
+    public function getList($filters = Array()) {
 
         $reports = [];
 
@@ -83,7 +83,7 @@ final class Report extends RestEntry{
         $this->set_data($data['Order']);
     }
 
-    public function areCodes()
+    public function areaCodes()
     {
         $url = sprintf('%s/%s', $this->id, 'areaCodes');
         $data = parent::get($url);

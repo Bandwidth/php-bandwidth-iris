@@ -13,7 +13,7 @@ class Disconnects extends RestEntry{
         parent::_init($this->parent->get_rest_client(), $this->parent->get_relative_namespace());
     }
 
-    public function get($filters = Array())
+    public function getList($filters = Array())
     {
         $disconnects = [];
 
@@ -43,8 +43,10 @@ class Disconnects extends RestEntry{
      * @param type $data
      * @return \Iris\Disconnect
      */
-    public function create($data) {
+    public function create($data, $save = true) {
         $disconnect = new Disconnect($this, $data);
+        if($save)
+            $disconnect->save();
         return $disconnect;
     }
 
@@ -112,7 +114,10 @@ class Disconnect extends RestEntry {
     public function save() {
         $data = parent::post(null, "DisconnectTelephoneNumberOrder", $this->to_array());
         $this->OrderStatus = new OrderRequestStatus($data);
-        $this->OrderId = $this->OrderStatus->orderRequest->id;
+        if(isset($this->OrderStatus->orderRequest)) {
+            $this->OrderId = $this->OrderStatus->orderRequest->id;
+            $this->set_data($this->OrderStatus->orderRequest->to_array());
+        }
     }
 
     /**

@@ -20,7 +20,7 @@ final class Portouts extends RestEntry{
         parent::_init($this->parent->get_rest_client(), $this->parent->get_relative_namespace());
     }
 
-    public function get($filters = Array()) {
+    public function getList($filters = Array()) {
         $out = [];
 
         $portouts = parent::get('portouts', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
@@ -45,8 +45,11 @@ final class Portouts extends RestEntry{
     * @params array $data
     * @return \Iris\Portin
     */
-    public function create($data) {
-        return new Portout($this, $data);
+    public function create($data, $save = true) {
+        $portout = new Portout($this, $data);
+        if($save)
+            $portout->save();
+        return $portout;
     }
 
     public function portout($id)

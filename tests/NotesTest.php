@@ -24,7 +24,7 @@ class NotesTest extends PHPUnit_Framework_TestCase {
 
         $client = new Iris\Client(\Iris\Config::REST_LOGIN, \Iris\Config::REST_PASS, Array('url' => \Iris\Config::REST_URL, 'handler' => $handler));
         $account = new Iris\Account(9500249, $client);
-        self::$notes = $account->disconnects()->create(array("OrderId" => "b902dee1-0585-4258-becd-5c7e51ccf5e1"))->notes();
+        self::$notes = $account->disconnects()->create(array("OrderId" => "b902dee1-0585-4258-becd-5c7e51ccf5e1"), false)->notes();
     }
 
     public function testNoteCreate() {
@@ -33,8 +33,6 @@ class NotesTest extends PHPUnit_Framework_TestCase {
             "Description" => "Test Note"
         ));
 
-        $note->save();
-
         $this->assertEquals("123", $note->Id);
         $this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/disconnects/b902dee1-0585-4258-becd-5c7e51ccf5e1/notes", self::$container[self::$index]['request']->getUri());
@@ -42,7 +40,7 @@ class NotesTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testNotesGet() {
-        $notes = self::$notes->get();
+        $notes = self::$notes->getList();
 
         $this->assertEquals(1, count($notes));
         $this->assertEquals("11425", $notes[0]->Id);
@@ -52,7 +50,7 @@ class NotesTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testNotesGetTwoItems() {
-        $notes = self::$notes->get();
+        $notes = self::$notes->getList();
 
         $this->assertEquals(2, count($notes));
         $this->assertEquals("11425", $notes[0]->Id);

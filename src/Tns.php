@@ -31,7 +31,7 @@ final class Tns extends RestEntry {
         return $tns;
     }
 
-    public function get($filters = Array()) {
+    public function getList($filters = Array()) {
         if(isset($this->parent) && $this->parent instanceof \Iris\Sippeer) {
             return $this->get_from_sippeer();
         }
@@ -52,7 +52,8 @@ final class Tns extends RestEntry {
     }
 
     public function create($data) {
-        return new Tn($this, $data);
+        $tn =  new Tn($this, $data);
+        return $tn;
     }
 
     public function tn($id) {
@@ -149,7 +150,7 @@ final class Tn extends RestEntry{
         $url = sprintf("%s/%s", $this->get_id(), "sites");
         $data = parent::get($url);
         $account = new Account($this->AccountId, $this->parent->get_rest_client());
-        return $account->sites()->create($data);
+        return $account->sites()->create($data, false);
     }
 
     public function sippeer() {
@@ -159,7 +160,7 @@ final class Tn extends RestEntry{
         $url = sprintf("%s/%s", $this->get_id(), "sippeers");
         $data = parent::get($url);
         $account = new Account($this->AccountId, $this->parent->get_rest_client());
-        return $account->sites()->create(["Id" => $this->SiteId])->sippeers()->create(["PeerId" => $data["Id"], "PeerName" => $data["Name"]]);
+        return $account->sites()->create(["Id" => $this->SiteId], false)->sippeers()->create(["PeerId" => $data["Id"], "PeerName" => $data["Name"]], false);
     }
 
     public function tnreservation() {
@@ -169,7 +170,7 @@ final class Tn extends RestEntry{
         $url = sprintf("%s/%s", $this->get_id(), "tnreservation");
         $account = new Account($this->AccountId, $this->parent->get_rest_client());
         $data = parent::get($url);
-        return $account->tnsreservations()->create($data);
+        return $account->tnsreservations()->create($data, false);
     }
 
     public function set_tn_options($data) {

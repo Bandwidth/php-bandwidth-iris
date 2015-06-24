@@ -20,7 +20,7 @@ final class Lidbs extends RestEntry{
         parent::_init($this->parent->get_rest_client(), $this->parent->get_relative_namespace());
     }
 
-    public function get($filters = Array()) {
+    public function getList($filters = Array()) {
 
         $libds = [];
 
@@ -46,8 +46,11 @@ final class Lidbs extends RestEntry{
         return $lidb;
     }
 
-    public function create($data) {
-        return new Lidb($this, $data);
+    public function create($data, $save = true) {
+        $lidb = new Lidb($this, $data);
+        if($save)
+            $lidb->save();
+        return $lidb;
     }
 
     public function get_appendix() {
@@ -91,7 +94,7 @@ final class Lidb extends RestEntry{
         $this->set_data($data);
     }
 
-    public function post() {
+    public function save() {
         $data = parent::post(null, "LidbOrder", $this->to_array());
         $this->set_data($data);
     }

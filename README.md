@@ -34,7 +34,7 @@ $sites = $account->sites();
 To get stored Sites you should create $sites object and execute get() method.
 
 ```PHP
-$items = $sites->get(); // Array(Site1, Site2)
+$items = $sites->getList(); // Array(Site1, Site2)
 ```
 
 To reflect object structure:
@@ -55,13 +55,13 @@ $account->availableNpaNxx(["state" => "CA"]);
 ## Cities
 ```PHP
 $cities = new \Iris\Cities($client);
-$items = $cities->get(["state" => "NC"]);
+$items = $cities->getList(["state" => "NC"]);
 ```
 
 ## Covered Rate Centers
 ```PHP
 $rcs = new Iris\CoveredRateCenters($client);
-$rateCenters = $rcs->get(["page" => 1, "size" => 10 ]);
+$rateCenters = $rcs->getList(["page" => 1, "size" => 10 ]);
 ```
 
 ## Disconnected Numbers
@@ -82,23 +82,22 @@ $disconnect = $account->disconnects()->create([
             "TelephoneNumber" => [ "9192755378", "9192755703" ]
         ]
     ]
-]];
+]]);
 ```
 
 ### Get Disconnect
 ```PHP
-$disconnect = $account->disconnects()->create(["OrderId" => "b902dee1-0585-4258-becd-5c7e51ccf5e1"]);
-$disconnect->get(true); // tnDetails: true
+$disconnect = $account->disconnects()->disconnect("b902dee1-0585-4258-becd-5c7e51ccf5e1", true); // tnDetails: true
 ```
 
 ### Add Note to Disconnect
 ```PHP
-$disconnect->notes()->create([ "UserId" => "byo_dev", "Description" => "Test Note"])->save();
+$disconnect->notes()->create([ "UserId" => "byo_dev", "Description" => "Test Note"]);
 ```
 
 ### Get Notes for Disconnect
 ```PHP
-$items = $disconnect->notes()->get();
+$items = $disconnect->notes()->getList();
 ```
 
 ## Dlda
@@ -151,7 +150,6 @@ $order_data = [
 ];
 
 $dlda = $account->dldas()->create($order_data);
-$dlda->post();
 ```
 
 ### Get Dlda
@@ -166,7 +164,7 @@ $dlda->history();
 
 ### List Dldas
 ```PHP
-$account->dldas()->get(["telephoneNumber" => "9195551212"]);
+$account->dldas()->getList(["telephoneNumber" => "9195551212"]);
 ```
 
 ## In Service Numbers
@@ -204,7 +202,6 @@ $order_data = [
 ];
 
 $lidb = $account->lidbs()->create($order_data);
-$lidb->post();
 ```
 ### Get Lidb
 ```PHP
@@ -212,7 +209,7 @@ $lidb = $account->lidbs()->lidb("7802373f-4f52-4387-bdd1-c5b74833d6e2");
 ```
 ### List Lidbs
 ```PHP
-$lidbs = $account->lidbs()->get(["lastModifiedAfter" => "mm-dd-yy", "telephoneNumber"=> "888"]);
+$lidbs = $account->lidbs()->getList(["lastModifiedAfter" => "mm-dd-yy", "telephoneNumber"=> "888"]);
 ```
 
 ## LNP Checker
@@ -234,8 +231,6 @@ $order = $account->orders()->create([
         ]
     ]
 ]);
-
-$order->post();
 ```
 ### Get Order
 ```PHP
@@ -244,17 +239,17 @@ $order = $response->Order;
 ```
 ### List Orders
 ```PHP
-$items = $account->orders()->get();
+$items = $account->orders()->getList();
 ```
 
 ### Add note to order
 ```PHP
-$order->notes()->create([ "UserId" => "byo_dev", "Description" => "Test Note"])->save();
+$order->notes()->create([ "UserId" => "byo_dev", "Description" => "Test Note"]);
 ```
 
 ### Get all Tns for an order
 ```PHP
-$order->tns()->get();
+$order->tns()->getList();
 ```
 ## Port Ins
 ### Create PortIn
@@ -280,25 +275,19 @@ $portin = $account->portins()->create(array(
     "SiteId" => "365",
     "Triggered" => "false"
 ));
-
-$portin->save();
 ```
 
 ## Get PortIn
 ```PHP
-$portin = $account->portins()->create(array(
-    "OrderId" => "d28b36f7-fa96-49eb-9556-a40fca49f7c6"
-));
-
-$portin->get();
+$portin = $account->portins()->portin("d28b36f7-fa96-49eb-9556-a40fca49f7c6"));
 ```
 ## List PortIns
 ```PHP
-$portins = $account->portins()->get(["pon" => "a pon" ]);
+$portins = $account->portins()->getList(["pon" => "a pon" ]);
 ```
 ### PortIn Instance methods
 ```PHP
-$portin->save();
+$portin->update();
 $portin->delete();
 $portin->get_activation_status();
 $status = $portin->set_activation_status([
@@ -306,13 +295,12 @@ $status = $portin->set_activation_status([
 ]);
 $portin->history();
 $portin->totals();
-$portin->notes()->get();
+$portin->notes()->getList();
 ```
 
 ### PortIn File Management
 ```PHP
-
-$portin->get_loas(true); // metadata = true
+$portin->list_loas(true); // metadata = true
 $portin->loas_send("./1.txt");
 $portin->loas_update("./1.txt", "1.txt");
 $portin->loas_delete("1.txt");
@@ -329,7 +317,7 @@ $portin->delete_metadata('test.txt');
 ### List Ratecenters
 ```PHP
 $rc = new \Iris\RateCenter($client);
-$cities = $rc->get(["state" => "CA", "available" => "true"]);
+$cities = $rc->getList(["state" => "CA", "available" => "true"]);
 ```
 
 ## SIP Peers
@@ -358,8 +346,6 @@ $sippeer = $account->sippeers()->create(array(
             )
         )
 ));
-
-$sippeer->save();
 ```
 ### Get SIP Peer
 ```PHP
@@ -367,7 +353,7 @@ $sippeer = $account->sippeers->sippeer("500651");
 ```
 ### List SIP Peers
 ```PHP
-$sippeers = $account->sippeers()->get();
+$sippeers = $account->sippeers()->getList();
 ```
 ### Delete SIP Peer
 ```PHP
@@ -375,17 +361,15 @@ $sippeer->delete();
 ```
 ### Move TNs
 ```PHP
-$sippeer->movetns(new \Iris\Phones([
-    "FullNumber" => [ "9192000046", "9192000047", "9192000048" ]
-]));
+$sippeer->movetns([ "FullNumber" => [ "9192000046", "9192000047", "9192000048" ]]);
 ```
 ### Get TNs
 ```PHP
-$tns = $sippeer->tns()->get();
+$tns = $sippeer->tns()->getList();
 ```
 ### Get TN
 ```PHP
-$tn = $sippeer->tns()->create(["FullNumber" => "8183386251"])->get();
+$tn = $sippeer->tns()->tn("8183386251");
 ```
 
 ### Total TNs
@@ -395,7 +379,7 @@ $count = $sippeer->totaltns();
 
 ### Set TN Options
 ```PHP
-$sippeer->tns()->create(["FullNumber" => "8183386251"])->set_tn_options([
+$sippeer->tns()->tn("8183386251")->set_tn_options([
     "FullNumber" => "8183386251",
     "CallForward" => "9194394706",
     "RewriteUser" => "JohnDoe",
@@ -417,14 +401,12 @@ $site = $account->sites()->create(
             "StreetName" => "Avenue",
             "StateCode" => "NC"
     )));
-
-$site->save();
 ```
 
 ### Updating a Site
 ```PHP
 $site->Name = "New Name";
-$site->save();
+$site->update();
 ```
 ### Deleting a Site
 ```PHP
@@ -432,12 +414,12 @@ $site->delete();
 ```
 ### Listing All Sites
 ```PHP
-$sites = $account->sites()->get();
+$sites = $account->sites()->getList();
 ```
 
 ### Orders of a site
 ```PHP
-$site->orders()->get(["status" => "disabled"]);
+$site->orders()->getList(["status" => "disabled"]);
 ```
 ### Total TNs of a site
 ```PHP
@@ -445,7 +427,7 @@ $site->totaltns();
 ```
 ### Portins of a site
 ```PHP
-$site->portins()->get(["status" => "disabled" ]);
+$site->portins()->getList(["status" => "disabled" ]);
 ```
 ### Sippeers
 ```PHP
@@ -464,8 +446,6 @@ $subscription = $account->subscriptions()->create([
         "DigestRequested" => "DAILY"
     ]
 ]);
-
-$subscription->save();
 ```
 ### Get Subscription
 ```PHP
@@ -473,12 +453,12 @@ $subscription = $account->subscriptions()->subscription($id);
 ```
 ### List Subscriptions
 ```PHP
-$account->subscriptions()->get(["orderType" => "portins"]);
+$account->subscriptions()->getList(["orderType" => "portins"]);
 ```
 ### Update
 ```PHP
 $subscription->OrderType = "portins";
-$subscription->save();
+$subscription->update();
 ```
 ### DELETE
 ```PHP
@@ -494,11 +474,11 @@ $tn = $tns->tn($id);
 ### List TNs
 ```PHP
 $tns = new Iris\Tns(null, $client);
-$tns_items = $tns->get(["page" => 1, "size" => 10 ]);
+$tns_items = $tns->getList(["page" => 1, "size" => 10 ]);
 ```
 ### TN Instance Methods
 ```PHP
-$tn = $tns->create([ "FullNumber" => "7576768750"]);
+$tn = $tns->tn("7576768750");
 $site = $tn->site();
 $sippeer = $tn->sippeer();
 $tnreservation = $tn->tnreservation();
@@ -511,7 +491,6 @@ $lca = $tn->lca();
 ### Create TN Reservation
 ```PHP
 $resertation = $account->tnsreservations()->create(["ReservedTn" => "2512027430"]);
-$resertation->send();
 ```
 ### Get TN Reservation
 ```PHP
@@ -519,6 +498,6 @@ $resertation = $account->tnsreservations()->tnsreservation("0099ff73-da96-4303-8
 ```
 ### Delete TN Reservation
 ```PHP
-$resertation = $account->tnsreservations()->create(["ReservationId" => "0099ff73-da96-4303-8a0a-00ff316c07aa"]);
+$resertation = $account->tnsreservations()->tnsreservation("0099ff73-da96-4303-8a0a-00ff316c07aa");
 $resertation->delete();
 ```

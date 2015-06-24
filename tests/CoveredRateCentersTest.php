@@ -25,7 +25,7 @@ class CoveredRateCenterTest extends PHPUnit_Framework_TestCase {
     }
 
 	public function testTnsGet() {
-		$rcs = self::$rcs->get(["page" => 1, "size" => 10 ]);
+		$rcs = self::$rcs->getList(["page" => 1, "size" => 10 ]);
 
         $this->assertEquals(2, count($rcs));
 

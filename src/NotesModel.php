@@ -15,7 +15,7 @@ class Notes extends RestEntry {
     * Get Notes
     * @return array Array of Notes
     */
-    public function get() {
+    public function getList() {
         $out = [];
 
         $data = parent::get('notes');
@@ -32,8 +32,10 @@ class Notes extends RestEntry {
         return $out;
     }
 
-    public function create($data) {
+    public function create($data, $save = true) {
         $note = new Note($this, $data);
+        if($save)
+            $note->save();
         return $note;
     }
 

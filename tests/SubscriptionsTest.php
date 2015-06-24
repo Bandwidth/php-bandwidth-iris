@@ -36,12 +36,19 @@ class SubscriptionsTest extends PHPUnit_Framework_TestCase {
                 "Email" => "test@test.com",
                 "DigestRequested" => "DAILY"
             ]
-        ]);
+        ], false);
 
         $json = '{"OrderType":"portins","OrderId":"98939562-90b0-40e9-8335-5526432d9741","EmailSubscription":{"Email":"test@test.com","DigestRequested":"DAILY"}}';
 		$this->assertEquals($json, json_encode($subscription->to_array()));
 
-        $subscription->save();
+        $subscription = self::$subscriptions->create([
+            "OrderType" => "portins",
+            "OrderId" => "98939562-90b0-40e9-8335-5526432d9741",
+            "EmailSubscription" => [
+                "Email" => "test@test.com",
+                "DigestRequested" => "DAILY"
+            ]
+        ]);
 
         $this->assertEquals("2489", $subscription->get_id());
         $this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
@@ -50,7 +57,7 @@ class SubscriptionsTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testSubsGet() {
-		$subscriptions = self::$subscriptions->get(["orderType" => "portins"]);
+		$subscriptions = self::$subscriptions->getList(["orderType" => "portins"]);
 
         $this->assertEquals(1, count($subscriptions));
         $this->assertEquals(1, $subscriptions[0]->get_id());
@@ -77,12 +84,12 @@ class SubscriptionsTest extends PHPUnit_Framework_TestCase {
                 "Email" => "test@test.com",
                 "DigestRequested" => "DAILY"
             ]
-        ]);
+        ], false);
 
         $json = '{"SubscriptionId":"1c59e661-8c90-4cb5-aab1-00547ea45ecb","OrderType":"portins","OrderId":"98939562-90b0-40e9-8335-5526432d9741","EmailSubscription":{"Email":"test@test.com","DigestRequested":"DAILY"}}';
 		$this->assertEquals($json, json_encode($subscription->to_array()));
 
-        $subscription->save();
+        $subscription->update();
 
         $this->assertEquals("PUT", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/subscriptions/1c59e661-8c90-4cb5-aab1-00547ea45ecb", self::$container[self::$index]['request']->getUri());
@@ -92,7 +99,7 @@ class SubscriptionsTest extends PHPUnit_Framework_TestCase {
     public function testSubDelete() {
         $subscription = self::$subscriptions->create([
             "SubscriptionId" => "1c59e661-8c90-4cb5-aab1-00547ea45ecb"
-        ]);
+        ], false);
 
         $subscription->delete();
 
