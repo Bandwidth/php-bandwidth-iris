@@ -11,7 +11,7 @@ final class RateCenter extends RestEntry{
 
     public function getList($filters = Array()) {
         $rcs = [];
-        $data = parent::get('rateCenters', $filters, Array(), Array("state"));
+        $data = parent::_get('rateCenters', $filters, Array(), Array("state"));
 
         if($data['RateCenters']) {
             $items =  $data['RateCenters']['RateCenter'];

@@ -24,7 +24,7 @@ final class Lidbs extends RestEntry{
 
         $libds = [];
 
-        $data = parent::get('lidbs', $filters);
+        $data = parent::_get('lidbs', $filters);
 
         if($data['ListOrderIdUserIdDate'] && $data['ListOrderIdUserIdDate']['TotalCount'] > 0) {
             $items = $data['ListOrderIdUserIdDate']['OrderIdUserIdDate'];
@@ -90,7 +90,7 @@ final class Lidb extends RestEntry{
     }
 
     public function get() {
-        $data = parent::get($this->get_id());
+        $data = parent::_get($this->get_id());
         $this->set_data($data);
     }
 

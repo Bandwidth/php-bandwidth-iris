@@ -11,7 +11,7 @@ class Sippeers extends RestEntry {
     public function getList($filters = Array()) {
         $sippeers = [];
 
-        $data = parent::get('sippeers');
+        $data = parent::_get('sippeers');
 
         if(isset($data['SipPeers']) && isset($data['SipPeers']['SipPeer'])) {
             if($this->is_assoc($data['SipPeers']['SipPeer']))
@@ -76,13 +76,13 @@ class Sippeer extends RestEntry {
     }
 
     public function get() {
-        $data = parent::get($this->get_id());
+        $data = parent::_get($this->get_id());
         $this->set_data($data['SipPeer']);
     }
 
     public function totaltns() {
         $url = sprintf('%s/%s', $this->get_id(), "totaltns");
-        $data = parent::get($url);
+        $data = parent::_get($url);
         return $data['SipPeerTelephoneNumbersCounts']['SipPeerTelephoneNumbersCount'];
     }
 
@@ -97,7 +97,7 @@ class Sippeer extends RestEntry {
     }
 
     public function delete() {
-        parent::delete($this->get_id());
+        parent::_delete($this->get_id());
     }
 
     public function movetns($data) {

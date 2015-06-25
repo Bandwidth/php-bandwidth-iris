@@ -61,13 +61,13 @@ final class TnsReservation extends RestEntry{
     }
 
     public function get() {
-        $data = parent::get($this->get_id());
+        $data = parent::_get($this->get_id());
         $this->set_data($data['Reservation']);
         return $this;
     }
 
     public function delete() {
-        parent::delete($this->get_id());
+        parent::_delete($this->get_id());
     }
 
     public function get_id() {

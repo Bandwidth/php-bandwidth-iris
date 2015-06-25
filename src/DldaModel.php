@@ -24,7 +24,7 @@ final class Dldas extends RestEntry{
 
         $dldas = [];
 
-        $data = parent::get('dldas');
+        $data = parent::_get('dldas');
 
         if($data['ListOrderIdUserIdDate'] && $data['ListOrderIdUserIdDate']['TotalCount']) {
             $items = $data['ListOrderIdUserIdDate']['OrderIdUserIdDate'];
@@ -96,7 +96,7 @@ final class Dlda extends RestEntry{
     }
 
     public function get() {
-        $data = parent::get($this->get_id());
+        $data = parent::_get($this->get_id());
         $this->set_data($data['DldaOrder']);
     }
 
@@ -111,7 +111,7 @@ final class Dlda extends RestEntry{
 
     public function history() {
         $url = sprintf("%s/%s", $this->get_id(), "history");
-        $data = parent::get($url);
+        $data = parent::_get($url);
         return new History($data);
     }
 

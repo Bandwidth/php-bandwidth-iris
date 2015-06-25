@@ -16,7 +16,7 @@ final class Tns extends RestEntry {
 
     public function get_from_sippeer() {
         $tns = [];
-        $data = parent::get('tns');
+        $data = parent::_get('tns');
 
         if($data['SipPeerTelephoneNumbers'] && $data['SipPeerTelephoneNumbers']["SipPeerTelephoneNumber"]) {
             $items =  $data['SipPeerTelephoneNumbers']["SipPeerTelephoneNumber"];
@@ -36,7 +36,7 @@ final class Tns extends RestEntry {
             return $this->get_from_sippeer();
         }
         $tns = [];
-        $data = parent::get('tns', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
+        $data = parent::_get('tns', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
 
         if(isset($data['TelephoneNumbers']) && isset($data['TelephoneNumbers']["TelephoneNumber"])) {
             $items =  $data['TelephoneNumbers']["TelephoneNumber"];
@@ -130,7 +130,7 @@ final class Tn extends RestEntry{
     }
 
     public function get() {
-        $data = parent::get($this->get_id());
+        $data = parent::_get($this->get_id());
         if(isset($data["SipPeerTelephoneNumber"]))
             $data = $data['SipPeerTelephoneNumber'];
         $this->set_data($data);
@@ -138,7 +138,7 @@ final class Tn extends RestEntry{
 
     public function tndetails() {
         $url = sprintf("%s/%s", $this->get_id(), "tndetails");
-        $data = parent::get($url);
+        $data = parent::_get($url);
         $data = $data['TelephoneNumberDetails'];
         $this->set_data($data);
     }
@@ -148,7 +148,7 @@ final class Tn extends RestEntry{
             $this->get();
 
         $url = sprintf("%s/%s", $this->get_id(), "sites");
-        $data = parent::get($url);
+        $data = parent::_get($url);
         $account = new Account($this->AccountId, $this->parent->get_rest_client());
         return $account->sites()->create($data, false);
     }
@@ -158,7 +158,7 @@ final class Tn extends RestEntry{
             $this->get();
 
         $url = sprintf("%s/%s", $this->get_id(), "sippeers");
-        $data = parent::get($url);
+        $data = parent::_get($url);
         $account = new Account($this->AccountId, $this->parent->get_rest_client());
         return $account->sites()->create(["Id" => $this->SiteId], false)->sippeers()->create(["PeerId" => $data["Id"], "PeerName" => $data["Name"]], false);
     }
@@ -169,7 +169,7 @@ final class Tn extends RestEntry{
 
         $url = sprintf("%s/%s", $this->get_id(), "tnreservation");
         $account = new Account($this->AccountId, $this->parent->get_rest_client());
-        $data = parent::get($url);
+        $data = parent::_get($url);
         return $account->tnsreservations()->create($data, false);
     }
 
@@ -183,7 +183,7 @@ final class Tn extends RestEntry{
 
     public function ratecenter() {
         $url = sprintf("%s/%s", $this->get_id(), "ratecenter");
-        $data = parent::get($url);
+        $data = parent::_get($url);
         if($data['TelephoneNumberDetails']) {
             return new TelephoneNumberDetail($data['TelephoneNumberDetails']);
         }
@@ -191,7 +191,7 @@ final class Tn extends RestEntry{
     }
     public function lata() {
         $url = sprintf("%s/%s", $this->get_id(), "lata");
-        $data = parent::get($url);
+        $data = parent::_get($url);
         if($data['TelephoneNumberDetails']) {
             return new TelephoneNumberDetail($data['TelephoneNumberDetails']);
         }
@@ -200,7 +200,7 @@ final class Tn extends RestEntry{
 
     public function lca() {
         $url = sprintf("%s/%s", $this->get_id(), "lca");
-        $data = parent::get($url);
+        $data = parent::_get($url);
         return new LcaSearch($data);
     }
 

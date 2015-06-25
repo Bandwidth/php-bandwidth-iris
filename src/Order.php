@@ -24,7 +24,7 @@ final class Orders extends RestEntry{
 
         $orders = [];
 
-        $data = parent::get('orders', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
+        $data = parent::_get('orders', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
 
         if(isset($data['ListOrderIdUserIdDate']) && isset($data['ListOrderIdUserIdDate']['OrderIdUserIdDate'])) {
             $items = $data['ListOrderIdUserIdDate']['OrderIdUserIdDate'];
@@ -110,7 +110,7 @@ final class Order extends RestEntry{
             $options = [];
         }
 
-        $data = parent::get($this->get_id(), $options);
+        $data = parent::_get($this->get_id(), $options);
         $response = new OrderResponse($data);
         if(isset($data['Order']))
             $this->set_data($data['Order']);

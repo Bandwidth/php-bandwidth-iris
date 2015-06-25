@@ -24,7 +24,7 @@ final class Reports extends RestEntry {
 
         $reports = [];
 
-        $data = parent::get('reports', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
+        $data = parent::_get('reports', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
         print_r($data); exit;
         /* TODO:  correct struct */
         if($data['ListOrderIdUserIdDate'] && $data['ListOrderIdUserIdDate']['TotalCount']) {
@@ -79,14 +79,14 @@ final class Report extends RestEntry{
         if(is_null($this->id))
             throw new \Exception('Id should be provided');
 
-        $data = parent::get($this->id);
+        $data = parent::_get($this->id);
         $this->set_data($data['Order']);
     }
 
     public function areaCodes()
     {
         $url = sprintf('%s/%s', $this->id, 'areaCodes');
-        $data = parent::get($url);
+        $data = parent::_get($url);
         return $data;
     }
 
@@ -94,7 +94,7 @@ final class Report extends RestEntry{
     {
         $rep_instances = [];
 
-        $data = parent::get('reports/{$this->id}/instances', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
+        $data = parent::_get('reports/{$this->id}/instances', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
 
         if($data['ListOrderIdUserIdDate'] && $data['ListOrderIdUserIdDate']['TotalCount']) {
             foreach($data['ListOrderIdUserIdDate']['OrderIdUserIdDate'] as $instance) {
@@ -138,7 +138,7 @@ final class ReportInstance extends RestEntry{
         if(is_null($this->id))
             throw new \Exception('Id should be provided');
 
-        $data = parent::get($this->id);
+        $data = parent::_get($this->id);
         $this->set_data($data['Order']);
     }
 }

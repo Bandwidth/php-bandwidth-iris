@@ -21,13 +21,13 @@ class Account extends RestEntry {
 
     public function inserviceNumbers($filters = array()) {
         $url = sprintf('%s/%s', $this->account_id, 'inserviceNumbers');
-        $response = parent::get($url, $filters);
+        $response = parent::_get($url, $filters);
         return new TelephoneNumbers($response['TelephoneNumbers']);
     }
 
     public function inserviceNumbers_totals($filters = array()) {
         $url = sprintf('%s/%s/%s', $this->account_id, 'inserviceNumbers', 'totals');
-        $response = parent::get($url, $filters);
+        $response = parent::_get($url, $filters);
         return $response['Count'];
     }
 
@@ -51,13 +51,13 @@ class Account extends RestEntry {
 
     public function disnumbers($filters = array()) {
         $url = sprintf('%s/%s', $this->account_id, 'discNumbers');
-        $response = parent::get($url, $filters);
+        $response = parent::_get($url, $filters);
         return new TelephoneNumbers($response['TelephoneNumbers']);
     }
 
     public function disnumbers_totals($filters = array()) {
         $url = sprintf('%s/%s/%s', $this->account_id, 'discNumbers', 'totals');
-        $response = parent::get($url, $filters);
+        $response = parent::_get($url, $filters);
         return $response['Count'];
     }
 
@@ -121,7 +121,7 @@ class Account extends RestEntry {
      */
     public function get($url, $options=Array(), $defaults = Array(), $required = Array())
     {
-        $data = parent::get($this->account_id);
+        $data = parent::_get($this->account_id);
         return $data;
     }
 
@@ -141,7 +141,7 @@ class Account extends RestEntry {
 
     public function availableNpaNxx($filters=Array()) {
         $url = sprintf('%s/%s', $this->account_id, 'availableNpaNxx');
-        $data = parent::get($url, $filters);
+        $data = parent::_get($url, $filters);
         $out = [];
 
         if($data['AvailableNpaNxxList']) {
@@ -169,7 +169,7 @@ class Account extends RestEntry {
         }
 
         $url = sprintf('%s/%s', $this->account_id, 'availableNumbers');
-        $data = parent::get($url, $filters);
+        $data = parent::_get($url, $filters);
         $count = $data['ResultCount'];
 
         $types = [
@@ -199,13 +199,13 @@ class Account extends RestEntry {
 
     public function serviceNumbers($filters=Array()){
         $url = sprintf('%s/%s', $this->account_id, 'serviceNumbers');
-        $data = parent::get($url, $filters);
+        $data = parent::_get($url, $filters);
         return $data;
     }
 
     public function products($filters=Array()){
         $url = sprintf('%s/%s', $this->account_id, 'products');
-        $data = parent::get($url, $filters);
+        $data = parent::_get($url, $filters);
         return $data;
     }
 

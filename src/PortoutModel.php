@@ -23,7 +23,7 @@ final class Portouts extends RestEntry{
     public function getList($filters = Array()) {
         $out = [];
 
-        $portouts = parent::get('portouts', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
+        $portouts = parent::_get('portouts', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
 
         if($portouts['lnpPortInfoForGivenStatus']) {
             $items = $portouts['lnpPortInfoForGivenStatus'];
@@ -113,13 +113,13 @@ class Portout extends RestEntry {
     }
 
     public function get() {
-        $data = parent::get($this->get_id());
+        $data = parent::_get($this->get_id());
         $this->set_data($data);
     }
 
     public function totals($filters = array()) {
         $url = sprintf('%s/%s', $this->get_id(), 'totals');
-        $response = parent::get($url, $filters);
+        $response = parent::_get($url, $filters);
         return $response['Count'];
     }
 

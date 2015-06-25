@@ -11,7 +11,7 @@ final class CoveredRateCenters extends RestEntry{
 
     public function getList($filters = Array()) {
         $rcs = [];
-        $data = parent::get('coveredRateCenters', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
+        $data = parent::_get('coveredRateCenters', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
 
         if($data['CoveredRateCenter']) {
             $items =  $data['CoveredRateCenter'];
@@ -64,7 +64,7 @@ final class CoveredRateCenter extends RestEntry{
     }
 
     public function get() {
-        $data = parent::get($this->get_id());
+        $data = parent::_get($this->get_id());
         $data = $data['CoveredRateCenter'];
         $this->set_data($data);
     }

@@ -24,7 +24,7 @@ final class Subscriptions extends RestEntry{
 
         $subscriptions = [];
 
-        $data = parent::get('subscriptions', $filters);
+        $data = parent::_get('subscriptions', $filters);
 
         if($data['Subscriptions'] && $data['Subscriptions']['Subscription']) {
             $items = $data['Subscriptions']['Subscription'];
@@ -77,11 +77,11 @@ final class Subscription extends RestEntry{
     }
 
     public function get() {
-        $data = parent::get($this->get_id());
+        $data = parent::_get($this->get_id());
         $this->set_data($data['Subscriptions']['Subscription']);
     }
     public function delete() {
-        parent::delete($this->get_id());
+        parent::_delete($this->get_id());
     }
 
     public function save() {

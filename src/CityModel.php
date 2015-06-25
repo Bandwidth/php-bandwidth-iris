@@ -11,7 +11,7 @@ final class Cities extends RestEntry{
 
     public function getList($filters = Array()) {
         $cities = [];
-        $data = parent::get('cities', $filters, Array(), Array("state"));
+        $data = parent::_get('cities', $filters, Array(), Array("state"));
 
         if($data['Cities']) {
             $items =  $data['Cities']['City'];

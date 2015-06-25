@@ -24,7 +24,7 @@ final class Lsrorders extends RestEntry{
 
         $orders = [];
 
-        $data = parent::get('lsrorders', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
+        $data = parent::_get('lsrorders', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
         print_r($data); exit;
         if($data['ListOrderIdUserIdDate'] && $data['ListOrderIdUserIdDate']['TotalCount']) {
             foreach($data['ListOrderIdUserIdDate']['OrderIdUserIdDate'] as $order) {
@@ -86,7 +86,7 @@ final class Lsrorder extends RestEntry{
         if(is_null($this->id))
             throw new \Exception('Id should be provided');
 
-        $data = parent::get($this->id);
+        $data = parent::_get($this->id);
         $this->set_data($data['Order']);
     }
 
@@ -103,14 +103,14 @@ final class Lsrorder extends RestEntry{
     public function history()
     {
         $url = sprintf('%s/%s', $this->id, 'history');
-        $data = parent::get($url);
+        $data = parent::_get($url);
         return $data;
     }
 
     public function notes()
     {
         $url = sprintf('%s/%s', $this->id, 'notes');
-        $data = parent::get($url);
+        $data = parent::_get($url);
         return $data;
     }
 }

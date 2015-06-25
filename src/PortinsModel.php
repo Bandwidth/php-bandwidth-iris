@@ -26,7 +26,7 @@ class Portins extends RestEntry {
     public function getList($filters = Array()) {
         $out = [];
 
-        $portins = parent::get('portins', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
+        $portins = parent::_get('portins', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
 
         if($portins['lnpPortInfoForGivenStatus']) {
             $items = $portins['lnpPortInfoForGivenStatus'];
@@ -58,7 +58,7 @@ class Portins extends RestEntry {
     public function totals()
     {
         $url = sprintf('%s/%s', 'portins', 'totals');
-        $data = parent::get($url);
+        $data = parent::_get($url);
         return $data;
     }
 
@@ -125,7 +125,7 @@ class Portin extends RestEntry {
     }
 
     public function delete() {
-        parent::delete($this->get_id());
+        parent::_delete($this->get_id());
     }
 
     public function loas_send($file, $headers) {
@@ -142,7 +142,7 @@ class Portin extends RestEntry {
 
     public function loas_delete($filename) {
         $url = sprintf('%s/%s/%s', $this->get_id(), 'loas', $filename);
-        parent::delete($url);
+        parent::_delete($url);
     }
 
     public function list_loas($metadata) {
@@ -153,12 +153,12 @@ class Portin extends RestEntry {
             $query['metadata'] = 'true';
         }
 
-        return (object)parent::get($url, $query);
+        return (object)parent::_get($url, $query);
     }
 
     public function get_metadata($filename) {
         $url = sprintf('%s/%s/%s/metadata', $this->get_id(), 'loas', $filename);
-        $data = parent::get($url);
+        $data = parent::_get($url);
         return new FileMetaData($data);
     }
 
@@ -170,12 +170,12 @@ class Portin extends RestEntry {
 
     public function delete_metadata($filename) {
         $url = sprintf('%s/%s/%s/metadata', $this->get_id(), 'loas', $filename);
-        parent::delete($url);
+        parent::_delete($url);
     }
 
     public function get_activation_status() {
         $url = sprintf('%s/%s', $this->get_id(), 'activationStatus');
-        $data = parent::get($url);
+        $data = parent::_get($url);
         return new ActivationStatus($data['ActivationStatus']);
     }
 
@@ -187,19 +187,19 @@ class Portin extends RestEntry {
     }
 
     public function get() {
-        $data = parent::get($this->get_id());
+        $data = parent::_get($this->get_id());
         $this->set_data($data);
     }
 
     public function history() {
         $url = sprintf("%s/%s", $this->get_id(), "history");
-        $data = parent::get($url);
+        $data = parent::_get($url);
         return new History($data);
     }
 
     public function totals($filters = array()) {
         $url = sprintf('%s/%s', $this->get_id(), 'totals');
-        $response = parent::get($url, $filters);
+        $response = parent::_get($url, $filters);
         return $response['Count'];
     }
 

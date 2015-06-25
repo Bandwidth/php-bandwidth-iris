@@ -18,7 +18,7 @@ final class Users extends RestEntry{
     {
         $out = [];
         $url = sprintf('%s', 'users');
-        $data = parent::get($url);
+        $data = parent::_get($url);
 
         if(isset($data['Users']) && isset($data['Users']['User'])) {
             $items = $data['Users']['User'];

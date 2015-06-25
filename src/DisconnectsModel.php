@@ -17,7 +17,7 @@ class Disconnects extends RestEntry{
     {
         $disconnects = [];
 
-        $data = parent::get('disconnects', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
+        $data = parent::_get('disconnects', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
 
         if(isset($data['ListOrderIdUserIdDate']) && isset($data['ListOrderIdUserIdDate']['OrderIdUserIdDate'])) {
             $items = $data['ListOrderIdUserIdDate']['OrderIdUserIdDate'];
@@ -100,7 +100,7 @@ class Disconnect extends RestEntry {
         } else {
             $options = [];
         }
-        $data = parent::get($this->get_id(), $options);
+        $data = parent::_get($this->get_id(), $options);
         $response = new OrderResponse($data);
         if(isset($data['orderRequest']))
             $this->set_data($data['orderRequest']);

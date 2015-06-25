@@ -18,7 +18,7 @@ class Notes extends RestEntry {
     public function getList() {
         $out = [];
 
-        $data = parent::get('notes');
+        $data = parent::_get('notes');
 
         if(isset($data) && isset($data['Note'])) {
             $notes = $data['Note'];

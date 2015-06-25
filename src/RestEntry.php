@@ -41,7 +41,7 @@ abstract class RestEntry{
         return sprintf('%s/%s', $this->namespace, $path);
     }
 
-    protected function get($url, $options=Array(), $defaults = Array(), $required = Array())
+    protected function _get($url, $options=Array(), $defaults = Array(), $required = Array())
     {
         $url = $this->get_url($url);
         $this->set_defaults($options, $defaults);
@@ -80,7 +80,7 @@ abstract class RestEntry{
         return $this->client->put($url, $base_node, $data);
     }
 
-    protected function delete($url)
+    protected function _delete($url)
     {
         $url = $this->get_url($url);
         $this->client->delete($url);
