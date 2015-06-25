@@ -137,11 +137,6 @@ final class Client extends iClient {
         $full_url = sprintf('%s%s', $this->url, $url);
 
         try {
-            if(CONFIG::DEBUG) {
-                echo "GET: ".$full_url."\n";
-                echo "GET OPTIONS: ".json_encode($options)."\n";
-            }
-
             $response = $this->client->get($full_url, ['query' => $options, 'auth' =>  [$this->login, $this->password]]);
             $response_body_str = '';
             $string_or_stream_body = $response->getBody(true);
@@ -166,13 +161,6 @@ final class Client extends iClient {
         $xml = new \SimpleXMLElement($xml_base_str);
 
         $this->array2xml($data, $xml);
-
-        if(CONFIG::DEBUG) {
-            echo "**** send ****\n";
-            echo $xml->asXML()."\n";
-            echo $method.": ".$full_url."\n";
-            echo "**** *** ****\n";
-        }
 
         try {
             $response = $this->client->{$method}(
@@ -220,11 +208,6 @@ final class Client extends iClient {
     {
         $url = $this->prepare_url($url);
         $full_url = sprintf('%s%s', $this->url, $url);
-
-        if(CONFIG::DEBUG) {
-            echo "RAW PUT: ".$full_url."\n";
-            echo "RAW BODY: ".$body."\n";
-        }
         return $this->client->put($full_url, ['body' => $body, 'headers' => $headers]);
     }
 
@@ -243,10 +226,6 @@ final class Client extends iClient {
     {
         $url = $this->prepare_url($url);
         $full_url = sprintf('%s%s', $this->url, $url);
-
-        if(CONFIG::DEBUG) {
-            echo "delete: ".$full_url."\n";
-        }
 
         try {
             $this->client->delete($full_url, ['auth' =>  [$this->login, $this->password]]);

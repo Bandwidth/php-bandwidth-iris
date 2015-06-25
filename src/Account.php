@@ -183,7 +183,8 @@ class Account extends RestEntry {
         }
     }
 
-    public function lnpChecker($data, $fullcheck = false) {
+    public function lnpChecker($array, $fullcheck = false) {
+        $data = ["TnList" => ["Tn" => $array ]];
         $obj = new \Iris\NumberPortabilityRequest($data);
         if($fullcheck !== false && in_array($fullcheck, ["true", "false", "onnetportability", "offnetportability"])) {
             $f = "?fullcheck=$fullcheck";

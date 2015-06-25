@@ -215,7 +215,7 @@ $lidbs = $account->lidbs()->getList(["lastModifiedAfter" => "mm-dd-yy", "telepho
 ## LNP Checker
 ### Check LNP
 ```PHP
-$account->lnpChecker(["TnList" => ["Tn" => ["4109255199", "9196190594"]]], "true");
+$account->lnpChecker(["4109255199", "9196190594"], "true");
 ```
 
 ## Orders

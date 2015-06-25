@@ -91,7 +91,7 @@ final class Order extends RestEntry{
         "TelephoneNumberList" => array("type" => "\Iris\TelephoneNumbers"),
         "ExistingTelephoneNumberOrderType" => array("type" => "\Iris\TelephoneNumberList"),
         "CloseOrder"  => array("type" => "string"),
-
+        "OrderCreateDate" => array("type" => "string"),
     );
 
     public function __construct($orders, $data)

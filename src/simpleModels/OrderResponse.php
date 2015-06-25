@@ -13,6 +13,7 @@ class OrderResponse {
         "LastModifiedDate" => array("type" => "string"),
         "OrderCompleteDate" => array("type" => "string"),
         "OrderStatus" =>  array("type" => "string"),
+        "CompletedNumbers" => array("type" => "\Iris\Phones"),
         "FailedQuantity" => array("type" => "string")
     );
 
