@@ -7,6 +7,6 @@
         }
     ],
     "require": {
-        "bandwidth-temp/iris": "^0.0.5"
+        "bandwidth-temp/iris": "^0.0.6"
     }
 }
