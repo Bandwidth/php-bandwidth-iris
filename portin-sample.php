@@ -44,7 +44,7 @@ if($res->PortableNumbers->Tn == $number) {
         "Triggered" => "false"
     ));
 
-    $filename = $portin->loas_send(__DIR__."/loa.pdf", array("Content-Type" => "application/pdf"));
+    $portin->loas_send(__DIR__."/loa.pdf", array("Content-Type" => "application/pdf"));
 
     echo "Successfully uploaded LOA";
 }

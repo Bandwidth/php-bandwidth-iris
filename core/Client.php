@@ -195,13 +195,34 @@ final class Client extends iClient {
         return $response_array;
     }
 
-    public function raw_post($url, $body, $headers = array())
+    public function raw_post($url, $content, $headers = array())
     {
         $url = $this->prepare_url($url);
         $full_url = sprintf('%s%s', $this->url, $url);
 
-        echo "RAW POST: ".$full_url."\n";
-        return $this->client->post($full_url, ['body' => $body, 'headers' => $headers]);
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $full_url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_VERBOSE, 0);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_USERPWD, "{$this->login}:{$this->password}");
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/pdf'));
+
+        $result = curl_exec($ch);
+
+        $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+        $header = substr($result, 0, $header_size);
+        $body = substr($result, $header_size);
+
+        $pattern = "/Location\:\s.+\/(.+)/";
+        preg_match($pattern, $header, $matches);
+
+        curl_close($ch);
+
+        return $matches[1];
     }
 
     public function raw_put($url, $body, $headers = array())
