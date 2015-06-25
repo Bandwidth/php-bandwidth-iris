@@ -5,7 +5,7 @@ require_once "./config.php";
 
 
 if(count($argv) < 3) {
-    die("usage: php portin-sample.php [tn] [sippeer name] e.g. php portin-sample.php 92.168.181.95 peer12");
+    die("usage: php sippeers-create-sample.php [tn] [sippeer name] e.g. php sippeers-create-sample.php 92.168.181.95 peer12");
 }
 
 if(empty(Config::SITE)){
