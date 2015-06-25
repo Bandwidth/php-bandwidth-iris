@@ -86,7 +86,7 @@ final class Subscription extends RestEntry{
 
     public function save() {
         $header = parent::post(null, "Subscription", $this->to_array());
-        $splitted = split("/", $header['Location']);
+        $splitted = explode("/", $header['Location']);
         $this->SubscriptionId = end($splitted);
     }
 

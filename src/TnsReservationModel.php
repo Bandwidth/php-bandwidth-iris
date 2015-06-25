@@ -56,7 +56,7 @@ final class TnsReservation extends RestEntry{
 
     public function save() {
         $header = parent::post(null, "Reservation", $this->to_array());
-        $splitted = split("/", $header['Location']);
+        $splitted = explode("/", $header['Location']);
         $this->ReservationId = end($splitted);
     }
 

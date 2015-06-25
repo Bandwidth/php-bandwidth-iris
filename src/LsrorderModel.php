@@ -95,7 +95,7 @@ final class Lsrorder extends RestEntry{
             parent::put($this->id, "Order", $this->to_array());
         else {
             $header = parent::post(null, "Order", $this->to_array());
-            $splitted = split("/", $header['Location']);
+            $splitted = explode("/", $header['Location']);
             $this->id = end($splitted);
         }
     }

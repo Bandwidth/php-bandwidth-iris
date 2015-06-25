@@ -72,7 +72,7 @@ class Note extends RestEntry {
 
     public function save() {
         $header = parent::post(null, "Note", $this->to_array());
-        $splitted = split("/", $header['Location']);
+        $splitted = explode("/", $header['Location']);
         $this->Id = end($splitted);
     }
 }
