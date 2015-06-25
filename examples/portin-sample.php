@@ -48,4 +48,8 @@ if($res->PortableNumbers->Tn == $number) {
 
     echo "\nSuccessfully uploaded LOA: ";
     echo $filename;
+
+    $portin->loas_update(__DIR__."/loa.pdf", $filename, array("Content-Type" => "application/pdf"));
+
+    echo "Successfully updated";
 }

@@ -59,6 +59,15 @@ abstract class RestEntry{
         return $this->client->raw_put($url, $body, $headers);
     }
 
+    public function raw_file_post($url, $body, $headers = array()) {
+        $url = $this->get_url($url);
+        return $this->client->raw_file_post($url, $body, $headers);
+    }
+    public function raw_file_put($url, $body, $headers = array()) {
+        $url = $this->get_url($url);
+        return $this->client->raw_file_put($url, $body, $headers);
+    }
+
     protected function post($url, $base_node, $data)
     {
         $url = $this->get_url($url);

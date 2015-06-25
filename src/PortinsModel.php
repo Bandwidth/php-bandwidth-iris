@@ -131,14 +131,15 @@ class Portin extends RestEntry {
     public function loas_send($file, $headers) {
         $url = sprintf('%s/%s', $this->get_id(), 'loas');
         $content = file_get_contents($file);
+        return trim(parent::raw_file_post($url, $content, $headers));
+    }
 
-        return trim(parent::raw_post($url, $content, $headers));
-    }
-    public function loas_update($file, $filename) {
-        $body = fopen($file, 'r');
+    public function loas_update($file, $filename, $headers) {
+        $content = file_get_contents($file);
         $url = sprintf('%s/%s/%s', $this->get_id(), 'loas', $filename);
-        parent::raw_put($url, $body);
+        parent::raw_file_put($url, $content, $headers);
     }
+
     public function loas_delete($filename) {
         $url = sprintf('%s/%s/%s', $this->get_id(), 'loas', $filename);
         parent::delete($url);

@@ -14,7 +14,6 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
         $mock = new MockHandler([
 			new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><LnpOrderResponse><OrderId>d28b36f7-fa96-49eb-9556-a40fca49f7c6</OrderId><Status><Code>201</Code><Description>Order request received. Please use the order id to check the status of your order later.</Description></Status><ProcessingStatus>PENDING_DOCUMENTS</ProcessingStatus><LoaAuthorizingPerson>John Doe</LoaAuthorizingPerson><Subscriber><SubscriberType>BUSINESS</SubscriberType><BusinessName>Acme Corporation</BusinessName><ServiceAddress><HouseNumber>1623</HouseNumber><StreetName>Brockton Ave #1</StreetName><City>Los Angeles</City><StateCode>CA</StateCode><Zip>90025</Zip><Country>USA</Country></ServiceAddress></Subscriber><BillingTelephoneNumber>6882015002</BillingTelephoneNumber><ListOfPhoneNumbers><PhoneNumber>6882015025</PhoneNumber><PhoneNumber>6882015026</PhoneNumber></ListOfPhoneNumbers><Triggered>false</Triggered><BillingType>PORTIN</BillingType></LnpOrderResponse>"),
 			new Response(200),
-			new Response(200),
 			new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><FileMetaData><DocumentName>test.txt</DocumentName><DocumentType>LOA</DocumentType></FileMetaData>"),
 			new Response(200),
 			new Response(200),
@@ -93,28 +92,6 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/portins", self::$container[self::$index]['request']->getUri());
         self::$index++;
-	}
-
-	// public function testPortinsLoasSend()
-	// {
-	// 	$portin = self::$portins->create(array(
-	// 		"OrderId" => "d28b36f7-fa96-49eb-9556-a40fca49f7c6"
-	// 	), false);
-	// 	$portin->loas_send(__DIR__."/test.txt", array("Content-Type" => "application/pdf"));
-	// 	$this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
-	// 	$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/portins/d28b36f7-fa96-49eb-9556-a40fca49f7c6/loas", self::$container[self::$index]['request']->getUri());
-	// 	self::$index++;
-	// }
-
-	public function testPortinsLoasUpdate()
-	{
-		$portin = self::$portins->create(array(
-			"OrderId" => "d28b36f7-fa96-49eb-9556-a40fca49f7c6"
-		), false);
-		$portin->loas_update(__DIR__."/test.txt", 'test.txt', array("Content-Type" => "application/pdf"));
-		$this->assertEquals("PUT", self::$container[self::$index]['request']->getMethod());
-		$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/portins/d28b36f7-fa96-49eb-9556-a40fca49f7c6/loas/test.txt", self::$container[self::$index]['request']->getUri());
-		self::$index++;
 	}
 
 	public function testPortinsLoasDelete()
