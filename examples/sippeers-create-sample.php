@@ -5,7 +5,7 @@ require_once "./config.php";
 
 
 if(count($argv) < 3) {
-    die("usage: php sippeers-create-sample.php [tn] [sippeer name] e.g. php sippeers-create-sample.php 92.168.181.95 peer12");
+    die("usage: php sippeers-create-sample.php [ip] [sippeer name] e.g. php sippeers-create-sample.php 92.168.181.95 peer12");
 }
 
 if(empty(Config::SITE)){
@@ -20,7 +20,7 @@ $name = $argv[2];
 
 $sippeer = $account->sites()->site(Config::SITE)->sippeers()->create(array(
         "PeerName" => $name,
-        "IsDefaultPeer" => false,
+        "IsDefaultPeer" => true,
         "ShortMessagingProtocol" => "SMPP",
         "VoiceHosts" => array(
             "Host" => array(

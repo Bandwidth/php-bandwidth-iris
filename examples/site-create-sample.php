@@ -8,9 +8,6 @@ if(count($argv) < 2) {
     die("usage: php site-create-sample.php [site name] e.g. php site-create-sample.php test12");
 }
 
-if(empty(Config::SITE)){
-  die("You must configure a site and sip peer for this demo in your config file");
-}
 
 $client = new Iris\Client(Config::LOGIN, Config::PASSWORD, Array('url' => Config::URL));
 $account = new Iris\Account(Config::ACCOUNT, $client);

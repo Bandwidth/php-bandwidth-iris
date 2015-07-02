@@ -13,4 +13,4 @@ $client = new Iris\Client(Config::LOGIN, Config::PASSWORD, Array('url' => Config
 $account = new Iris\Account(Config::ACCOUNT, $client);
 $order = $account->orders()->order($argv[1]);
 
-echo json_encode($order->Order->to_array());
+echo json_encode($order->to_array());

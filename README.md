@@ -21,6 +21,21 @@ $client = new \Iris\Client($login, $password, ['url' => 'https://api.inetwork.co
 ```bash
 php phpunit.phar --bootstrap ./vendor/autoload.php tests/
 ```
+=======
+## Examples
+There is an 'examples' folder in the source tree that shows how each of the API objects work with simple example code.  To run the examples:
+
+```bash
+$ cd examples
+$ composer install
+$ cp config.php.example config.php
+```
+Edit the config.php to match your IRIS credentials and run the examples individually.  e.g.
+
+```bash
+php availableNumbers-sample.php
+```
+If the examples take command line parameters, you will get the usage by just executing the individual script.
 
 ## API Objects
 ### General principles
