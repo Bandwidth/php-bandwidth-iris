@@ -21,7 +21,7 @@ class UsersTest extends PHPUnit_Framework_TestCase {
         $handler = HandlerStack::create($mock);
         $handler->push($history);
 
-        self::$client = new Iris\Client(\Iris\Config::REST_LOGIN, \Iris\Config::REST_PASS, Array('url' => \Iris\Config::REST_URL, 'handler' => $handler));
+        self::$client = new Iris\Client("test", "test", Array('url' => 'https://api.test.inetwork.com/v1.0', 'handler' => $handler));
         self::$account = new \Iris\Account(9500249, self::$client);
     }
 
