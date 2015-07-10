@@ -111,7 +111,7 @@ final class Client extends iClient {
             $options = array();
         }
         if(!isset($options['url'])) {
-            $options['url'] = "https://api.test.inetwork.com/v1.0";
+            $options['url'] = "https://api.inetwork.com/v1.0";
         }
 
         $this->url = $this->prepare_base_url($options['url']);
