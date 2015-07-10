@@ -8,7 +8,7 @@ if(count($argv) < 2) {
     die("usage: php tns-list-sample.php [npa] e.g. php tns-list-sample.php 818");
 }
 
-$client = new Iris\Client(Config::LOGIN, Config::PASSWORD, Array('url' => Config::URL));
+$client = new Iris\Client(Config::LOGIN, Config::PASSWORD);
 
 $tns = new Iris\Tns(null, $client);
 

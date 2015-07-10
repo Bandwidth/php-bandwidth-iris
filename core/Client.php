@@ -101,11 +101,18 @@ abstract class iClient
 final class Client extends iClient {
     public function __construct($login, $password, $options=Null)
     {
-        if(empty($login) || empty($password) || !is_array($options) || !isset($options['url']))
-            throw new \Exception("Provide login, password and url");
+        if(empty($login) || empty($password))
+            throw new \Exception("Provide login, password");
 
         $this->login = $login;
         $this->password = $password;
+
+        if(!is_array($options)) {
+            $options = array();
+        }
+        if(!isset($options['url'])) {
+            $options['url'] = "https://api.test.inetwork.com/v1.0";
+        }
 
         $this->url = $this->prepare_base_url($options['url']);
 

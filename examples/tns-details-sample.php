@@ -10,7 +10,7 @@ if(count($argv) < 2) {
 
 $tnarg = $argv[1];
 
-$client = new Iris\Client(Config::LOGIN, Config::PASSWORD, Array('url' => Config::URL));
+$client = new Iris\Client(Config::LOGIN, Config::PASSWORD);
 
 $tns = new Iris\Tns(null, $client);
 

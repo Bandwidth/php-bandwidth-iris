@@ -12,7 +12,7 @@ if(empty(Config::SITE) || empty(Config::SIPPEER)){
   die("You must configure a site and sip peer for this demo in your config file");
 }
 
-$client = new Iris\Client(Config::LOGIN, Config::PASSWORD, Array('url' => Config::URL));
+$client = new Iris\Client(Config::LOGIN, Config::PASSWORD);
 $account = new Iris\Account(Config::ACCOUNT, $client);
 
 $number = $argv[1];

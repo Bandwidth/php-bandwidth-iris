@@ -3,7 +3,6 @@
 class Config {
     const LOGIN = "";
     const PASSWORD = "";
-    const URL = "";
     const ACCOUNT = "";
     const SITE = "";
     const SIPPEER = "";

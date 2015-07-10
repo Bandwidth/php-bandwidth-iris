@@ -9,7 +9,7 @@ if(count($argv) < 2) {
 }
 
 
-$client = new Iris\Client(Config::LOGIN, Config::PASSWORD, Array('url' => Config::URL));
+$client = new Iris\Client(Config::LOGIN, Config::PASSWORD);
 $account = new Iris\Account(Config::ACCOUNT, $client);
 
 $name = $argv[1];
