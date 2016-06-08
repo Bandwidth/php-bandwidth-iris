@@ -96,7 +96,7 @@ final class Lidb extends RestEntry{
 
     public function save() {
         $data = parent::post(null, "LidbOrder", $this->to_array());
-        $this->set_data($data);
+        $this->set_data($data["LidbOrder"]);
     }
 
     public function get_id() {
