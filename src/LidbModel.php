@@ -63,7 +63,7 @@ final class Lidb extends RestEntry{
 
     protected $fields = array(
         "CustomerOrderId" => array("type" => "string"),
-        "orderId" => array("type" => "string"),
+        "OrderId" => array("type" => "string"),
         "AccountId" => array("type" => "string"),
         "accountId" => array("type" => "string"),
         "CountOfTNs" => array("type" => "string"),
@@ -96,7 +96,7 @@ final class Lidb extends RestEntry{
 
     public function save() {
         $data = parent::post(null, "LidbOrder", $this->to_array());
-        $this->set_data($data);
+        $this->set_data($data["LidbOrder"]);
     }
 
     public function get_id() {
