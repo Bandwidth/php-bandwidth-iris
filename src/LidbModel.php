@@ -63,7 +63,7 @@ final class Lidb extends RestEntry{
 
     protected $fields = array(
         "CustomerOrderId" => array("type" => "string"),
-        "orderId" => array("type" => "string"),
+        "OrderId" => array("type" => "string"),
         "AccountId" => array("type" => "string"),
         "accountId" => array("type" => "string"),
         "CountOfTNs" => array("type" => "string"),
