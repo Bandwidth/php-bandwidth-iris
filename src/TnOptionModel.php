@@ -41,7 +41,7 @@ final class TnOptions extends RestEntry{
     }
 
     public function tnoption($id) {
-        $item = new TnOption($this, array("orderId" => $id));
+        $item = new TnOption($this, array("OrderId" => $id));
         $item->get();
         return $item;
     }
@@ -62,7 +62,7 @@ final class TnOption extends RestEntry{
     use BaseModel;
 
     protected $fields = array(
-        "orderId" => array("type" => "string"),
+        "OrderId" => array("type" => "string"),
         "AccountId" => array("type" => "string"),
         "accountId" => array("type" => "string"),
         "CountOfTNs" => array("type" => "string"),
