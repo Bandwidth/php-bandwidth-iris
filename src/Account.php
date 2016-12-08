@@ -10,6 +10,12 @@ class Account extends RestEntry {
         $this->client = $client;
     }
 
+    public function tnoptions() {
+        if(!isset($this->tnoptions))
+            $this->tnoptions = new TnOptions($this);
+        return $this->tnoptions;
+    }
+
     /**
     * @params \Iris\TnLineOptions
     */
@@ -18,6 +24,7 @@ class Account extends RestEntry {
         $response = parent::post($url, "LineOptionOrder", $data->to_array());
         return new TnLineOptionOrderResponse($response);
     }
+
 
     public function inserviceNumbers($filters = array()) {
         $url = sprintf('%s/%s', $this->account_id, 'inserviceNumbers');

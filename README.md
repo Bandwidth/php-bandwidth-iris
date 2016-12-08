@@ -6,7 +6,7 @@ PHP Client library for IRIS / BBS API
 Run
 
 ```bash
-composer require bandwidth/iris
+composer require bandwidth-temp/iris
 ```
 
 ## Usage

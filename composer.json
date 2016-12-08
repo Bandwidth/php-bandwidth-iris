@@ -18,9 +18,9 @@
         "guzzlehttp/guzzle": "~6.0"
     },
     "autoload": {
-	      "classmap": [
-	        "src/",
+        "classmap": [
+            "src/",
             "core/"
-	      ]
+        ]
     }
 }
