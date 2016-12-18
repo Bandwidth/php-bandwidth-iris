@@ -118,9 +118,10 @@ final class Tn extends RestEntry{
         "OrderType" => array("type" => "string"),
         "SiteId" =>  array("type" => "string"),
         "AccountId" => array("type" => "string"),
-        "CallForward" => array("type" => "string"),
         "Features" => array("type" => "\Iris\Features"),
-        "TnAttributes" => array("type" => "\Iris\TnAttributes")
+        "TnAttributes" => array("type" => "\Iris\TnAttributes"),
+        "MessagingSettings" => array("type" => "\Iris\MessageSettings"),
+        "TnOptions" => array("type" => "\Iris\TnOptionGroup")
     );
 
     public function __construct($tns, $data) {
