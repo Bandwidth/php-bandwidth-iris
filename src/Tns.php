@@ -117,6 +117,8 @@ final class Tn extends RestEntry{
         "OrderId" => array("type" => "string"),
         "OrderType" => array("type" => "string"),
         "SiteId" =>  array("type" => "string"),
+        "Site" =>  array("type" => "string"),
+        "SipPeer" =>  array("type" => "string"),
         "AccountId" => array("type" => "string"),
         "Features" => array("type" => "\Iris\Features"),
         "TnAttributes" => array("type" => "\Iris\TnAttributes"),
