@@ -66,6 +66,7 @@ final class Subscription extends RestEntry{
         "OrderType" => array("type" => "string"),
         "OrderId" => array("type" => "string"),
         "EmailSubscription" => array("type" => "\Iris\EmailSubscription"),
+        "CallbackSubscription" => array("type" => "\Iris\CallbackSubscription")
     );
 
 
