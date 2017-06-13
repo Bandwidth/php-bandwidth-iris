@@ -3,6 +3,8 @@
 namespace Iris;
 
 final class Tns extends RestEntry {
+    protected $totalsTns = null;
+    
     public function __construct($parent, $client=null, $namespace="")
     {
         if($parent) {
@@ -37,6 +39,11 @@ final class Tns extends RestEntry {
         }
         $tns = [];
         $data = parent::_get('tns', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
+        
+        if (isset($data['TelephoneNumberCount']))
+        {
+            $this->totalsTns = (int) $data['TelephoneNumberCount'];
+        }
 
         if(isset($data['TelephoneNumbers']) && isset($data['TelephoneNumbers']["TelephoneNumber"])) {
             $items =  $data['TelephoneNumbers']["TelephoneNumber"];
@@ -49,6 +56,16 @@ final class Tns extends RestEntry {
             }
         }
         return $tns;
+    }
+
+    public function totalTns()
+    {
+        if (is_null($this->totalsTns))
+        {
+            $this->getList(array('size' => 1));
+        }
+
+        return $this->totalsTns;
     }
 
     public function create($data) {
