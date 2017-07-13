@@ -1,10 +1,10 @@
 {
-    "name": "bandwidth-temp/iris",
+    "name": "bandwidth/iris",
     "type": "library",
     "description": "Bandwidth's Iris SDK for PHP",
     "keywords": ["iris","sdk","php"],
-    "homepage": "http://www.bandwidth.com",
-    "reference": "v0.0.9",
+    "homepage": "http://dev.bandwidth.com",
+    "reference": "v0.0.10",
     "license": "MIT",
     "authors": [
     ],
