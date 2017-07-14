@@ -172,7 +172,7 @@ class Account extends RestEntry {
 
         foreach($filters as $field => $value) {
             if(!in_array($field, $query_fields))
-                throw new \Exception("Field $filed is not allowed.");
+                throw new \Exception("Field $field is not allowed.");
         }
 
         $url = sprintf('%s/%s', $this->account_id, 'availableNumbers');
