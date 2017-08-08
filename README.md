@@ -20,7 +20,7 @@ $client = new \Iris\Client($login, $password, ['url' => 'https://api.inetwork.co
 
 ```bash
 $ composer install
-$ php phpunit.phar --bootstrap ./vendor/autoload.php tests/
+$ php ./bin/phpunit --bootstrap ./vendor/autoload.php tests/
 ```
 =======
 ## Examples
