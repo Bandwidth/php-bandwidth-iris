@@ -177,7 +177,7 @@ class Account extends RestEntry {
 
         $url = sprintf('%s/%s', $this->account_id, 'availableNumbers');
         $data = parent::_get($url, $filters);
-        $count = $data['ResultCount'];
+        $count = isset($data['ResultCount']) ? $data['ResultCount'] : 0;
 
         $types = [
             ["level1" => "TelephoneNumberDetailList", "level2" => "TelephoneNumberDetail", "classname" => "\Iris\TelephoneNumberDetail"],
