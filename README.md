@@ -1,5 +1,6 @@
-PHP Client library for IRIS / BBS API
+PHP Client library for Bandwidth's Phone Number Dashboard (AKA: Dashboard, Iris)
 =========================================================
+[![Build Status](https://travis-ci.org/bandwidthcom/php-bandwidth-iris.svg?branch=master)](https://travis-ci.org/bandwidthcom/php-bandwidth-iris)
 
 ## Install
 
