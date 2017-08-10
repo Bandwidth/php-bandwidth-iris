@@ -4,4 +4,5 @@ php:
   - '5.6'
   - '7.0'
   - '7.1'
-script: phpunit --bootstrap ./vendor/autoload.php --testdox --colors=always tests
+install: composer install
+script: php ./bin/phpunit --bootstrap ./vendor/autoload.php --testdox --colors=always tests
