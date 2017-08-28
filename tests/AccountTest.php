@@ -141,7 +141,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($json, json_encode($res->to_array()));
 
         $this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/lnpchecker?fullcheck=true", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/lnpchecker?fullCheck=true", self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
     public function testNpaGet() {

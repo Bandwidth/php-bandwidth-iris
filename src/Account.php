@@ -194,7 +194,7 @@ class Account extends RestEntry {
         $data = ["TnList" => ["Tn" => $array ]];
         $obj = new \Iris\NumberPortabilityRequest($data);
         if($fullcheck !== false && in_array($fullcheck, ["true", "false", "onnetportability", "offnetportability"])) {
-            $f = "?fullcheck=$fullcheck";
+            $f = "?fullCheck=$fullcheck";
         } else {
             $f = "";
         }
