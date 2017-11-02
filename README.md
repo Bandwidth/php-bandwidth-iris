@@ -1,6 +1,6 @@
 PHP Client library for Bandwidth's Phone Number Dashboard (AKA: Dashboard, Iris)
 =========================================================
-[![Build Status](https://travis-ci.org/bandwidthcom/php-bandwidth-iris.svg?branch=master)](https://travis-ci.org/bandwidthcom/php-bandwidth-iris)
+[![Build Status](https://travis-ci.org/bandwidth/php-bandwidth-iris.svg?branch=master)](https://travis-ci.org/bandwidth/php-bandwidth-iris)
 
 ## Install
 
