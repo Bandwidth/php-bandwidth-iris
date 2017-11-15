@@ -17,6 +17,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
             new Response(200, [], "<?xml version=\"1.0\"?> <SearchResult><ResultCount>2</ResultCount> <TelephoneNumberDetailList><TelephoneNumberDetail> <City>KNIGHTDALE</City> <LATA>426</LATA> <RateCenter>KNIGHTDALE</RateCenter> <State>NC</State> <FullNumber>9192956932</FullNumber> <Tier>0</Tier><VendorId>49</VendorId> <VendorName>Bandwidth CLEC</VendorName></TelephoneNumberDetail><TelephoneNumberDetail> <City>KNIGHTDALE</City> <LATA>426</LATA> <RateCenter>KNIGHTDALE</RateCenter> <State>NC</State> <FullNumber>9192956932</FullNumber> <Tier>0</Tier><VendorId>49</VendorId> <VendorName>Bandwidth CLEC</VendorName></TelephoneNumberDetail> </TelephoneNumberDetailList></SearchResult>"),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?> <SearchResult><ResultCount>5</ResultCount> <TelephoneNumberList><TelephoneNumber>9194390154</TelephoneNumber> <TelephoneNumber>9194390158</TelephoneNumber> <TelephoneNumber>9194390176</TelephoneNumber> <TelephoneNumber>9194390179</TelephoneNumber> <TelephoneNumber>9194390185</TelephoneNumber></TelephoneNumberList> </SearchResult>"),
             new Response(400, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?> <SearchResult><Error> <Code>4000</Code> <Description>The area code of telephone numbers can not end with 11. </Description></Error><ResultCount>0</ResultCount> </SearchResult>"),
+            new Response(200, [],"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><SearchResult/>"),
             new Response(201, ['Location' => 'https://api.test.inetwork.com:443/v1.0/accounts/9500249/tnsreservation/2489']),
             new Response(200, [], "<?xml version=\"1.0\"?><ReservationResponse><Reservation> <ReservationId>0099ff73-da96-4303-8a0a-00ff316c07aa</ReservationId> <AccountId>14</AccountId> <ReservationExpires>0</ReservationExpires> <ReservedTn>2512027430</ReservedTn></Reservation> </ReservationResponse>"),
             new Response(200, []),
@@ -93,6 +94,14 @@ class AccountTest extends PHPUnit_Framework_TestCase {
         self::$index++;
     }
 
+    public function testAvailableNumbersNoResults() {
+        $response = self::$account->availableNumbers();
+
+        $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/availableNumbers", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
+
     public function testTnReservation() {
         $resertation = self::$account->tnsreservations()->create(["ReservedTn" => "2512027430"]);
 
@@ -132,7 +141,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($json, json_encode($res->to_array()));
 
         $this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/lnpchecker?fullcheck=true", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/lnpchecker?fullCheck=true", self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
     public function testNpaGet() {

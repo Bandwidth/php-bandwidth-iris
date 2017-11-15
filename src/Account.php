@@ -172,12 +172,12 @@ class Account extends RestEntry {
 
         foreach($filters as $field => $value) {
             if(!in_array($field, $query_fields))
-                throw new \Exception("Field $filed is not allowed.");
+                throw new \Exception("Field $field is not allowed.");
         }
 
         $url = sprintf('%s/%s', $this->account_id, 'availableNumbers');
         $data = parent::_get($url, $filters);
-        $count = $data['ResultCount'];
+        $count = isset($data['ResultCount']) ? $data['ResultCount'] : 0;
 
         $types = [
             ["level1" => "TelephoneNumberDetailList", "level2" => "TelephoneNumberDetail", "classname" => "\Iris\TelephoneNumberDetail"],
@@ -194,7 +194,7 @@ class Account extends RestEntry {
         $data = ["TnList" => ["Tn" => $array ]];
         $obj = new \Iris\NumberPortabilityRequest($data);
         if($fullcheck !== false && in_array($fullcheck, ["true", "false", "onnetportability", "offnetportability"])) {
-            $f = "?fullcheck=$fullcheck";
+            $f = "?fullCheck=$fullcheck";
         } else {
             $f = "";
         }

@@ -1,12 +1,13 @@
-PHP Client library for IRIS / BBS API
+PHP Client library for Bandwidth's Phone Number Dashboard (AKA: Dashboard, Iris)
 =========================================================
+[![Build Status](https://travis-ci.org/bandwidth/php-bandwidth-iris.svg?branch=master)](https://travis-ci.org/bandwidth/php-bandwidth-iris)
 
 ## Install
 
 Run
 
 ```bash
-composer require bandwidth-temp/iris
+composer require bandwidth/iris
 ```
 
 ## Usage
@@ -20,7 +21,7 @@ $client = new \Iris\Client($login, $password, ['url' => 'https://api.inetwork.co
 
 ```bash
 $ composer install
-$ php phpunit.phar --bootstrap ./vendor/autoload.php tests/
+$ php ./bin/phpunit --bootstrap ./vendor/autoload.php tests/
 ```
 =======
 ## Examples
