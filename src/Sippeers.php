@@ -56,7 +56,8 @@ class Sippeer extends RestEntry {
         "VoiceHosts" => array("type" => "Iris\Hosts"),
         "VoiceHostGroups" => array("type" => "string"),
         "SmsHosts" => array("type" => "Iris\Hosts"),
-        "TerminationHosts" => array("type" => "Iris\Hosts")
+        "TerminationHosts" => array("type" => "Iris\Hosts"),
+        "CallingName" => array("type" => "string")
     );
 
     public function __construct($parent, $data) {
