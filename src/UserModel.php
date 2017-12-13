@@ -56,7 +56,7 @@ final class User extends RestEntry {
     public function password($password)
     {
         $url = sprintf('%s/%s', $this->get_id(), 'password');
-        parent::raw_put($url, "<Password>".htmlspecialchars($password)."</Password>", ['Content-Type' => 'application/xml']);
+        parent::put($url, 'Password', htmlspecialchars($password));
     }
 
     public function get_id() {

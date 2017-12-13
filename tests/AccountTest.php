@@ -51,7 +51,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
         $response = self::$account->lineOptionOrders($TnLineOptions);
 
         $this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/lineOptionOrders", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/lineOptionOrders", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 
@@ -60,7 +60,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals("KNIGHTDALE", $response[0]->City);
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/availableNumbers", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/availableNumbers", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 
@@ -69,7 +69,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals("KNIGHTDALE", $response[1]->City);
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/availableNumbers", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/availableNumbers", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 
@@ -78,7 +78,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals("9194390154", $response[0]->TelephoneNumber[0]);
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/availableNumbers", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/availableNumbers", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 
@@ -90,7 +90,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
         $response = self::$account->availableNumbers();
 
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/availableNumbers", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/availableNumbers", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 
@@ -98,7 +98,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
         $response = self::$account->availableNumbers();
 
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/availableNumbers", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/availableNumbers", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 
@@ -110,7 +110,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($json, json_encode($resertation->to_array()));
         $this->assertEquals("2489", $resertation->get_id());
         $this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/tnreservation", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/tnreservation", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 
@@ -121,7 +121,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($json, json_encode($resertation->to_array()));
         $this->assertEquals("0099ff73-da96-4303-8a0a-00ff316c07aa", $resertation->get_id());
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/tnreservation/0099ff73-da96-4303-8a0a-00ff316c07aa", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/tnreservation/0099ff73-da96-4303-8a0a-00ff316c07aa", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
     public function testDeleteTnReservation() {
@@ -129,7 +129,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
         $resertation->delete();
 
         $this->assertEquals("DELETE", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/tnreservation/0099ff73-da96-4303-8a0a-00ff316c07aa", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/tnreservation/0099ff73-da96-4303-8a0a-00ff316c07aa", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 
@@ -141,7 +141,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($json, json_encode($res->to_array()));
 
         $this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/lnpchecker?fullCheck=true", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/lnpchecker?fullCheck=true", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
     public function testNpaGet() {
@@ -150,7 +150,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
         $json = '{"City":"COMPTON:COMPTON DA","Npa":"424","Nxx":"242","Quantity":"7","State":"CA"}';
         $this->assertEquals($json, json_encode($npas[0]->to_array()));
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/availableNpaNxx?state=CA", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/availableNpaNxx?state=CA", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
     public function testInserviceGet() {
@@ -159,7 +159,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
         $json = '{"TelephoneNumber":["8183386247","8183386249","8183386251","8183386252"]}';
         $this->assertEquals($json, json_encode($numbers->to_array()));
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/inserviceNumbers?page=2&type=x", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/inserviceNumbers?page=2&type=x", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 
@@ -168,7 +168,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals(4, $numbers);
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/inserviceNumbers/totals", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/inserviceNumbers/totals", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 
@@ -178,7 +178,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
         $json = '{"TelephoneNumber":["4158714245","4352154439"]}';
         $this->assertEquals($json, json_encode($numbers->to_array()));
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/discNumbers?page=2&type=x", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/discNumbers?page=2&type=x", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 
@@ -187,7 +187,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals(4, $numbers);
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/discNumbers/totals", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/discNumbers/totals", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 
@@ -199,7 +199,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals("Your BDR archive is currently being constructed", $response->Info);
         $this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/bdrs", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/bdrs", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 
