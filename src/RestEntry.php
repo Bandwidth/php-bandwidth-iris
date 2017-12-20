@@ -47,16 +47,7 @@ abstract class RestEntry{
         $this->set_defaults($options, $defaults);
         $this->check_required($options, $required);
 
-        return $this->client->get($url, $options);
-    }
-
-    public function raw_post($url, $body, $headers = array()) {
-        $url = $this->get_url($url);
-        return $this->client->raw_post($url, $body, $headers);
-    }
-    public function raw_put($url, $body, $headers = array()) {
-        $url = $this->get_url($url);
-        return $this->client->raw_put($url, $body, $headers);
+        return $this->client->get($url, ['query' => $options]);
     }
 
     public function raw_file_post($url, $body, $headers = array()) {

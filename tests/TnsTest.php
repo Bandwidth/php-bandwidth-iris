@@ -29,7 +29,6 @@ class TnsTest extends PHPUnit_Framework_TestCase {
         $handler->push($history);
 
         $client = new Iris\Client("test", "test", Array('url' => 'https://api.test.inetwork.com/v1.0', 'handler' => $handler));
-        $account = new Iris\Account(9500249, $client);
         self::$tns = new Iris\Tns(null, $client);
     }
 
@@ -39,7 +38,7 @@ class TnsTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(2, count($tns));
 		$this->assertEquals("7576768750", $tns[0]->FullNumber);
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/tns?page=1&size=10", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/tns?page=1&size=10", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
     public function testTnGet() {
@@ -48,7 +47,7 @@ class TnsTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals("PortInPendingFoc", $tn->Status);
         $this->assertEquals("98939562-90b0-40e9-8335-5526432d9741", $tn->OrderId);
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/tns/7576768750", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/tns/7576768750", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 
@@ -61,7 +60,7 @@ class TnsTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals("2297", $site->Id);
         $this->assertEquals("API Test Site", $site->Name);
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/tns/7576768750/sites", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/tns/7576768750/sites", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 
@@ -73,7 +72,7 @@ class TnsTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals("500651", $sippeer->PeerId);
         $this->assertEquals("Something", $sippeer->PeerName);
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/tns/7576768750/sippeers", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/tns/7576768750/sippeers", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 
@@ -85,7 +84,7 @@ class TnsTest extends PHPUnit_Framework_TestCase {
         $json = '{"ReservedTn":"6136211234","ReservationId":"123","ReservationExpires":"int (seconds)","AccountId":"111"}';
 		$this->assertEquals($json, json_encode($tnreservation->to_array()));
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/tns/7576768750/tnreservation", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/tns/7576768750/tnreservation", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 
@@ -97,7 +96,7 @@ class TnsTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($json, json_encode($tn->to_array()));
 
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/tns/7576768750/tndetails", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/tns/7576768750/tndetails", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 
@@ -109,7 +108,7 @@ class TnsTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($json, json_encode($rc->to_array()));
 
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/tns/7576768750/ratecenter", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/tns/7576768750/ratecenter", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 
@@ -121,7 +120,7 @@ class TnsTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($json, json_encode($rc->to_array()));
 
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/tns/7576768750/lata", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/tns/7576768750/lata", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 
@@ -133,7 +132,7 @@ class TnsTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($json, json_encode($rc->to_array()));
 
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
-        $this->assertEquals("https://api.test.inetwork.com/v1.0/tns/7576768750/lca", self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/tns/7576768750/lca", (string) self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
 
