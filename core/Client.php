@@ -318,6 +318,8 @@ final class Client extends iClient
     {
         $result = [];
 
+        $responseBody = (string) $response->getBody();
+
         if ($response->hasHeader('Location'))
         {
             $location = $response->getHeader('Location');
@@ -330,7 +332,7 @@ final class Client extends iClient
 
         if ($contentType && strpos($contentType, 'zip') !== false)
         {
-            return $response->getBody();
+            return $result;
         }
 
         $responseBody = (string) $response->getBody();
@@ -343,6 +345,11 @@ final class Client extends iClient
         if ($contentType && strpos($contentType, 'json') !== false)
         {
             $responseBody = json_decode($responseBody, true);
+        }
+
+        if ($contentType && strpos($contentType, 'zip') !== false)
+        {
+            return $responseBody;
         }
 
         try

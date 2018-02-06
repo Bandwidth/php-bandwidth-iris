@@ -123,7 +123,7 @@ class BillingReport extends RestEntry
      * @return mixed
      * @throws \Exception
      */
-    public function file($options = [])
+    public function file()
     {
         if (!isset($this->ReportStatus) || $this->ReportStatus !== 'COMPLETED')
         {
@@ -131,8 +131,7 @@ class BillingReport extends RestEntry
         }
 
         $url = sprintf('%s/%s', $this->get_id(), 'file');
-        $url = parent::get_url($url);
 
-        return $this->client->get($url, $options);
+        return parent::_get($url);
     }
 }
