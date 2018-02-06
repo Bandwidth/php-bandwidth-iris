@@ -110,6 +110,21 @@ class Account extends RestEntry {
         return $this->users;
     }
 
+    /**
+     * Get BillingReports instance
+     *
+     * @return BillingReports
+     */
+    public function billingreports()
+    {
+        if (!isset($this->billingReports))
+        {
+            $this->billingReports = new BillingReports($this);
+        }
+
+        return $this->billingReports;
+    }
+
     public function reports() {
         if(!isset($this->reports))
             $this->reports = new Reports($this);
