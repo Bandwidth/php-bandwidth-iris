@@ -123,7 +123,7 @@ class BillingReport extends RestEntry
      * @return mixed
      * @throws \Exception
      */
-    public function file()
+    public function file($options = [])
     {
         if (!isset($this->ReportStatus) || $this->ReportStatus !== 'COMPLETED')
         {

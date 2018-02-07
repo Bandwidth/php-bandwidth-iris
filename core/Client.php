@@ -328,26 +328,26 @@ final class Client extends iClient
         $contentType = $response->getHeader('Content-Type');
         $contentType = reset($contentType);
 
-        $responseBody = $response->getBody();
+        if ($contentType && strpos($contentType, 'zip') !== false)
+        {
+            return $response->getBody();
+        }
+
+        $responseBody = (string) $response->getBody();
 
         if (!$responseBody)
         {
             return $result;
         }
 
-        if ($contentType && strpos($contentType, 'zip') !== false)
-        {
-            return $responseBody;
-        }
-
         if ($contentType && strpos($contentType, 'json') !== false)
         {
-            $responseBody = json_decode((string) $responseBody, true);
+            $responseBody = json_decode($responseBody, true);
         }
 
         try
         {
-            $xml = new SimpleXMLElement((string) $responseBody);
+            $xml = new SimpleXMLElement($responseBody);
             $responseBody = $this->xml2array($xml);
             unset($xml);
         }

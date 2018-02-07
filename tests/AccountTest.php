@@ -273,7 +273,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
 
         $zip = $billingReport->file();
 
-        $this->assertEquals("zipcontent", $zip);
+        $this->assertEquals("zipcontent", $zip->getContents());
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/billingreports/a12b456c8-abcd-1a3b-a1b2-0a2b4c6d8e0f2/file", self::$container[self::$index]['request']->getUri());
         self::$index++;
