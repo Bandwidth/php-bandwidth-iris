@@ -318,8 +318,6 @@ final class Client extends iClient
     {
         $result = [];
 
-        $responseBody = (string) $response->getBody();
-
         if ($response->hasHeader('Location'))
         {
             $location = $response->getHeader('Location');
@@ -330,21 +328,11 @@ final class Client extends iClient
         $contentType = $response->getHeader('Content-Type');
         $contentType = reset($contentType);
 
-        if ($contentType && strpos($contentType, 'zip') !== false)
-        {
-            return $result;
-        }
-
-        $responseBody = (string) $response->getBody();
+        $responseBody = $response->getBody();
 
         if (!$responseBody)
         {
             return $result;
-        }
-
-        if ($contentType && strpos($contentType, 'json') !== false)
-        {
-            $responseBody = json_decode($responseBody, true);
         }
 
         if ($contentType && strpos($contentType, 'zip') !== false)
@@ -352,9 +340,14 @@ final class Client extends iClient
             return $responseBody;
         }
 
+        if ($contentType && strpos($contentType, 'json') !== false)
+        {
+            $responseBody = json_decode((string) $responseBody, true);
+        }
+
         try
         {
-            $xml = new SimpleXMLElement($responseBody);
+            $xml = new SimpleXMLElement((string) $responseBody);
             $responseBody = $this->xml2array($xml);
             unset($xml);
         }

@@ -549,5 +549,11 @@ $billingReport = $account->billingreports()->billingreport('a12b456c8-abcd-1a3b-
 
 ### Download zip with content of the billing report
 ```PHP
-$zip = $billingReport->file();
+$zipStream = $billingReport->file();
+```
+
+### Download zip with content of the billing report and save to file
+```PHP
+$outFile = '/tmp/report.zip';
+$billingReport->file(['stream' => true, 'sink' => $outFile]);
 ```

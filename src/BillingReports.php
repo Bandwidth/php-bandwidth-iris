@@ -131,7 +131,8 @@ class BillingReport extends RestEntry
         }
 
         $url = sprintf('%s/%s', $this->get_id(), 'file');
+        $url = parent::get_url($url);
 
-        return parent::_get($url);
+        return $this->client->get($url, $options);
     }
 }
