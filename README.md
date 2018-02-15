@@ -524,3 +524,36 @@ $resertation = $account->tnsreservations()->tnsreservation("0099ff73-da96-4303-8
 $resertation = $account->tnsreservations()->tnsreservation("0099ff73-da96-4303-8a0a-00ff316c07aa");
 $resertation->delete();
 ```
+
+## Billing reports
+
+### Listing all Billing Report instances
+```PHP
+$billingReports = $account->billingreports()->getList();
+```
+
+### Request new billing report
+```PHP
+$billingReport = $account->billingreports()->request(
+    array("Type" => "bdr",
+        "DateRange" => array(
+            "StartDate" => "2018-02-05",
+            "EndDate" => "2018-02-06",
+    )));
+```
+
+### Checking status of the billing report
+```PHP
+$billingReport = $account->billingreports()->billingreport('a12b456c8-abcd-1a3b-a1b2-0a2b4c6d8e0f2');
+```
+
+### Download zip with content of the billing report
+```PHP
+$zipStream = $billingReport->file();
+```
+
+### Download zip with content of the billing report and save to file
+```PHP
+$outFile = '/tmp/report.zip';
+$billingReport->file(['stream' => true, 'sink' => $outFile]);
+```

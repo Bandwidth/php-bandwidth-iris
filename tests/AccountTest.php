@@ -27,7 +27,38 @@ class AccountTest extends PHPUnit_Framework_TestCase {
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Quantity><Count>4</Count></Quantity>"),
             new Response(200, [], "<?xml version=\"1.0\"?><TNs><TotalCount>4</TotalCount><Links><first></first></Links><TelephoneNumbers><Count>2</Count><TelephoneNumber>4158714245</TelephoneNumber><TelephoneNumber>4352154439</TelephoneNumber></TelephoneNumbers></TNs>"),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Quantity><Count>4</Count></Quantity>"),
-            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><BdrCreationResponse><Info>Your BDR archive is currently being constructed</Info> </BdrCreationResponse>")
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><BdrCreationResponse><Info>Your BDR archive is currently being constructed</Info> </BdrCreationResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><BillingReportsRetrievalResponse>
+                                                <BillingReportList>
+                                                    <BillingReport>
+                                                        <BillingReportId>5f8734f0-d7c3-445c-b1e2-cdbb620e4ff7</BillingReportId>
+                                                        <BillingReportKind>DIDSNAP</BillingReportKind>
+                                                        <UserId>jbm</UserId>
+                                                        <ReportStatus>PROCESSING</ReportStatus>
+                                                        <Description>The requested report archive is still being constructed, please check back later.</Description>
+                                                        <CreatedDate>2017-11-01 14:12:16</CreatedDate>
+                                                        <DateRange>
+                                                            <StartDate>2017-01-01</StartDate>
+                                                            <EndDate>2017-09-30</EndDate>
+                                                        </DateRange>
+                                                    </BillingReport>
+                                                    <BillingReport>
+                                                        <BillingReportId>7680a54a-b1f1-4d43-8af6-bf3a701ad202</BillingReportId>
+                                                        <BillingReportKind>DIDSNAP</BillingReportKind>
+                                                        <UserId>jbm</UserId>
+                                                        <ReportStatus>COMPLETE</ReportStatus>
+                                                        <Description>The requested report archive is failed</Description>
+                                                        <CreatedDate>2017-11-06 14:22:21</CreatedDate>
+                                                        <DateRange>
+                                                            <StartDate>2017-05-01</StartDate>
+                                                            <EndDate>2017-10-31</EndDate>
+                                                        </DateRange>
+                                                    </BillingReport>
+                                                </BillingReportList>
+                                            </BillingReportsRetrievalResponse>"),
+            new Response(201, ['Location' => 'https://api.test.inetwork.com:443/v1.0/accounts/9500249/billingreports/a12b456c8-abcd-1a3b-a1b2-0a2b4c6d8e0f2'], '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><BillingReportCreationResponse><ReportStatus>RECEIVED</ReportStatus><Description>The report archive is currently being constructed.</Description></BillingReportCreationResponse>'),
+            new Response(200, ['Location' => 'https://api.test.inetwork.com:443/v1.0/accounts/9500249/billingreports/a12b456c8-abcd-1a3b-a1b2-0a2b4c6d8e0f2/file'], '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><BillingReportRetrievalResponse><ReportStatus>COMPLETED</ReportStatus><Description>The report archive is constructed.</Description></BillingReportRetrievalResponse>'),
+            new Response(200, ['Content-Type' => 'application/zip'], 'zipcontent'),
         ]);
 
         self::$container = [];
@@ -203,4 +234,48 @@ class AccountTest extends PHPUnit_Framework_TestCase {
         self::$index++;
     }
 
+    public function testBillingReports() {
+        $billingReports = self::$account->billingreports()->getList();
+
+        $this->assertEquals(2, count($billingReports));
+        $this->assertEquals('5f8734f0-d7c3-445c-b1e2-cdbb620e4ff7', $billingReports[0]->Id);
+        $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/billingreports", self::$container[self::$index]['request']->getUri());
+        unset($billingReports);
+
+        self::$index++;
+    }
+
+    public function testBillingReportRequest() {
+        $response = self::$account->billingreports()->request(array(
+            'Type' => 'BDR',
+            'DateRange' => array(
+                'StartDate' => '2017-11-01',
+                'EndDate' => '2017-11-02',
+            )
+        ));
+
+        $this->assertEquals("a12b456c8-abcd-1a3b-a1b2-0a2b4c6d8e0f2", $response->Id);
+        $this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/billingreports", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
+
+    public function testBillingReportReadyAndDownload() {
+        $billingReport = self::$account->billingreports()
+            ->billingreport('a12b456c8-abcd-1a3b-a1b2-0a2b4c6d8e0f2');
+
+        $this->assertEquals("a12b456c8-abcd-1a3b-a1b2-0a2b4c6d8e0f2", $billingReport->Id);
+        $this->assertEquals("COMPLETED", $billingReport->ReportStatus);
+        $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/billingreports/a12b456c8-abcd-1a3b-a1b2-0a2b4c6d8e0f2", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+
+        $zip = $billingReport->file();
+
+        $this->assertEquals("zipcontent", $zip->getContents());
+        $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/billingreports/a12b456c8-abcd-1a3b-a1b2-0a2b4c6d8e0f2/file", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
 }

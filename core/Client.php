@@ -316,36 +316,46 @@ final class Client extends iClient
      */
     private function parseResponse($response)
     {
-        $responseBody = (string) $response->getBody();
+        $result = [];
 
-        if (!$responseBody && $response->hasHeader('Location'))
+        if ($response->hasHeader('Location'))
         {
             $location = $response->getHeader('Location');
-            return ['Location' => reset($location)];
-        }
-
-        if (!$responseBody)
-        {
-            return [];
+            $result['Location'] = reset($location);
+            unset($location);
         }
 
         $contentType = $response->getHeader('Content-Type');
         $contentType = reset($contentType);
 
+        if ($contentType && strpos($contentType, 'zip') !== false)
+        {
+            return $response->getBody();
+        }
+
+        $responseBody = (string) $response->getBody();
+
+        if (!$responseBody)
+        {
+            return $result;
+        }
+
         if ($contentType && strpos($contentType, 'json') !== false)
         {
-            return json_decode($responseBody, true);
+            $responseBody = json_decode($responseBody, true);
         }
 
         try
         {
             $xml = new SimpleXMLElement($responseBody);
-            return $this->xml2array($xml);
+            $responseBody = $this->xml2array($xml);
+            unset($xml);
         }
         catch (Exception $e)
         {
-            return [];
         }
+
+        return array_replace($result, $responseBody);
     }
 
     /**
