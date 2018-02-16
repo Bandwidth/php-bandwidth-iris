@@ -159,8 +159,10 @@ final class Tn extends RestEntry{
     public function tndetails() {
         $url = sprintf("%s/%s", $this->get_id(), "tndetails");
         $data = parent::_get($url);
-        $data = $data['TelephoneNumberDetails'];
-        $this->set_data($data);
+        if (isset($data['TelephoneNumberDetails']))
+        {
+            $this->set_data($data['TelephoneNumberDetails']);
+        }
     }
 
     public function site() {
