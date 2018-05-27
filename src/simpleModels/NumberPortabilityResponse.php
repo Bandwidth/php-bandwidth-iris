@@ -6,8 +6,10 @@ class NumberPortabilityResponse {
     use BaseModel;
 
     protected $fields = array(
+        "PortType" => array("type" => "string"),
         "PortableNumbers" => array("type" => "\Iris\TnList"),
         "SupportedRateCenters" => array("type" => "string"),
+        "SupportedTollFreeNumbers" => array("type" => "string"),
         "UnsupportedRateCenters" => array("type" => "\Iris\RateCentersS"),
         "PartnerSupportedRateCenters" => array("type" => "\Iris\RateCentersS"),
         "SupportedLosingCarriers" => array("type" => "\Iris\SupportedLosingCarriers")
