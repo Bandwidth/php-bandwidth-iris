@@ -342,7 +342,7 @@ final class Client extends iClient
 
         if ($contentType && strpos($contentType, 'json') !== false)
         {
-            $responseBody = json_decode($responseBody, true);
+            return json_decode($responseBody, true);
         }
 
         try
