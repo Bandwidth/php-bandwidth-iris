@@ -20,6 +20,7 @@ class Feature {
 
     protected $fields = array(
         "Status" => array("type" => "string"),
+        "CallerName" => array("type" => "string"),
         "SubscriberType" => array("type" => "string"),
         "SubscriberInformation" => array("type" => "string"),
         "UseType" => array("type" => "string"),
