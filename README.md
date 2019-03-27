@@ -13,7 +13,7 @@ composer require bandwidth/iris
 ## Usage
 
 ```PHP
-$client = new \Iris\Client($login, $password, ['url' => https://dashboard.bandwidth.com/api/']);
+$client = new \Iris\Client($login, $password, ['url' => 'https://dashboard.bandwidth.com/api/']);
 
 ```
 
