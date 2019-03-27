@@ -365,7 +365,7 @@ final class Client extends iClient
      */
     private function parseExceptionResponse($e)
     {
-        $body = $e->getResponse()->getBody(true);
+        $body = $e->getResponse()->getBody(true)->getContents();
         $doc = @simplexml_load_string($body);
 
         if (isset($doc) &&
@@ -389,6 +389,6 @@ final class Client extends iClient
             );
         }
 
-        throw new ResponseException($body, $e->getResponse()->getStatusCode());
+        throw new ResponseException($e->getMessage(), $e->getResponse()->getStatusCode());
     }
 }
