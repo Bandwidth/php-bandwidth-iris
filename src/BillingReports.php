@@ -111,6 +111,12 @@ class BillingReport extends RestEntry
     public function save()
     {
         $header = parent::post(null, "BillingReport", $this->to_array());
+
+        if (!isset($header['Location']))
+        {
+            return $this;
+        }
+
         $splitted = explode("/", $header['Location']);
         $this->Id = end($splitted);
 
