@@ -41,7 +41,7 @@ abstract class iClient
         {
             $tag = $element->getName();
             $e = get_object_vars($element);
-            if (!empty($e))
+            if ($element->count() > 0)
             {
                 $res = $element instanceof \SimpleXMLElement ? $this->xml2array($element) : $e;
             }
@@ -276,7 +276,8 @@ final class Client extends iClient
             {
                 return $response;
             }
-            return $this->parseResponse($response);
+            $parsedResponse = $this->parseResponse($response);
+            return $parsedResponse;
         }
         catch (ClientException $e)
         {
@@ -317,7 +318,6 @@ final class Client extends iClient
     private function parseResponse($response)
     {
         $result = [];
-
         if ($response->hasHeader('Location'))
         {
             $location = $response->getHeader('Location');
