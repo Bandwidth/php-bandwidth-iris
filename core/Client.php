@@ -276,8 +276,7 @@ final class Client extends iClient
             {
                 return $response;
             }
-            $parsedResponse = $this->parseResponse($response);
-            return $parsedResponse;
+            return $this->parseResponse($response);
         }
         catch (ClientException $e)
         {
@@ -318,6 +317,7 @@ final class Client extends iClient
     private function parseResponse($response)
     {
         $result = [];
+
         if ($response->hasHeader('Location'))
         {
             $location = $response->getHeader('Location');
