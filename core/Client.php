@@ -41,7 +41,7 @@ abstract class iClient
         {
             $tag = $element->getName();
             $e = get_object_vars($element);
-            if ($element->count() > 0)
+            if (!empty($e))
             {
                 $res = $element instanceof \SimpleXMLElement ? $this->xml2array($element) : $e;
             }
