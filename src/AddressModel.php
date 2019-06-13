@@ -21,7 +21,8 @@ class Address {
         "City" => array("type" => "string", "required" => true),
         "HouseNumber" => array("type" => "string", "required" => true),
         "StreetName" => array("type" => "string", "required" => true),
-        "StateCode" => array("type" => "string", "required" => true)
+        "StateCode" => array("type" => "string", "required" => true),
+        "Zip" => array("type" => "string", "required" => true)
     );
 
     public function __construct($data) {
