@@ -41,7 +41,8 @@ class SiteTest extends PHPUnit_Framework_TestCase {
 					"AddressType" => "Service",
 					"HouseNumber" => "1",
 					"StreetName" => "Avenue",
-					"StateCode" => "NC"
+					"StateCode" => "NC",
+                    "Zip" => "28591"
 			)));
 
         $this->assertEquals("2489", $site->Id);
