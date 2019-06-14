@@ -2,7 +2,22 @@ PHP Client library for Bandwidth's Phone Number Dashboard (AKA: Dashboard, Iris)
 =========================================================
 [![Build Status](https://travis-ci.org/Bandwidth/php-bandwidth-iris.svg?branch=master)](https://travis-ci.org/Bandwidth/php-bandwidth-iris)
 
-NOTE: This package is not compatible with PHP versions >= 7.2
+## Release Notes
+
+| Version | Notes |
+|:---|:---|
+| 2.0.0 | Fixed incompatibilities with Bandwidth's Dashboard API Create Site function that required breaking changes. Versions less than 2.0.0 are not guaranteed to work with Bandwidth's Dashboard API. |
+
+## Supported PHP Versions
+
+| Version                        | Support Level            |
+|:-------------------------------|:-------------------------|
+| 5.5 | Supported |
+| 5.6 | Supported |
+| 7.0 | Supported |
+| 7.1 | Supported |
+| 7.2 | Supported |
+| 7.3 | Supported |
 
 ## Install
 
