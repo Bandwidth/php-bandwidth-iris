@@ -78,6 +78,7 @@ class Portin extends RestEntry {
         "LNPLosingCarrierId" => [ "type" => "string"],
         "LNPLosingCarrierName" => [ "type" => "string"],
         "RequestedFOCDate" => [ "type" => "string"],
+        "ActualFocDate" => [ "type" => "string"],
         "VendorId" => [ "type" => "string"],
         "VendorName" => [ "type" => "string"],
         "PON" => [ "type" => "string"],
