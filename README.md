@@ -8,6 +8,7 @@ PHP Client library for Bandwidth's Phone Number Dashboard (AKA: Dashboard, Iris)
 |:---|:---|
 | 2.0.0 | Fixed incompatibilities with Bandwidth's Dashboard API Create Site function that required breaking changes. Versions less than 2.0.0 are not guaranteed to work with Bandwidth's Dashboard API. |
 | 2.0.1 | Added `ActualFocDate` to Portins model |
+| 2.0.2 | Fixed HTTP method for `set_tn_options` to `PUT` |
 
 ## Supported PHP Versions
 

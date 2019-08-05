@@ -200,7 +200,7 @@ final class Tn extends RestEntry{
 
         if(!($this->parent->parent instanceof Sippeer))
             throw new \Exception("You should get TN from sippeer");
-        parent::post($this->get_id(), "SipPeerTelephoneNumbers", $data->to_array());
+        parent::put($this->get_id(), "SipPeerTelephoneNumbers", $data->to_array());
     }
 
     public function ratecenter() {
