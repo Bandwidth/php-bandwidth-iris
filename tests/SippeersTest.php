@@ -148,7 +148,7 @@ class SippeersTest extends PHPUnit_Framework_TestCase {
             "RPIDFormat" => "e164"
         ]);
 
-        $this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("PUT", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/sites/9999/sippeers/2489/tns/8183386251", self::$container[self::$index]['request']->getUri());
         self::$index++;
     }
