@@ -181,7 +181,7 @@ class Account extends RestEntry {
     }
 
     public function availableNumbers($filters=Array()){
-        $query_fields = ["areaCode", "quantity", "enableTNDetail", "npaNxx", "npaNxxx",
+        $query_fields = ["areaCode", "quantity", "enableTNDetail", "localVanity", "npaNxx", "npaNxxx",
             "LCA", "enableTNDetail", "rateCenter", "state", "quantity", "tollFreeVanity",
             "tollFreeWildCardPattern", "city", "zip", "lata" ];
 
