@@ -10,6 +10,7 @@ PHP Client library for Bandwidth's Phone Number Dashboard (AKA: Dashboard, Iris)
 | 2.0.1 | Added `ActualFocDate` to Portins model |
 | 2.0.2 | Fixed HTTP method for `set_tn_options` to `PUT` |
 | 2.0.3 | Fixed HTTP request for `set_tn_options` to the correct XML object |
+| 2.0.4 | Added `localVanity` to `availableNumbers` |
 
 ## Supported PHP Versions
 
