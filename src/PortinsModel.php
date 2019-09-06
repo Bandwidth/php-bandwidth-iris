@@ -100,6 +100,7 @@ class Portin extends RestEntry {
         "LastModifiedDate" => array("type" => "string"),
         "userId" => array("type" => "string"),
         "BillingTelephoneNumber" => array("type" => "string"),
+        "NewBillingTelephoneNumber" => array("type" => "string"),
         "Subscriber" => array("type" => "\Iris\Subscriber"),
         "LoaAuthorizingPerson" => array("type" => "string"),
         "ListOfPhoneNumbers" => array("type" => "\Iris\Phones"),
