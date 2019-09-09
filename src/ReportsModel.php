@@ -98,7 +98,7 @@ final class Report extends RestEntry{
 
         if($data['ListOrderIdUserIdDate'] && $data['ListOrderIdUserIdDate']['TotalCount']) {
             foreach($data['ListOrderIdUserIdDate']['OrderIdUserIdDate'] as $instance) {
-                $rep_instances[] = new ReportInctace($this, $instance);
+                $rep_instances[] = new ReportInstance($this, $instance);
             }
         }
 
