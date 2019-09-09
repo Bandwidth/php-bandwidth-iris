@@ -107,16 +107,43 @@ final class Report extends RestEntry{
 }
 
 
+final class InstanceParameters {
+    use BaseModel;
+
+    protected $fields = array(
+        "Parameter" => array("type" => "\Iris\InstanceParameter")
+    );
+    public function __construct($data) {
+        $this->set_data($data);
+    }
+}
+
+final class InstanceParameter {
+    use BaseModel;
+
+    protected $fields = array(
+        "Name" => array("type" => "string"),
+        "Value" => array("type" => "string"),
+    );
+    public function __construct($data) {
+        $this->set_data($data);
+    }
+}
+
 final class ReportInstance extends RestEntry{
     use BaseModel;
 
     protected $fields = array(
-        "orderId" => array(
-            "type" => "string"
-        ),
-        /* TODO:  fill fields */
+        "Id" => array("type" => "string"),
+        "ReportId" => array("type" => "string"),
+        "ReportName" => array("type" => "string"),
+        "OutputFormat" => array("type" => "string"),
+        "RequestedByUserName" => array("type" => "string"),
+        "RequestedAt" => array("type" => "string"),
+        "Parameters" => array("type" => "\Iris\InstanceParameters"),
+        "Status" => array("type" => "string"),
+        "ExpiresAt" => array("type" => "string"),
     );
-
 
     public function __construct($report, $data)
     {
