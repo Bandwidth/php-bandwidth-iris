@@ -48,16 +48,66 @@ final class Reports extends RestEntry {
 
 }
 
+final class ReportValue {
+    use BaseModel;
+
+    protected $fields = array(
+        "InternalName" => array("type" => "string"),
+        "DisplayName" => array("type" => "string"),
+    );
+    public function __construct($data) {
+        $this->set_data($data);
+    }
+}
+
+final class ReportValues {
+    use BaseModel;
+
+    protected $fields = array(
+        "Value" => array("type" => "\Iris\ReportValue")
+    );
+    public function __construct($data) {
+        $this->set_data($data);
+    }
+}
+
+final class ReportParameter {
+    use BaseModel;
+
+    protected $fields = array(
+        "Name" => array("type" => "string"),
+        "Type" => array("type" => "string"),
+        "Required" => array("type" => "string"),
+        "Description" => array("type" => "string"),
+        "MultiSelectAllowed" => array("type" => "string"),
+        "HelpInformation" => array("type" => "string"),
+        "Values" => array("type" => "\Iris\ReportValues"),
+    );
+    public function __construct($data) {
+        $this->set_data($data);
+    }
+}
+
+final class ReportParameters {
+    use BaseModel;
+
+    protected $fields = array(
+        "Parameter" => array("type" => "\Iris\ReportParameter")
+    );
+    public function __construct($data) {
+        $this->set_data($data);
+    }
+}
+
 final class Report extends RestEntry{
     use BaseModel;
 
     protected $fields = array(
-        "orderId" => array(
-            "type" => "string"
-        ),
-        /* TODO:  fill fields */
+        "Id" => array("type" => "string"),
+        "Name" => array("type" => "string"),
+        "Description" => array("type" => "string"),
+        "Parameters" => array("type" => "\Iris\ReportParameters"),
     );
-
 
     public function __construct($reports, $data)
     {
