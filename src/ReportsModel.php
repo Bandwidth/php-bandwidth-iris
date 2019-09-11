@@ -22,11 +22,11 @@ final class Reports extends RestEntry {
         parent::_init($this->parent->get_rest_client(), $this->parent->get_relative_namespace());
     }
 
-    public function getList($filters = Array()) {
+    public function getList($filters = array()) {
 
         $reports = [];
 
-        $data = parent::_get('reports', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
+        $data = parent::_get('reports', $filters, array("page"=> 1, "size" => 30), array("page", "size"));
         if($data['Reports']) {
             foreach($data['Reports']['Report'] as $report) {
                 $reports[] = new Report($this, $report);
@@ -139,11 +139,11 @@ final class Report extends RestEntry{
         return $data;
     }
 
-    public function instances($filters = Array())
+    public function instances($filters = array())
     {
         $rep_instances = [];
 
-        $data = parent::_get($this->Id.'/instances', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
+        $data = parent::_get($this->Id.'/instances', $filters, array("page"=> 1, "size" => 30), array("page", "size"));
 
         if($data['Instances']) {
             foreach($data['Instances']['Instance'] as $instance) {
