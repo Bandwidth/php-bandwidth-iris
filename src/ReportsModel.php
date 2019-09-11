@@ -28,7 +28,7 @@ final class Reports extends RestEntry {
 
         $data = parent::_get('reports', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
         if($data['Reports']) {
-            foreach($data['Reports'] as $report) {
+            foreach($data['Reports']['Report'] as $report) {
                 $reports[] = new Report($this, $report);
             }
         }
@@ -146,7 +146,7 @@ final class Report extends RestEntry{
         $data = parent::_get($this->Id.'/instances', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
 
         if($data['Instances']) {
-            foreach($data['Instances'] as $instance) {
+            foreach($data['Instances']['Instance'] as $instance) {
                 $rep_instances[] = new ReportInstance($this, $instance);
             }
         }
