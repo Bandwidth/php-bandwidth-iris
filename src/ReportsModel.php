@@ -13,6 +13,8 @@
 
 namespace Iris;
 
+require_once("ReportsInstanceModel.php");
+
 final class Reports extends RestEntry {
 
     public function __construct($parent) {
@@ -43,7 +45,6 @@ final class Reports extends RestEntry {
     public function get_appendix() {
         return '/reports';
     }
-
 }
 
 final class ReportValue {
@@ -138,11 +139,11 @@ final class Report extends RestEntry{
         return $data;
     }
 
-    public function instances()
+    public function instances($filters = Array())
     {
         $rep_instances = [];
 
-        $data = parent::_get('reports/{$this->id}/instances', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
+        $data = parent::_get($this->Id.'/instances', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
 
         if($data['Instances']) {
             foreach($data['Instances'] as $instance) {
@@ -151,5 +152,9 @@ final class Report extends RestEntry{
         }
 
         return $rep_instances;
+    }
+
+    public function get_appendix() {
+        return $this->parent->get_appendix();
     }
 }
