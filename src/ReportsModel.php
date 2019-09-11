@@ -154,6 +154,11 @@ final class Report extends RestEntry{
         return $rep_instances;
     }
 
+    public function modifyInstance($instance) {
+        $response = parent::post($this->Id."/instances/".$instance->Id, "Instance", $this->to_array());
+        return $response; //this api endpoint returns a response header
+    }
+
     public function get_appendix() {
         return $this->parent->get_appendix();
     }

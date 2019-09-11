@@ -67,21 +67,4 @@ final class ReportInstance extends RestEntry{
         }
     }
 
-    public function get() {
-        if(is_null($this->id))
-            throw new \Exception('Id should be provided');
-
-        $data = parent::_get($this->id);
-        $this->set_data($data['Instance']);
-    }
-
-    public function get_by_id($instanceId) {
-        //TODO: Get instances/{instanceId}
-    }
-
-    public function create() {
-        $response = parent::post(null, "Instance", $this->to_array());
-        return $response; //this api endpoint returns a response header
-    }
-
 }

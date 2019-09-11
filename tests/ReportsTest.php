@@ -18,6 +18,9 @@ class ReportsTest extends PHPUnit_Framework_TestCase {
             new Response(200, [], '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ReportsResponse><Report><Id>123</Id><Name>Sample Report 1</Name><Parameters><Parameter><Name>Report Parameter 1</Name><Type>Enum</Type><Required>false</Required><ValueFilter>Value1</ValueFilter><Values><Value><InternalName>Value1</InternalName><DisplayName>Display Value1</DisplayName></Value></Values><Description>Report Parameter 1 Description</Description><MultiSelectAllowed>true</MultiSelectAllowed><HelpInformation>Report Parameter 1 Help Text</HelpInformation></Parameter><Parameter><Name>Report Parameter 2</Name></Parameter></Parameters></Report></ReportsResponse>'),
             //GET instances for report
             new Response(200, [], '<ReportInstancesResponse><Instances><Instance><Id>100090</Id><ReportId>100020</ReportId><ReportName>Sample Report</ReportName><OutputFormat>pdf</OutputFormat><RequestedByUserName>jbm</RequestedByUserName><RequestedAt>2015-05-18 14:03:04</RequestedAt><Parameters><Parameter><Name>AccountId</Name><Value>1</Value></Parameter></Parameters><Status>Expired</Status></Instance></Instances></ReportInstancesResponse>'),
+
+            //POST update report instance
+            new Response(200, [], ''),
         ]);
 
         self::$container = [];
@@ -37,7 +40,7 @@ class ReportsTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals("100020", $report->Id);
     }
 
-    public function testReportsGetIdAndGetInstances() {
+    public function testReportsGetIdAndInstances() {
         $report = self::$reports->get_by_id("123");
         $this->assertEquals("123", $report->Id);
         $this->assertEquals("Sample Report 1", $report->Name);
@@ -47,5 +50,4 @@ class ReportsTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals("100090", $instance->Id);
         $this->assertEquals("Sample Report", $instance->ReportName);
     }
-
 }
