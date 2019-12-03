@@ -128,7 +128,7 @@ $disconnect = $account->disconnects()->create([
             "TelephoneNumber" => [ "9192755378", "9192755703" ]
         ]
     ]
-]]);
+]);
 ```
 
 ### Get Disconnect
