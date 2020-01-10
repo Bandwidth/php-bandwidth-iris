@@ -390,6 +390,17 @@ final class Client extends iClient
             );
         }
 
+        if (isset($doc) &&
+            isset($doc->Errors) &&
+            isset($doc->Errors->Description) &&
+            isset($doc->Errors->Code))
+        {
+            throw new ResponseException(
+                (string) $doc->Errors->Description,
+                (int) $doc->Errors->Code
+            );
+        }
+
         throw new ResponseException($e->getMessage(), $e->getResponse()->getStatusCode());
     }
 }
