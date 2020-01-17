@@ -580,3 +580,21 @@ $zipStream = $billingReport->file();
 $outFile = '/tmp/report.zip';
 $billingReport->file(['stream' => true, 'sink' => $outFile]);
 ```
+
+## TN Options
+
+### Create New TN Options (Async request)
+```PHP
+$tnoptions = $account->tnoptions();
+$data = array(
+    "TnOptionGroups" => array(
+        "TnOptionGroup" => array(
+            "CallForward" => "<FORWARD_NUMBER>",
+            "TelephoneNumbers" => array(
+                "TelephoneNumber" => "<UPDATE_NUMBER>"
+            )
+        ),
+    )
+);
+$tnoptions->create($data);
+```
