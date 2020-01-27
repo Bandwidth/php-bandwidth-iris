@@ -13,7 +13,8 @@ PHP Client library for Bandwidth's Phone Number Dashboard (AKA: Dashboard, Iris)
 | 2.0.4 | Added `localVanity` to `availableNumbers` |
 | 2.0.5 | Added `NewBillingTelephoneNumber` to `Portins` model |
 | 2.0.6 | Build `ReportsModel` functionality |
-| 2.0.7 | Fixed rate center check |
+| 2.0.7 | Fixed error handling for Errors fields |
+| 2.0.8 | Fixed rate center check |
 
 ## Supported PHP Versions
 
