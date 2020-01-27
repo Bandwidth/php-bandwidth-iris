@@ -13,7 +13,7 @@ final class CoveredRateCenters extends RestEntry{
         $rcs = [];
         $data = parent::_get('coveredRateCenters', $filters, Array("page"=> 1, "size" => 30), Array("page", "size"));
 
-        if($data['CoveredRateCenter']) {
+        if(isset($data['CoveredRateCenter'])) {
             $items =  $data['CoveredRateCenter'];
 
             if($this->is_assoc($items))
