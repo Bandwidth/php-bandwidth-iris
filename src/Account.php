@@ -254,18 +254,21 @@ class Account extends RestEntry {
     public function getImportTnOrders($filters = array()) {
         $url = sprintf('%s/%s', $this->account_id, 'importTnOrders');
         $response = parent::_get($url, $filters);
+        //TODO: Confirm the actual response object
         return new ImportTnOrderResponse($response);
     }
 
     public function createImportTnOrder(ImportTnOrder $order) {
         $url = sprintf('%s/%s', $this->account_id, 'importTnOrders');
         $data = parent::post($url, 'ImportTnOrder', $order->to_array());
+        //TODO: Confirm the actual response object
         return new ImportTnOrderResponse($data);
     }
 
     public function getImportTnOrder($id) {
         $url = sprintf('%s/%s/%s', $this->account_id, 'importTnOrders', $id);
         $response = parent::_get($url);
+        //TODO: Confirm the actual response object
         return new ImportTnOrderResponse($response);
     }
 
@@ -274,5 +277,16 @@ class Account extends RestEntry {
         $response = parent::_get($url);
         //TODO: Figure out the actual response object
         return $response;
+    }
+
+    public function checkTnsPortability($tns) {
+        $url = sprintf('%s/%s', $this->account_id, 'importTnChecker');
+        $payload = new ImportTnCheckerPayload(array(
+            "TelephoneNumbers" => array(
+                "TelephoneNumber" => $tns
+        )));
+        $data = parent::post($url, 'ImportTnCheckerPayload', $payload->to_array());
+        //TODO: Confirm the actual response object
+        return new ImportTnCheckerResponse($data);
     }
 }

@@ -633,3 +633,8 @@ $account->getImportTnOrder("some_id_value");
 ```PHP
 $account->getImportTnOrderHistory("some_id_value");
 ```
+
+### Check TNs Portability
+```PHP
+$account->checkTnsPortability(array("+15554443333", "+15553334444"));
+```
