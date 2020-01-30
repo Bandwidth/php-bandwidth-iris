@@ -15,6 +15,7 @@ PHP Client library for Bandwidth's Phone Number Dashboard (AKA: Dashboard, Iris)
 | 2.0.6 | Build `ReportsModel` functionality |
 | 2.0.7 | Fixed error handling for Errors fields |
 | 2.0.8 | Fixed rate center check |
+| 2.1.0 | Added `importTnOrders` endpoints |
 
 ## Supported PHP Versions
 
@@ -45,8 +46,8 @@ $client = new \Iris\Client($login, $password, ['url' => 'https://dashboard.bandw
 ## Run tests
 
 ```bash
-$ composer install
-$ php ./bin/phpunit --bootstrap ./vendor/autoload.php tests/
+composer install
+php ./bin/phpunit --bootstrap ./vendor/autoload.php tests/
 ```
 =======
 ## Examples
@@ -599,4 +600,36 @@ $data = array(
     )
 );
 $tnoptions->create($data);
+```
+
+## Import TN Orders
+
+### Get Import TN Orders
+```PHP
+$account->getImportTnOrders(array(
+    "createdDateFrom" => "2013-10-22T00:00:00.000Z",
+    "createdDateTo" => "2013-10-25T00:00:00.000Z"
+));
+```
+
+### Create Import TN Order
+```PHP
+$importTnOrder = new \Iris\ImportTnOrder(array(
+    "CustomerOrderId" => "custom string",
+    "TelephoneNumbers" => array(
+        "TelephoneNumber" => array("+15554443333", "+15553332222")
+    )
+));
+
+$account->createImportTnOrder($importTnOrder);
+```
+
+### Get Import TN Order By ID
+```PHP
+$account->getImportTnOrder("some_id_value");
+```
+
+### Get Import TN Order History
+```PHP
+$account->getImportTnOrderHistory("some_id_value");
 ```

@@ -250,4 +250,29 @@ class Account extends RestEntry {
     public function get_rest_client() {
       return $this->client;
     }
+
+    public function getImportTnOrders($filters = array()) {
+        $url = sprintf('%s/%s', $this->account_id, 'importTnOrders');
+        $response = parent::_get($url, $filters);
+        return new ImportTnOrderResponse($response);
+    }
+
+    public function createImportTnOrder(ImportTnOrder $order) {
+        $url = sprintf('%s/%s', $this->account_id, 'importTnOrders');
+        $data = parent::post($url, 'ImportTnOrder', $order->to_array());
+        return new ImportTnOrderResponse($data);
+    }
+
+    public function getImportTnOrder($id) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'importTnOrders', $id);
+        $response = parent::_get($url);
+        return new ImportTnOrderResponse($response);
+    }
+
+    public function getImportTnOrderHistory($id) {
+        $url = sprintf('%s/%s/%s/%s', $this->account_id, 'importTnOrders', $id, 'history');
+        $response = parent::_get($url);
+        //TODO: Figure out the actual response object
+        return $response;
+    }
 }
