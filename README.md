@@ -46,8 +46,8 @@ $client = new \Iris\Client($login, $password, ['url' => 'https://dashboard.bandw
 ## Run tests
 
 ```bash
-$ composer install
-$ php ./bin/phpunit --bootstrap ./vendor/autoload.php tests/
+composer install
+php ./bin/phpunit --bootstrap ./vendor/autoload.php tests/
 ```
 =======
 ## Examples

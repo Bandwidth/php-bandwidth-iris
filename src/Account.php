@@ -266,7 +266,7 @@ class Account extends RestEntry {
     public function getImportTnOrder($id) {
         $url = sprintf('%s/%s/%s', $this->account_id, 'importTnOrders', $id);
         $response = parent::_get($url);
-        return new ImportTnOrder($response);
+        return new ImportTnOrderResponse($response);
     }
 
     public function getImportTnOrderHistory($id) {
