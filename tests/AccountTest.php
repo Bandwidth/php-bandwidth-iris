@@ -92,6 +92,25 @@ class AccountTest extends PHPUnit_Framework_TestCase {
                             <Errors/>
                         </ImportTnOrder>
                     </ImportTnOrderResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
+                <RemoveImportedTnOrderResponse>
+                    <RemoveImportedTnOrder>
+                        <CustomerOrderId>SJM000001</CustomerOrderId>
+                        <OrderCreateDate>2018-01-20T02:59:54.000Z</OrderCreateDate>
+                        <AccountId>9900012</AccountId>
+                        <CreatedByUser>smckinnon</CreatedByUser>
+                        <OrderId>b05de7e6-0cab-4c83-81bb-9379cba8efd0</OrderId>
+                        <LastModifiedDate>2018-01-20T02:59:54.000Z</LastModifiedDate>
+                        <TelephoneNumbers>
+                            <TelephoneNumber>9199918388</TelephoneNumber>
+                            <TelephoneNumber>4158714245</TelephoneNumber>
+                            <TelephoneNumber>4352154439</TelephoneNumber>
+                            <TelephoneNumber>4352154466</TelephoneNumber>
+                        </TelephoneNumbers>
+                        <ProcessingStatus>PROCESSING</ProcessingStatus>
+                        <Errors/>
+                    </RemoveImportedTnOrder>
+                </RemoveImportedTnOrderResponse>"),
         ]);
 
         self::$container = [];
@@ -316,6 +335,13 @@ class AccountTest extends PHPUnit_Framework_TestCase {
         $importTnOrderResponse = self::$account->getImportTnOrder("b05de7e6-0cab-4c83-81bb-9379cba8efd0");
 
         $this->assertEquals("b05de7e6-0cab-4c83-81bb-9379cba8efd0", $importTnOrderResponse->ImportTnOrder->OrderId);
+        self::$index++;
+    }
+
+    public function testRemoveImportedTnOrder() {
+        $removeImportedTnOrderResponse = self::$account->getRemoveImportedTnOrder("b05de7e6-0cab-4c83-81bb-9379cba8efd0");
+
+        $this->assertEquals("b05de7e6-0cab-4c83-81bb-9379cba8efd0", $removeImportedTnOrderResponse->RemoveImportedTnOrder->OrderId);
         self::$index++;
     }
 }
