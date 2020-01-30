@@ -602,7 +602,7 @@ $data = array(
 $tnoptions->create($data);
 ```
 
-## Import TN Orders
+## Hosted Messaging Functions
 
 ### Get Import TN Orders
 ```PHP
@@ -637,4 +637,14 @@ $account->getImportTnOrderHistory("some_id_value");
 ### Check TNs Portability
 ```PHP
 $account->checkTnsPortability(array("+15554443333", "+15553334444"));
+```
+
+### Get In Service Numbers
+```PHP
+$account->getInserviceNumbers(array("areacode" => "919"));
+```
+
+### Check In Service Number
+```PHP
+$account->checkInserviceNumber("5554443333");
 ```
