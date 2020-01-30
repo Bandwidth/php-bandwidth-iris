@@ -123,6 +123,24 @@ class AccountTest extends PHPUnit_Framework_TestCase {
                         <TelephoneNumber>8042121778</TelephoneNumber>
                     </TelephoneNumbers>
                 </TNs>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
+                <ImportTnCheckerResponse>
+                    <ImportTnCheckerPayload>
+                        <TelephoneNumbers>
+                            <TelephoneNumber>3032281000</TelephoneNumber>
+                        </TelephoneNumbers>
+                        <ImportTnErrors>
+                            <ImportTnError>
+                                <Code>19006</Code>
+                                <Description>Bandwidth numbers cannot be imported by this account at this time.</Description>
+                                <TelephoneNumbers>
+                                    <TelephoneNumber>4109235436</TelephoneNumber>
+                                    <TelephoneNumber>4104685864</TelephoneNumber>
+                                </TelephoneNumbers>
+                            </ImportTnError>
+                        </ImportTnErrors>
+                    </ImportTnCheckerPayload>
+                </ImportTnCheckerResponse>"),
         ]);
 
         self::$container = [];
@@ -366,6 +384,16 @@ class AccountTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals("8043024183", $tns->TelephoneNumbers->TelephoneNumber[0]);
         $this->assertEquals("8042121778", $tns->TelephoneNumbers->TelephoneNumber[1]);
 
+        self::$index++;
+    }
+
+    public function testCheckTnsPortability() {
+        $importTnCheckerResponse = self::$account->checkTnsPortability(array("5554443333"));
+
+        $this->assertEquals("3032281000", $importTnCheckerResponse->ImportTnCheckerPayload->TelephoneNumbers->TelephoneNumber);
+        $this->assertEquals("19006", $importTnCheckerResponse->ImportTnCheckerPayload->ImportTnErrors->ImportTnError->Code);
+
+        
         self::$index++;
     }
 }

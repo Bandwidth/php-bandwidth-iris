@@ -2,12 +2,11 @@
 
 namespace Iris;
 
-class ImportTnCheckerPayload {
+class ImportTnErrors {
     use BaseModel;
 
     protected $fields = array(
-        "TelephoneNumbers" => array("type" => "\Iris\Phones"),
-        "ImportTnErrors" => array("type" => "\Iris\ImportTnErrors")
+        "ImportTnError" => array("type" => "\Iris\ImportTnError")
     );
 
     public function __construct($data) {

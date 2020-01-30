@@ -12,6 +12,6 @@ class ImportTnError {
     );
 
     public function __construct($data) {
-        $this->set_data($data);
+        $this->set_data($data, true);
     }
 }
