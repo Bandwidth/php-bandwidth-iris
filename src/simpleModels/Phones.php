@@ -9,7 +9,7 @@ class Phones {
         "PhoneNumber" => array("type" => "string"),
         "TelephoneNumber" => array("type" => "string"),
         "FullNumber" => array("type" => "string"),
-        "Count" => array("type" => "integer")
+        "Count" => array("type" => "string")
     );
 
     public function __construct($data) {

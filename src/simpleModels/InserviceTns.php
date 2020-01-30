@@ -2,11 +2,11 @@
 
 namespace Iris;
 
-class TNs {
+class InserviceTns {
     use BaseModel;
 
     protected $fields = array(
-        "TotalCount" => array("type" => "integer"),
+        "TotalCount" => array("type" => "string"),
         "TelephoneNumbers" => array("type" => "\Iris\Phones"),
         "Links" => array("type" => "\Iris\Links")
     );

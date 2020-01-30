@@ -111,6 +111,18 @@ class AccountTest extends PHPUnit_Framework_TestCase {
                         <Errors/>
                     </RemoveImportedTnOrder>
                 </RemoveImportedTnOrderResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
+                <TNs>
+                    <TotalCount>2</TotalCount>
+                    <Links>
+                        <first>link</first>
+                    </Links>
+                    <TelephoneNumbers>
+                        <Count>2</Count>
+                        <TelephoneNumber>8043024183</TelephoneNumber>
+                        <TelephoneNumber>8042121778</TelephoneNumber>
+                    </TelephoneNumbers>
+                </TNs>"),
         ]);
 
         self::$container = [];
@@ -342,6 +354,18 @@ class AccountTest extends PHPUnit_Framework_TestCase {
         $removeImportedTnOrderResponse = self::$account->getRemoveImportedTnOrder("b05de7e6-0cab-4c83-81bb-9379cba8efd0");
 
         $this->assertEquals("b05de7e6-0cab-4c83-81bb-9379cba8efd0", $removeImportedTnOrderResponse->RemoveImportedTnOrder->OrderId);
+        self::$index++;
+    }
+
+    public function testGetInserviceNumbers() {
+        $tns = self::$account->getInserviceNumbers();
+
+        $this->assertEquals("2", $tns->TotalCount);
+        $this->assertEquals("link", $tns->Links->first);
+        $this->assertEquals("2", $tns->TelephoneNumbers->Count);
+        $this->assertEquals("8043024183", $tns->TelephoneNumbers->TelephoneNumber[0]);
+        $this->assertEquals("8042121778", $tns->TelephoneNumbers->TelephoneNumber[1]);
+
         self::$index++;
     }
 }

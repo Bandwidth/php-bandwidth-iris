@@ -294,7 +294,7 @@ class Account extends RestEntry {
         $url = sprintf('%s/%s', $this->account_id, 'inserviceNumbers');
         $response = parent::_get($url, $filters);
         //TODO: Confirm the actual response object
-        return new TNs($response);
+        return new InserviceTns($response);
     }
 
     public function checkInserviceNumber($tn) {
