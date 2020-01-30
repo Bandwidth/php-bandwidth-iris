@@ -12,4 +12,4 @@ class ImportTnOrderResponse {
     public function __construct($data) {
         $this->set_data($data);
     }
-)
+}

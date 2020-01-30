@@ -601,3 +601,35 @@ $data = array(
 );
 $tnoptions->create($data);
 ```
+
+## Import TN Orders
+
+### Get Import TN Orders
+```PHP
+$account->getImportTnOrders(array(
+    "createdDateFrom" => "2013-10-22T00:00:00.000Z",
+    "createdDateTo" => "2013-10-25T00:00:00.000Z"
+));
+```
+
+### Create Import TN Order
+```PHP
+$importTnOrder = new \Iris\ImportTnOrder(array(
+    "CustomerOrderId" => "custom string",
+    "TelephoneNumbers" => array(
+        "TelephoneNumber" => array("+15554443333", "+15553332222")
+    )
+));
+
+$account->createImportTnOrder($importTnOrder);
+```
+
+### Get Import TN Order By ID
+```PHP
+$account->getImportTnOrder("some_id_value");
+```
+
+### Get Import TN Order History
+```PHP
+$account->getImportTnOrderHistory("some_id_value");
+```
