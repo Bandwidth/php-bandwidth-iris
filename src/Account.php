@@ -302,4 +302,32 @@ class Account extends RestEntry {
         $response = parent::_get($url);
         return $response;
     }
+
+    public function getRemoveImportedTnOrders($filters = array()) {
+        $url = sprintf('%s/%s', $this->account_id, 'removeImportedTnOrders');
+        $response = parent::_get($url, $filters);
+        //TODO: Confirm the actual response object
+        return new RemoveImportedTnOrderResponse($response);
+    }
+
+    public function createRemoveImportedTnOrder(RemoveImportedTnOrder $order) {
+        $url = sprintf('%s/%s', $this->account_id, 'removeImportedTnOrders');
+        $data = parent::post($url, 'RemoveImportedTnOrder', $order->to_array());
+        //TODO: Confirm the actual response object
+        return new RemoveImportedTnOrderResponse($data);
+    }
+
+    public function getRemoveImportedTnOrder($id) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'removeImportedTnOrders', $id);
+        $response = parent::_get($url);
+        //TODO: Confirm the actual response object
+        return new RemoveImportedTnOrderResponse($response);
+    }
+
+    public function getRemoveImportedTnOrderHistory($id) {
+        $url = sprintf('%s/%s/%s/%s', $this->account_id, 'removeImportedTnOrders', $id, 'history');
+        $response = parent::_get($url);
+        //TODO: Figure out the actual response object
+        return $response;
+    }
 }

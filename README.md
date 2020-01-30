@@ -648,3 +648,33 @@ $account->getInserviceNumbers(array("areacode" => "919"));
 ```PHP
 $account->checkInserviceNumber("5554443333");
 ```
+
+### Get Remove Imported TN Orders
+```PHP
+$account->getRemoveImportedTnOrders(array(
+    "createdDateFrom" => "2013-10-22T00:00:00.000Z",
+    "createdDateTo" => "2013-10-25T00:00:00.000Z"
+));
+```
+
+### Create A Remove Imported TN Order
+```PHP
+$removeImportedTnOrder = new \Iris\RemoveImportedTnOrder(array(
+    "CustomerOrderId" => "custom string",
+    "TelephoneNumbers" => array(
+        "TelephoneNumber" => array("+15554443333", "+15553332222")
+    )
+));
+
+$account->createRemoveImportedTnOrder($removeImportedTnOrder);
+```
+
+### Get Removed Imported TN Order
+```PHP
+$account->getRemoveImportedTnOrder("some_id_value");
+```
+
+### Get Removed Imported TN Order History
+```PHP
+$account->getRemoveImportedTnOrderHistory("some_id_value");
+```
