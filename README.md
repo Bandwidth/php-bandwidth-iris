@@ -604,7 +604,7 @@ $tnoptions->create($data);
 
 ## Hosted Messaging Functions
 
-### Get Import TN Orders (good)
+### Get Import TN Orders
 ```PHP
 $resp = $account->getImportTnOrders(array(
     "createdDateFrom" => "2013-10-22T00:00:00.000Z",
@@ -614,7 +614,7 @@ $resp = $account->getImportTnOrders(array(
 print_r($resp);
 ```
 
-### Create Import TN Order (good)
+### Create Import TN Order
 ```PHP
 $importTnOrder = new \Iris\ImportTnOrder(array(
     "CustomerOrderId" => "id",
@@ -639,32 +639,32 @@ $importTnOrder = new \Iris\ImportTnOrder(array(
 print_r($account->createImportTnOrder($importTnOrder));
 ```
 
-### Get Import TN Order By ID (good)
+### Get Import TN Order By ID
 ```PHP
 print_r($account->getImportTnOrder("some_id_value"));
 ```
 
-### Get Import TN Order History (good)
+### Get Import TN Order History
 ```PHP
 print_r($account->getImportTnOrderHistory("some_id_value"));
 ```
 
-### Check TNs Portability (good)
+### Check TNs Portability
 ```PHP
 print_r($account->checkTnsPortability(array("5554443333", "5553334444")));
 ```
 
-### Get In Service Numbers (good)
+### Get In Service Numbers
 ```PHP
 $account->getInserviceNumbers(array("areacode" => "919"));
 ```
 
-### Check In Service Number (good)
+### Check In Service Number
 ```PHP
 print_r($account->checkInserviceNumber("5554443333"));
 ```
 
-### Get Remove Imported TN Orders (good)
+### Get Remove Imported TN Orders
 ```PHP
 $resp = $account->getRemoveImportedTnOrders(array(
     "createdDateFrom" => "2013-10-22T00:00:00.000Z",
@@ -674,7 +674,7 @@ $resp = $account->getRemoveImportedTnOrders(array(
 print_r($resp);
 ```
 
-### Create A Remove Imported TN Order (good)
+### Create A Remove Imported TN Order
 ```PHP
 $removeImportedTnOrder = new \Iris\RemoveImportedTnOrder(array(
     "CustomerOrderId" => "custom string",
@@ -686,12 +686,12 @@ $removeImportedTnOrder = new \Iris\RemoveImportedTnOrder(array(
 print_r($account->createRemoveImportedTnOrder($removeImportedTnOrder));
 ```
 
-### Get Removed Imported TN Order (good)
+### Get Removed Imported TN Order
 ```PHP
 print_r($account->getRemoveImportedTnOrder("some_id_value"));
 ```
 
-### Get Removed Imported TN Order History (good)
+### Get Removed Imported TN Order History
 ```PHP
 print_r($account->getRemoveImportedTnOrderHistory("some_id_value"));
 ```
