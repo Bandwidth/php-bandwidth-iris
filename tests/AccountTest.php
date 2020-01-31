@@ -364,25 +364,25 @@ class AccountTest extends PHPUnit_Framework_TestCase {
     public function testGetImportTnOrder() {
         $importTnOrderResponse = self::$account->getImportTnOrder("b05de7e6-0cab-4c83-81bb-9379cba8efd0");
 
-        $this->assertEquals("b05de7e6-0cab-4c83-81bb-9379cba8efd0", $importTnOrderResponse->ImportTnOrder->OrderId);
+        $this->assertEquals("b05de7e6-0cab-4c83-81bb-9379cba8efd0", $importTnOrderResponse["ImportTnOrder"]["OrderId"]);
         self::$index++;
     }
 
     public function testRemoveImportedTnOrder() {
         $removeImportedTnOrderResponse = self::$account->getRemoveImportedTnOrder("b05de7e6-0cab-4c83-81bb-9379cba8efd0");
 
-        $this->assertEquals("b05de7e6-0cab-4c83-81bb-9379cba8efd0", $removeImportedTnOrderResponse->RemoveImportedTnOrder->OrderId);
+        $this->assertEquals("b05de7e6-0cab-4c83-81bb-9379cba8efd0", $removeImportedTnOrderResponse["RemoveImportedTnOrder"]["OrderId"]);
         self::$index++;
     }
 
     public function testGetInserviceNumbers() {
         $tns = self::$account->getInserviceNumbers();
 
-        $this->assertEquals("2", $tns->TotalCount);
-        $this->assertEquals("link", $tns->Links->first);
-        $this->assertEquals("2", $tns->TelephoneNumbers->Count);
-        $this->assertEquals("8043024183", $tns->TelephoneNumbers->TelephoneNumber[0]);
-        $this->assertEquals("8042121778", $tns->TelephoneNumbers->TelephoneNumber[1]);
+        $this->assertEquals("2", $tns["TotalCount"]);
+        $this->assertEquals("link", $tns["Links"]["first"]);
+        $this->assertEquals("2", $tns["TelephoneNumbers"]["Count"]);
+        $this->assertEquals("8043024183", $tns["TelephoneNumbers"]["TelephoneNumber"][0]);
+        $this->assertEquals("8042121778", $tns["TelephoneNumbers"]["TelephoneNumber"][1]);
 
         self::$index++;
     }
@@ -390,8 +390,8 @@ class AccountTest extends PHPUnit_Framework_TestCase {
     public function testCheckTnsPortability() {
         $importTnCheckerResponse = self::$account->checkTnsPortability(array("5554443333"));
 
-        $this->assertEquals("3032281000", $importTnCheckerResponse->ImportTnCheckerPayload->TelephoneNumbers->TelephoneNumber);
-        $this->assertEquals("19006", $importTnCheckerResponse->ImportTnCheckerPayload->ImportTnErrors->ImportTnError->Code);
+        $this->assertEquals("3032281000", $importTnCheckerResponse["ImportTnCheckerPayload"]["TelephoneNumbers"]["TelephoneNumber"]);
+        $this->assertEquals("19006", $importTnCheckerResponse["ImportTnCheckerPayload"]["ImportTnErrors"]["ImportTnError"]["Code"]);
 
         
         self::$index++;
