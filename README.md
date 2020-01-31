@@ -604,77 +604,94 @@ $tnoptions->create($data);
 
 ## Hosted Messaging Functions
 
-### Get Import TN Orders
+### Get Import TN Orders (good)
 ```PHP
-$account->getImportTnOrders(array(
+$resp = $account->getImportTnOrders(array(
     "createdDateFrom" => "2013-10-22T00:00:00.000Z",
     "createdDateTo" => "2013-10-25T00:00:00.000Z"
 ));
+
+print_r($resp);
 ```
 
-### Create Import TN Order
+### Create Import TN Order (good)
 ```PHP
 $importTnOrder = new \Iris\ImportTnOrder(array(
-    "CustomerOrderId" => "custom string",
+    "CustomerOrderId" => "id",
     "TelephoneNumbers" => array(
-        "TelephoneNumber" => array("+15554443333", "+15553332222")
-    )
+        "TelephoneNumber" => array("5554443333")
+    ),
+    "SiteId" => "12345",
+    "Subscriber" => array(
+        "Name" => "Company INC",
+        "ServiceAddress" => array(
+            "HouseNumber" => "1",
+            "StreetName" => "Street",
+            "City" => "City",
+            "StateCode" => "XY",
+            "Zip" => "54345",
+            "County" => "County"
+        )
+    ),
+    "LoaAuthorizingPerson" => "Test Person"
 ));
 
-$account->createImportTnOrder($importTnOrder);
+print_r($account->createImportTnOrder($importTnOrder));
 ```
 
-### Get Import TN Order By ID
+### Get Import TN Order By ID (good)
 ```PHP
-$account->getImportTnOrder("some_id_value");
+print_r($account->getImportTnOrder("some_id_value"));
 ```
 
-### Get Import TN Order History
+### Get Import TN Order History (good)
 ```PHP
-$account->getImportTnOrderHistory("some_id_value");
+print_r($account->getImportTnOrderHistory("some_id_value"));
 ```
 
-### Check TNs Portability
+### Check TNs Portability (good)
 ```PHP
-$account->checkTnsPortability(array("+15554443333", "+15553334444"));
+print_r($account->checkTnsPortability(array("5554443333", "5553334444")));
 ```
 
-### Get In Service Numbers
+### Get In Service Numbers (good)
 ```PHP
 $account->getInserviceNumbers(array("areacode" => "919"));
 ```
 
-### Check In Service Number
+### Check In Service Number (good)
 ```PHP
-$account->checkInserviceNumber("5554443333");
+print_r($account->checkInserviceNumber("5554443333"));
 ```
 
-### Get Remove Imported TN Orders
+### Get Remove Imported TN Orders (good)
 ```PHP
-$account->getRemoveImportedTnOrders(array(
+$resp = $account->getRemoveImportedTnOrders(array(
     "createdDateFrom" => "2013-10-22T00:00:00.000Z",
     "createdDateTo" => "2013-10-25T00:00:00.000Z"
 ));
+
+print_r($resp);
 ```
 
-### Create A Remove Imported TN Order
+### Create A Remove Imported TN Order (good)
 ```PHP
 $removeImportedTnOrder = new \Iris\RemoveImportedTnOrder(array(
     "CustomerOrderId" => "custom string",
     "TelephoneNumbers" => array(
-        "TelephoneNumber" => array("+15554443333", "+15553332222")
+        "TelephoneNumber" => array("5554443333", "5553332222")
     )
 ));
 
-$account->createRemoveImportedTnOrder($removeImportedTnOrder);
+print_r($account->createRemoveImportedTnOrder($removeImportedTnOrder));
 ```
 
-### Get Removed Imported TN Order
+### Get Removed Imported TN Order (good)
 ```PHP
-$account->getRemoveImportedTnOrder("some_id_value");
+print_r($account->getRemoveImportedTnOrder("some_id_value"));
 ```
 
-### Get Removed Imported TN Order History
+### Get Removed Imported TN Order History (good)
 ```PHP
-$account->getRemoveImportedTnOrderHistory("some_id_value");
+print_r($account->getRemoveImportedTnOrderHistory("some_id_value"));
 ```
