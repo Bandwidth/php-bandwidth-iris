@@ -611,7 +611,7 @@ $resp = $account->getImportTnOrders(array(
     "createdDateTo" => "2013-10-25T00:00:00.000Z"
 ));
 
-print_r($resp);
+print_r($resp->ImportTnOrderSummary[0]->OrderId);
 ```
 
 ### Create Import TN Order
@@ -636,17 +636,17 @@ $importTnOrder = new \Iris\ImportTnOrder(array(
     "LoaAuthorizingPerson" => "Test Person"
 ));
 
-print_r($account->createImportTnOrder($importTnOrder));
+print_r($account->createImportTnOrder($importTnOrder)->ImportTnOrder->OrderId);
 ```
 
 ### Get Import TN Order By ID
 ```PHP
-print_r($account->getImportTnOrder("some_id_value"));
+print_r($account->getImportTnOrder("some_id_value")->ProcessingStatus);
 ```
 
 ### Get Import TN Order History
 ```PHP
-print_r($account->getImportTnOrderHistory("some_id_value"));
+print_r($account->getImportTnOrderHistory("some_id_value")->OrderHistory[0]->Status);
 ```
 
 ### Check TNs Portability
