@@ -94,7 +94,6 @@ class AccountTest extends PHPUnit_Framework_TestCase {
                     </ImportTnOrderResponse>"),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
                 <RemoveImportedTnOrderResponse>
-                    <RemoveImportedTnOrder>
                         <CustomerOrderId>SJM000001</CustomerOrderId>
                         <OrderCreateDate>2018-01-20T02:59:54.000Z</OrderCreateDate>
                         <AccountId>9900012</AccountId>
@@ -109,7 +108,6 @@ class AccountTest extends PHPUnit_Framework_TestCase {
                         </TelephoneNumbers>
                         <ProcessingStatus>PROCESSING</ProcessingStatus>
                         <Errors/>
-                    </RemoveImportedTnOrder>
                 </RemoveImportedTnOrderResponse>"),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
                 <TNs>
@@ -370,19 +368,20 @@ class AccountTest extends PHPUnit_Framework_TestCase {
 
     public function testRemoveImportedTnOrder() {
         $removeImportedTnOrderResponse = self::$account->getRemoveImportedTnOrder("b05de7e6-0cab-4c83-81bb-9379cba8efd0");
+        print_r($removeImportedTnOrderResponse);
 
-        $this->assertEquals("b05de7e6-0cab-4c83-81bb-9379cba8efd0", $removeImportedTnOrderResponse["RemoveImportedTnOrder"]["OrderId"]);
+        $this->assertEquals("b05de7e6-0cab-4c83-81bb-9379cba8efd0", $removeImportedTnOrderResponse->OrderId);
         self::$index++;
     }
 
     public function testGetInserviceNumbers() {
         $tns = self::$account->getInserviceNumbers();
 
-        $this->assertEquals("2", $tns["TotalCount"]);
-        $this->assertEquals("link", $tns["Links"]["first"]);
-        $this->assertEquals("2", $tns["TelephoneNumbers"]["Count"]);
-        $this->assertEquals("8043024183", $tns["TelephoneNumbers"]["TelephoneNumber"][0]);
-        $this->assertEquals("8042121778", $tns["TelephoneNumbers"]["TelephoneNumber"][1]);
+        $this->assertEquals("2", $tns->TotalCount);
+        $this->assertEquals("link", $tns->Links->first);
+        $this->assertEquals("2", $tns->TelephoneNumbers->Count);
+        $this->assertEquals("8043024183", $tns->TelephoneNumbers->TelephoneNumber[0]);
+        $this->assertEquals("8042121778", $tns->TelephoneNumbers->TelephoneNumber[1]);
 
         self::$index++;
     }
@@ -390,8 +389,8 @@ class AccountTest extends PHPUnit_Framework_TestCase {
     public function testCheckTnsPortability() {
         $importTnCheckerResponse = self::$account->checkTnsPortability(array("5554443333"));
 
-        $this->assertEquals("3032281000", $importTnCheckerResponse["ImportTnCheckerPayload"]["TelephoneNumbers"]["TelephoneNumber"]);
-        $this->assertEquals("19006", $importTnCheckerResponse["ImportTnCheckerPayload"]["ImportTnErrors"]["ImportTnError"]["Code"]);
+        $this->assertEquals("3032281000", $importTnCheckerResponse->ImportTnCheckerPayload->TelephoneNumbers->TelephoneNumber);
+        $this->assertEquals("19006", $importTnCheckerResponse->ImportTnCheckerPayload->ImportTnErrors->ImportTnError->Code);
 
         
         self::$index++;
