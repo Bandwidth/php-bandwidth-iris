@@ -651,12 +651,12 @@ print_r($account->getImportTnOrderHistory("some_id_value"));
 
 ### Check TNs Portability
 ```PHP
-print_r($account->checkTnsPortability(array("5554443333", "5553334444")));
+print_r($account->checkTnsPortability(array("5554443333", "5553334444"))->ImportTnCheckerPayload);
 ```
 
 ### Get In Service Numbers
 ```PHP
-$account->getInserviceNumbers(array("areacode" => "919"));
+print_r($account->getInserviceNumbers(array("areacode" => "919"))->TelephoneNumbers->Count);
 ```
 
 ### Check In Service Number
@@ -671,7 +671,7 @@ $resp = $account->getRemoveImportedTnOrders(array(
     "createdDateTo" => "2013-10-25T00:00:00.000Z"
 ));
 
-print_r($resp);
+print_r($resp->RemoveImportedTnOrderSummary[0]->OrderStatus);
 ```
 
 ### Create A Remove Imported TN Order
@@ -683,15 +683,15 @@ $removeImportedTnOrder = new \Iris\RemoveImportedTnOrder(array(
     )
 ));
 
-print_r($account->createRemoveImportedTnOrder($removeImportedTnOrder));
+print_r($account->createRemoveImportedTnOrder($removeImportedTnOrder)->Location);
 ```
 
 ### Get Removed Imported TN Order
 ```PHP
-print_r($account->getRemoveImportedTnOrder("some_id_value"));
+print_r($account->getRemoveImportedTnOrder("some_id_value")->ProcessingStatus);
 ```
 
 ### Get Removed Imported TN Order History
 ```PHP
-print_r($account->getRemoveImportedTnOrderHistory("some_id_value"));
+print_r($account->getRemoveImportedTnOrderHistory("some_id_value")->OrderHistory[0]->Status);
 ```

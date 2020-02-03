@@ -282,13 +282,13 @@ class Account extends RestEntry {
                 "TelephoneNumber" => $tns
         )));
         $data = parent::post($url, 'ImportTnCheckerPayload', $payload->to_array());
-        return $data;
+        return new ImportTnCheckerResponse($data);
     }
 
     public function getInserviceNumbers($filters = array()) {
         $url = sprintf('%s/%s', $this->account_id, 'inserviceNumbers');
         $response = parent::_get($url, $filters);
-        return $response;
+        return new InserviceTns($response);
     }
 
     public function checkInserviceNumber($tn) {
@@ -300,24 +300,24 @@ class Account extends RestEntry {
     public function getRemoveImportedTnOrders($filters = array()) {
         $url = sprintf('%s/%s', $this->account_id, 'removeImportedTnOrders');
         $response = parent::_get($url, $filters);
-        return $response;
+        return new RemoveImportedTnOrderSummaryResponse($response);
     }
 
     public function createRemoveImportedTnOrder(RemoveImportedTnOrder $order) {
         $url = sprintf('%s/%s', $this->account_id, 'removeImportedTnOrders');
         $data = parent::post($url, 'RemoveImportedTnOrder', $order->to_array());
-        return $data;
+        return new RemoveImportedTnOrderResponse($data);
     }
 
     public function getRemoveImportedTnOrder($id) {
         $url = sprintf('%s/%s/%s', $this->account_id, 'removeImportedTnOrders', $id);
         $response = parent::_get($url);
-        return $response;
+        return new RemoveImportedTnOrder($response);
     }
 
     public function getRemoveImportedTnOrderHistory($id) {
         $url = sprintf('%s/%s/%s/%s', $this->account_id, 'removeImportedTnOrders', $id, 'history');
         $response = parent::_get($url);
-        return $response;
+        return new OrderHistoryResponse($response);
     }
 }

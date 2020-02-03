@@ -7,8 +7,7 @@ class RemoveImportedTnOrderResponse {
 
     protected $fields = array(
         "RemoveImportedTnOrder" => array("type" => "\Iris\RemoveImportedTnOrder"),
-        "Errors" => array("type" => "\Iris\Error"),
-        "ProcessingStatus" => array("type" => "string")
+        "Location" => array("type" => "string")
     );
 
     public function __construct($data) {
