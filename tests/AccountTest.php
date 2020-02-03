@@ -61,7 +61,6 @@ class AccountTest extends PHPUnit_Framework_TestCase {
             new Response(200, ['Content-Type' => 'application/zip'], 'zipcontent'),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
                     <ImportTnOrderResponse>
-                        <ImportTnOrder>
                             <CustomerOrderId>SJM000001</CustomerOrderId>
                             <OrderCreateDate>2018-01-20T02:59:54.000Z</OrderCreateDate>
                             <AccountId>9900012</AccountId>
@@ -90,7 +89,6 @@ class AccountTest extends PHPUnit_Framework_TestCase {
                             </TelephoneNumbers>
                             <ProcessingStatus>PROCESSING</ProcessingStatus>
                             <Errors/>
-                        </ImportTnOrder>
                     </ImportTnOrderResponse>"),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
                 <RemoveImportedTnOrderResponse>
@@ -362,13 +360,12 @@ class AccountTest extends PHPUnit_Framework_TestCase {
     public function testGetImportTnOrder() {
         $importTnOrderResponse = self::$account->getImportTnOrder("b05de7e6-0cab-4c83-81bb-9379cba8efd0");
 
-        $this->assertEquals("b05de7e6-0cab-4c83-81bb-9379cba8efd0", $importTnOrderResponse["ImportTnOrder"]["OrderId"]);
+        $this->assertEquals("b05de7e6-0cab-4c83-81bb-9379cba8efd0", $importTnOrderResponse->OrderId);
         self::$index++;
     }
 
     public function testRemoveImportedTnOrder() {
         $removeImportedTnOrderResponse = self::$account->getRemoveImportedTnOrder("b05de7e6-0cab-4c83-81bb-9379cba8efd0");
-        print_r($removeImportedTnOrderResponse);
 
         $this->assertEquals("b05de7e6-0cab-4c83-81bb-9379cba8efd0", $removeImportedTnOrderResponse->OrderId);
         self::$index++;
