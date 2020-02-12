@@ -124,6 +124,9 @@ abstract class iClient
 
 final class Client extends iClient
 {
+
+    protected $lastResponseBody = null;
+
     public function __construct($login, $password, $options = [])
     {
         if (empty($login) || empty($password))
@@ -270,6 +273,7 @@ final class Client extends iClient
      */
     public function request($method, $url, $options = [], $parse = true)
     {
+        $this->lastResponseBody = null;
         try
         {
             $response = $this->client->request($method, ltrim($url, '/'), $options);
@@ -283,6 +287,14 @@ final class Client extends iClient
         {
             $this->parseExceptionResponse($e);
         }
+    }
+
+    /**
+     * Returns the XML string received in the last response.
+     * @return type
+     */
+    public function getLastResponseBody() {
+        return $this->lastResponseBody;
     }
 
     /**
@@ -335,6 +347,7 @@ final class Client extends iClient
         }
 
         $responseBody = (string) $response->getBody();
+        $this->lastResponseBody = $responseBody;
 
         if (!$responseBody)
         {
