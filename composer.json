@@ -4,7 +4,7 @@
     "description": "Bandwidth's Iris SDK for PHP",
     "keywords": ["iris","sdk","php"],
     "homepage": "http://dev.bandwidth.com",
-    "reference": "v2.0.6",
+    "reference": "v2.1.0",
     "license": "MIT",
     "authors": [
     ],

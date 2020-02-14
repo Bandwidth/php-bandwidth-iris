@@ -15,6 +15,7 @@ PHP Client library for Bandwidth's Phone Number Dashboard (AKA: Dashboard, Iris)
 | 2.0.6 | Build `ReportsModel` functionality |
 | 2.0.7 | Fixed error handling for Errors fields |
 | 2.0.8 | Fixed rate center check |
+| 2.1.0 | Added `importTnOrders`, `removeImportedTnOrders`, `inserviceNumbers`, and `importTnChecker` endpoints |
 
 ## Supported PHP Versions
 
@@ -45,8 +46,8 @@ $client = new \Iris\Client($login, $password, ['url' => 'https://dashboard.bandw
 ## Run tests
 
 ```bash
-$ composer install
-$ php ./bin/phpunit --bootstrap ./vendor/autoload.php tests/
+composer install
+php ./bin/phpunit --bootstrap ./vendor/autoload.php tests/
 ```
 =======
 ## Examples
@@ -599,4 +600,98 @@ $data = array(
     )
 );
 $tnoptions->create($data);
+```
+
+## Hosted Messaging Functions
+
+### Get Import TN Orders
+```PHP
+$resp = $account->getImportTnOrders(array(
+    "createdDateFrom" => "2013-10-22T00:00:00.000Z",
+    "createdDateTo" => "2013-10-25T00:00:00.000Z"
+));
+
+print_r($resp->ImportTnOrderSummary[0]->OrderId);
+```
+
+### Create Import TN Order
+```PHP
+$importTnOrder = new \Iris\ImportTnOrder(array(
+    "CustomerOrderId" => "id",
+    "TelephoneNumbers" => array(
+        "TelephoneNumber" => array("5554443333")
+    ),
+    "SiteId" => "12345",
+    "Subscriber" => array(
+        "Name" => "Company INC",
+        "ServiceAddress" => array(
+            "HouseNumber" => "1",
+            "StreetName" => "Street",
+            "City" => "City",
+            "StateCode" => "XY",
+            "Zip" => "54345",
+            "County" => "County"
+        )
+    ),
+    "LoaAuthorizingPerson" => "Test Person"
+));
+
+print_r($account->createImportTnOrder($importTnOrder)->ImportTnOrder->OrderId);
+```
+
+### Get Import TN Order By ID
+```PHP
+print_r($account->getImportTnOrder("some_id_value")->ProcessingStatus);
+```
+
+### Get Import TN Order History
+```PHP
+print_r($account->getImportTnOrderHistory("some_id_value")->OrderHistory[0]->Status);
+```
+
+### Check TNs Portability
+```PHP
+print_r($account->checkTnsPortability(array("5554443333", "5553334444"))->ImportTnCheckerPayload);
+```
+
+### Get In Service Numbers
+```PHP
+print_r($account->getInserviceNumbers(array("areacode" => "919"))->TelephoneNumbers->Count);
+```
+
+### Check In Service Number
+```PHP
+print_r($account->checkInserviceNumber("5554443333"));
+```
+
+### Get Remove Imported TN Orders
+```PHP
+$resp = $account->getRemoveImportedTnOrders(array(
+    "createdDateFrom" => "2013-10-22T00:00:00.000Z",
+    "createdDateTo" => "2013-10-25T00:00:00.000Z"
+));
+
+print_r($resp->RemoveImportedTnOrderSummary[0]->OrderStatus);
+```
+
+### Create A Remove Imported TN Order
+```PHP
+$removeImportedTnOrder = new \Iris\RemoveImportedTnOrder(array(
+    "CustomerOrderId" => "custom string",
+    "TelephoneNumbers" => array(
+        "TelephoneNumber" => array("5554443333", "5553332222")
+    )
+));
+
+print_r($account->createRemoveImportedTnOrder($removeImportedTnOrder)->Location);
+```
+
+### Get Removed Imported TN Order
+```PHP
+print_r($account->getRemoveImportedTnOrder("some_id_value")->ProcessingStatus);
+```
+
+### Get Removed Imported TN Order History
+```PHP
+print_r($account->getRemoveImportedTnOrderHistory("some_id_value")->OrderHistory[0]->Status);
 ```

@@ -59,6 +59,84 @@ class AccountTest extends PHPUnit_Framework_TestCase {
             new Response(201, ['Location' => 'https://api.test.inetwork.com:443/v1.0/accounts/9500249/billingreports/a12b456c8-abcd-1a3b-a1b2-0a2b4c6d8e0f2'], '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><BillingReportCreationResponse><ReportStatus>RECEIVED</ReportStatus><Description>The report archive is currently being constructed.</Description></BillingReportCreationResponse>'),
             new Response(200, ['Location' => 'https://api.test.inetwork.com:443/v1.0/accounts/9500249/billingreports/a12b456c8-abcd-1a3b-a1b2-0a2b4c6d8e0f2/file'], '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><BillingReportRetrievalResponse><ReportStatus>COMPLETED</ReportStatus><Description>The report archive is constructed.</Description></BillingReportRetrievalResponse>'),
             new Response(200, ['Content-Type' => 'application/zip'], 'zipcontent'),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
+                    <ImportTnOrderResponse>
+                            <CustomerOrderId>SJM000001</CustomerOrderId>
+                            <OrderCreateDate>2018-01-20T02:59:54.000Z</OrderCreateDate>
+                            <AccountId>9900012</AccountId>
+                            <CreatedByUser>smckinnon</CreatedByUser>
+                            <OrderId>b05de7e6-0cab-4c83-81bb-9379cba8efd0</OrderId>
+                            <LastModifiedDate>2018-01-20T02:59:54.000Z</LastModifiedDate>
+                            <SiteId>202</SiteId>
+                            <SipPeerId>520565</SipPeerId>
+                            <Subscriber>
+                                <Name>ABC Inc.</Name>
+                                <ServiceAddress>
+                                    <HouseNumber>11235</HouseNumber>
+                                    <StreetName>Back</StreetName>
+                                    <City>Denver</City>
+                                    <StateCode>CO</StateCode>
+                                    <Zip>27541</Zip>
+                                    <County>Canyon</County>
+                                </ServiceAddress>
+                            </Subscriber>
+                            <LoaAuthorizingPerson>The Authguy</LoaAuthorizingPerson>
+                            <TelephoneNumbers>
+                                <TelephoneNumber>9199918388</TelephoneNumber>
+                                <TelephoneNumber>4158714245</TelephoneNumber>
+                                <TelephoneNumber>4352154439</TelephoneNumber>
+                                <TelephoneNumber>4352154466</TelephoneNumber>
+                            </TelephoneNumbers>
+                            <ProcessingStatus>PROCESSING</ProcessingStatus>
+                            <Errors/>
+                    </ImportTnOrderResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
+                <RemoveImportedTnOrderResponse>
+                        <CustomerOrderId>SJM000001</CustomerOrderId>
+                        <OrderCreateDate>2018-01-20T02:59:54.000Z</OrderCreateDate>
+                        <AccountId>9900012</AccountId>
+                        <CreatedByUser>smckinnon</CreatedByUser>
+                        <OrderId>b05de7e6-0cab-4c83-81bb-9379cba8efd0</OrderId>
+                        <LastModifiedDate>2018-01-20T02:59:54.000Z</LastModifiedDate>
+                        <TelephoneNumbers>
+                            <TelephoneNumber>9199918388</TelephoneNumber>
+                            <TelephoneNumber>4158714245</TelephoneNumber>
+                            <TelephoneNumber>4352154439</TelephoneNumber>
+                            <TelephoneNumber>4352154466</TelephoneNumber>
+                        </TelephoneNumbers>
+                        <ProcessingStatus>PROCESSING</ProcessingStatus>
+                        <Errors/>
+                </RemoveImportedTnOrderResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
+                <TNs>
+                    <TotalCount>2</TotalCount>
+                    <Links>
+                        <first>link</first>
+                    </Links>
+                    <TelephoneNumbers>
+                        <Count>2</Count>
+                        <TelephoneNumber>8043024183</TelephoneNumber>
+                        <TelephoneNumber>8042121778</TelephoneNumber>
+                    </TelephoneNumbers>
+                </TNs>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
+                <ImportTnCheckerResponse>
+                    <ImportTnCheckerPayload>
+                        <TelephoneNumbers>
+                            <TelephoneNumber>3032281000</TelephoneNumber>
+                        </TelephoneNumbers>
+                        <ImportTnErrors>
+                            <ImportTnError>
+                                <Code>19006</Code>
+                                <Description>Bandwidth numbers cannot be imported by this account at this time.</Description>
+                                <TelephoneNumbers>
+                                    <TelephoneNumber>4109235436</TelephoneNumber>
+                                    <TelephoneNumber>4104685864</TelephoneNumber>
+                                </TelephoneNumbers>
+                            </ImportTnError>
+                        </ImportTnErrors>
+                    </ImportTnCheckerPayload>
+                </ImportTnCheckerResponse>"),
         ]);
 
         self::$container = [];
@@ -276,6 +354,42 @@ class AccountTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals("zipcontent", $zip->getContents());
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/billingreports/a12b456c8-abcd-1a3b-a1b2-0a2b4c6d8e0f2/file", self::$container[self::$index]['request']->getUri());
+        self::$index++;
+    }
+
+    public function testGetImportTnOrder() {
+        $importTnOrderResponse = self::$account->getImportTnOrder("b05de7e6-0cab-4c83-81bb-9379cba8efd0");
+
+        $this->assertEquals("b05de7e6-0cab-4c83-81bb-9379cba8efd0", $importTnOrderResponse->OrderId);
+        self::$index++;
+    }
+
+    public function testRemoveImportedTnOrder() {
+        $removeImportedTnOrderResponse = self::$account->getRemoveImportedTnOrder("b05de7e6-0cab-4c83-81bb-9379cba8efd0");
+
+        $this->assertEquals("b05de7e6-0cab-4c83-81bb-9379cba8efd0", $removeImportedTnOrderResponse->OrderId);
+        self::$index++;
+    }
+
+    public function testGetInserviceNumbers() {
+        $tns = self::$account->getInserviceNumbers();
+
+        $this->assertEquals("2", $tns->TotalCount);
+        $this->assertEquals("link", $tns->Links->first);
+        $this->assertEquals("2", $tns->TelephoneNumbers->Count);
+        $this->assertEquals("8043024183", $tns->TelephoneNumbers->TelephoneNumber[0]);
+        $this->assertEquals("8042121778", $tns->TelephoneNumbers->TelephoneNumber[1]);
+
+        self::$index++;
+    }
+
+    public function testCheckTnsPortability() {
+        $importTnCheckerResponse = self::$account->checkTnsPortability(array("5554443333"));
+
+        $this->assertEquals("3032281000", $importTnCheckerResponse->ImportTnCheckerPayload->TelephoneNumbers->TelephoneNumber);
+        $this->assertEquals("19006", $importTnCheckerResponse->ImportTnCheckerPayload->ImportTnErrors->ImportTnError->Code);
+
+        
         self::$index++;
     }
 }

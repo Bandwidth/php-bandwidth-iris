@@ -23,7 +23,6 @@ class OrderRequest {
         "OrderCreateDate" => array("type" => "string"),
         "id" => array("type" => "string"),
         "DisconnectTelephoneNumberOrderType" => array("type" => "string"),
-        "OrderCreateDate" => array("type" => "string"),
     );
 
     public function __construct($data) {
