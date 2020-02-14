@@ -125,6 +125,9 @@ abstract class iClient
 final class Client extends iClient
 {
 
+    /**
+     * Store the last response body string 
+     */
     protected $lastResponseBody = null;
 
     public function __construct($login, $password, $options = [])
@@ -291,7 +294,7 @@ final class Client extends iClient
 
     /**
      * Returns the XML string received in the last response.
-     * @return type
+     * @return string $lastResponseBody
      */
     public function getLastResponseBody() {
         return $this->lastResponseBody;
