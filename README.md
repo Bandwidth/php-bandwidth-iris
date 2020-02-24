@@ -706,7 +706,7 @@ $csrOrder = new \Iris\Csr(array(
     "WorkingOrBillingTelephoneNumber" => "5554443333"
 ));
 
-print_r($account->createCsrOrder(csrOrder));
+print_r($account->createCsrOrder($csrOrder));
 ```
 
 ### Replace CSR Order
@@ -717,11 +717,28 @@ $csrOrder = new \Iris\Csr(array(
     "WorkingOrBillingTelephoneNumber" => "5554443333"
 ));
 
-print_r($account->replaceCsrOrder("order_id", csrOrder));
+print_r($account->replaceCsrOrder("order_id", $csrOrder));
 ```
 
 ### Get CSR Order
 
 ```PHP
 print_r($account->getCsrOrder("order_id"));
+```
+
+### Get CSR Order Notes
+
+```PHP
+print_r($account->getCsrOrderNotes("order_id"));
+```
+
+### Add CSR Order Note
+
+```PHP
+$note = new \Iris\Note(array(
+    "UserId" => "id",
+    "Description" => "description"
+));
+
+print_r($account->addNoteToCsr("order_id", $note));
 ```
