@@ -320,4 +320,10 @@ class Account extends RestEntry {
         $response = parent::_get($url);
         return new OrderHistoryResponse($response);
     }
+
+    public function createCsrOrder(Csr $order) {
+        $url = sprintf('%s/%s', $this->account_id, 'csrs');
+        $data = parent::post($url, 'Csr', $order->to_array());
+        return new CsrResponse($data);  
+    }
 }
