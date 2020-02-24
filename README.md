@@ -16,6 +16,7 @@ PHP Client library for Bandwidth's Phone Number Dashboard (AKA: Dashboard, Iris)
 | 2.0.7 | Fixed error handling for Errors fields |
 | 2.0.8 | Fixed rate center check |
 | 2.1.0 | Added `importTnOrders`, `removeImportedTnOrders`, `inserviceNumbers`, and `importTnChecker` endpoints |
+| 2.2.0 | Added `csrs` endpoints |
 
 ## Supported PHP Versions
 
