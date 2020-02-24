@@ -137,6 +137,72 @@ class AccountTest extends PHPUnit_Framework_TestCase {
                         </ImportTnErrors>
                     </ImportTnCheckerPayload>
                 </ImportTnCheckerResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
+				<CsrResponse>
+					<OrderId>4f5b3804-3d0d-49de-a133-d4b67ad6fa11</OrderId>
+					<Status>RECEIVED</Status>
+					<AccountNumber>123456789ABC</AccountNumber>
+					<AccountTelephoneNumber>9196191234</AccountTelephoneNumber>
+					<EndUserName>Bandwidth User</EndUserName>
+					<AuthorizingUserName>Auth Bandwidth User</AuthorizingUserName>
+					<CustomerCode>123</CustomerCode>
+					<EndUserPIN>123ABC</EndUserPIN>
+					<EndUserPassword>supersecretpassword123</EndUserPassword>
+					<AddressLine1>900 Main Campus Drive</AddressLine1>
+					<City>Raleigh</City>
+					<State>NC</State>
+					<ZIPCode>27606</ZIPCode>
+					<TypeOfService>business</TypeOfService>
+				</CsrResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
+				<CsrResponse>
+					<OrderId>4f5b3804-3d0d-49de-a133-d4b67ad6fa11</OrderId>
+					<Status>RECEIVED</Status>
+					<AccountNumber>123456789ABC</AccountNumber>
+					<AccountTelephoneNumber>9196191234</AccountTelephoneNumber>
+					<EndUserName>Bandwidth User</EndUserName>
+					<AuthorizingUserName>Auth Bandwidth User</AuthorizingUserName>
+					<CustomerCode>123</CustomerCode>
+					<EndUserPIN>123ABC</EndUserPIN>
+					<EndUserPassword>supersecretpassword123</EndUserPassword>
+					<AddressLine1>900 Main Campus Drive</AddressLine1>
+					<City>Raleigh</City>
+					<State>NC</State>
+					<ZIPCode>27606</ZIPCode>
+					<TypeOfService>business</TypeOfService>
+				</CsrResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
+				<CsrResponse>
+					<OrderId>4f5b3804-3d0d-49de-a133-d4b67ad6fa11</OrderId>
+					<Status>RECEIVED</Status>
+					<AccountNumber>123456789ABC</AccountNumber>
+					<AccountTelephoneNumber>9196191234</AccountTelephoneNumber>
+					<EndUserName>Bandwidth User</EndUserName>
+					<AuthorizingUserName>Auth Bandwidth User</AuthorizingUserName>
+					<CustomerCode>123</CustomerCode>
+					<EndUserPIN>123ABC</EndUserPIN>
+					<EndUserPassword>supersecretpassword123</EndUserPassword>
+					<AddressLine1>900 Main Campus Drive</AddressLine1>
+					<City>Raleigh</City>
+					<State>NC</State>
+					<ZIPCode>27606</ZIPCode>
+					<TypeOfService>business</TypeOfService>
+				</CsrResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
+                <Notes>
+                    <Note>
+                        <Id>87037</Id>
+                        <UserId>jbm</UserId>
+                        <Description>This is a test note</Description>
+                        <LastDateModifier>2014-11-16T04:01:10.000Z</LastDateModifier>
+                    </Note>
+                    <Note>
+                        <Id>87039</Id>
+                        <UserId>smckinnon</UserId>
+                        <Description>This is a second test note</Description>
+                        <LastDateModifier>2014-11-16T04:08:46.000Z</LastDateModifier>
+                    </Note>
+                </Notes> "),
         ]);
 
         self::$container = [];
@@ -390,6 +456,36 @@ class AccountTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals("19006", $importTnCheckerResponse->ImportTnCheckerPayload->ImportTnErrors->ImportTnError->Code);
 
         
+        self::$index++;
+    }
+
+    public function testCreateCsrOrder() {
+		$request = new \Iris\Csr(array());
+        $response = self::$account->createCsrOrder($request);
+		
+        $this->assertEquals("4f5b3804-3d0d-49de-a133-d4b67ad6fa11", $response->OrderId);
+        self::$index++;
+    }
+
+    public function testGetCsrOrder() {
+        $response = self::$account->getCsrOrder("id");
+        $this->assertEquals("4f5b3804-3d0d-49de-a133-d4b67ad6fa11", $response->OrderId);
+        self::$index++;
+    }
+
+    public function testReplaceCsrOrder() {
+		$request = new \Iris\Csr(array());
+        $response = self::$account->replaceCsrOrder("id", $request);
+		
+        $this->assertEquals("4f5b3804-3d0d-49de-a133-d4b67ad6fa11", $response->OrderId);
+        self::$index++;
+    }
+
+    public function testGetCsrOrderNotes() {
+        $response = self::$account->getCsrOrderNotes("order_id", "note");
+        
+        $this->assertEquals("This is a test note", $response->Note[0]->Description);
+        $this->assertEquals("This is a second test note", $response->Note[1]->Description);
         self::$index++;
     }
 }
