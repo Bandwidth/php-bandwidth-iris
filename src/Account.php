@@ -350,4 +350,10 @@ class Account extends RestEntry {
         $data = parent::post($url, 'Note', $note->to_array());
         return $data;
     }
+
+    public function updateCsrOrderNote($orderId, $noteId, Note $note) {
+        $url = sprintf('%s/%s/%s/%s', $this->account_id, 'csrs', $orderId, 'notes', $noteId);
+        $response = parent::put($url, 'Note', $note->to_array());
+        return $data;
+    }
 }
