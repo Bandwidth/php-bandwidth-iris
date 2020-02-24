@@ -19,7 +19,8 @@ class Csr {
         "City" => array("type" => "string"),
         "State" => array("type" => "string"),
         "ZIPCode" => array("type" => "string"),
-        "TypeOfService" => array("type" => "string")
+        "TypeOfService" => array("type" => "string"),
+        "Status" => array("type" => "string")
     );
 
     public function __construct($data) {

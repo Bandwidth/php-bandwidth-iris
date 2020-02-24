@@ -695,3 +695,33 @@ print_r($account->getRemoveImportedTnOrder("some_id_value")->ProcessingStatus);
 ```PHP
 print_r($account->getRemoveImportedTnOrderHistory("some_id_value")->OrderHistory[0]->Status);
 ```
+
+## CSR
+
+### Create CSR Order
+
+```PHP
+$csrOrder = new \Iris\Csr(array(
+    "CustomerOrderId" => "order id",
+    "WorkingOrBillingTelephoneNumber" => "5554443333"
+));
+
+print_r($account->createCsrOrder(csrOrder));
+```
+
+### Replace CSR Order
+
+```PHP
+$csrOrder = new \Iris\Csr(array(
+    "CustomerOrderId" => "order id",
+    "WorkingOrBillingTelephoneNumber" => "5554443333"
+));
+
+print_r($account->replaceCsrOrder("order_id", csrOrder));
+```
+
+### Get CSR Order
+
+```PHP
+print_r($account->getCsrOrder("order_id"));
+```
