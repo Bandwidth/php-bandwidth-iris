@@ -10,6 +10,7 @@ class ServiceAddress {
         "HouseNumber" => array("type" => "string", "required" => true),
         "StreetName" => array("type" => "string", "required" => true),
         "StateCode" => array("type" => "string", "required" => true),
+        "State" => array("type" => "string"),
         "Zip" => array("type" => "string"),
         "Country" => array("type" => "string"),
         "County" =>  array("type" => "string"),
