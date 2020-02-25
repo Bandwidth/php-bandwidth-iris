@@ -20,7 +20,7 @@ class CsrResponse {
         "State" => array("type" => "string"),
         "ZIPCode" => array("type" => "string"),
         "TypeOfService" => array("type" => "string"),
-        "Errors" => array("type" => "\Iris\Error"),
+        "Errors" => array("type" => "\Iris\ErrorList"),
         "CustomerOrderId" => array("type" => "string"),
         "LastModifiedBy" => array("type" => "string"),
         "OrderCreateDate" => array("type" => "string"),
