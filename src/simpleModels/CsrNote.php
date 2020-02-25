@@ -2,18 +2,7 @@
   
 namespace Iris;
 
-class NotesList {
-    use BaseModel;
-
-    protected $fields = array(
-        "Note" => array("type" => "\Iris\NotesListNote")
-    );
-    public function __construct($data) {
-        $this->set_data($data);
-    }
-}
-
-class NotesListNote {
+class CsrNote {
     use BaseModel;
 
     protected $fields = array(
