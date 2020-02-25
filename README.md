@@ -740,7 +740,7 @@ print_r($response->Note[0]->Description);
 ### Add CSR Order Note
 
 ```PHP
-$note = new \Iris\Note(array(
+$note = new \Iris\CsrNote(array(
     "UserId" => "id",
     "Description" => "description"
 ));
@@ -751,7 +751,7 @@ $account->addNoteToCsr("order_id", $note);
 ### Update CSR Order Note
 
 ```PHP
-$note = new \Iris\Note(array(
+$note = new \Iris\CsrNote(array(
     "UserId" => "id",
     "Description" => "description"
 ));
