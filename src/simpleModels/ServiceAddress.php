@@ -21,6 +21,7 @@ class ServiceAddress {
         "AddressLine2" => array("type" => "string"),
         "PlusFour" => array("type" => "string"),
         "AddressType" => array("type" => "string"),
+        "UnparsedAddress" => array("type" => "string")
     );
 
     public function __construct($data) {
