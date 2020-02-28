@@ -320,4 +320,40 @@ class Account extends RestEntry {
         $response = parent::_get($url);
         return new OrderHistoryResponse($response);
     }
+
+    public function createCsrOrder(Csr $order) {
+        $url = sprintf('%s/%s', $this->account_id, 'csrs');
+        $data = parent::post($url, 'Csr', $order->to_array());
+        return new CsrResponse($data);  
+    }
+
+    public function getCsrOrder($id) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'csrs', $id);
+        $response = parent::_get($url);
+        return new CsrResponse($response);
+    }
+
+    public function replaceCsrOrder($id, Csr $order) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'csrs', $id);
+        $response = parent::put($url, 'Csr', $order->to_array());
+        return new CsrResponse($response);
+    }
+
+    public function getCsrOrderNotes($id) {
+        $url = sprintf('%s/%s/%s/%s', $this->account_id, 'csrs', $id, 'notes');
+        $response = parent::_get($url);
+        return new CsrNotesList($response);
+    }
+
+    public function addNoteToCsr($id, CsrNote $note) {
+        $url = sprintf('%s/%s/%s/%s', $this->account_id, 'csrs', $id, 'notes');
+        $data = parent::post($url, 'Note', $note->to_array());
+        return $data;
+    }
+
+    public function updateCsrOrderNote($orderId, $noteId, CsrNote $note) {
+        $url = sprintf('%s/%s/%s/%s/%s', $this->account_id, 'csrs', $orderId, 'notes', $noteId);
+        $data = parent::put($url, 'Note', $note->to_array());
+        return $data;
+    }
 }

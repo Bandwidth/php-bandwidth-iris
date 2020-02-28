@@ -16,6 +16,7 @@ PHP Client library for Bandwidth's Phone Number Dashboard (AKA: Dashboard, Iris)
 | 2.0.7 | Fixed error handling for Errors fields |
 | 2.0.8 | Fixed rate center check |
 | 2.1.0 | Added `importTnOrders`, `removeImportedTnOrders`, `inserviceNumbers`, and `importTnChecker` endpoints |
+| 2.2.0 | Added `csrs` endpoints |
 
 ## Supported PHP Versions
 
@@ -694,4 +695,66 @@ print_r($account->getRemoveImportedTnOrder("some_id_value")->ProcessingStatus);
 ### Get Removed Imported TN Order History
 ```PHP
 print_r($account->getRemoveImportedTnOrderHistory("some_id_value")->OrderHistory[0]->Status);
+```
+
+## CSR
+
+### Create CSR Order
+
+```PHP
+$csrOrder = new \Iris\Csr(array(
+    "CustomerOrderId" => "order id",
+    "WorkingOrBillingTelephoneNumber" => "5554443333"
+));
+
+$response = $account->createCsrOrder($csrOrder);
+print_r($response->OrderId);
+```
+
+### Replace CSR Order
+
+```PHP
+$csrOrder = new \Iris\Csr(array(
+    "CustomerOrderId" => "order id",
+    "WorkingOrBillingTelephoneNumber" => "5554443333"
+));
+
+$response = $account->replaceCsrOrder("order_id", $csrOrder);
+print_r($response->OrderId);
+```
+
+### Get CSR Order
+
+```PHP
+$response = $account->getCsrOrder("order_id");
+print_r($response->OrderId);
+```
+
+### Get CSR Order Notes
+
+```PHP
+$response = $account->getCsrOrderNotes("order_id");
+print_r($response->Note[0]->Description);
+```
+
+### Add CSR Order Note
+
+```PHP
+$note = new \Iris\CsrNote(array(
+    "UserId" => "id",
+    "Description" => "description"
+));
+
+$account->addNoteToCsr("order_id", $note);
+```
+
+### Update CSR Order Note
+
+```PHP
+$note = new \Iris\CsrNote(array(
+    "UserId" => "id",
+    "Description" => "description"
+));
+
+$account->updateCsrOrderNote("order_id", "note_id", $note);
 ```
