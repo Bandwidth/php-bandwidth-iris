@@ -17,6 +17,7 @@ PHP Client library for Bandwidth's Phone Number Dashboard (AKA: Dashboard, Iris)
 | 2.0.8 | Fixed rate center check |
 | 2.1.0 | Added `importTnOrders`, `removeImportedTnOrders`, `inserviceNumbers`, and `importTnChecker` endpoints |
 | 2.2.0 | Added `csrs` endpoints |
+| 2.3.0 | Added `loas` endpoints for ImportTnOrders |
 
 ## Supported PHP Versions
 
@@ -648,6 +649,50 @@ print_r($account->getImportTnOrder("some_id_value")->ProcessingStatus);
 ### Get Import TN Order History
 ```PHP
 print_r($account->getImportTnOrderHistory("some_id_value")->OrderHistory[0]->Status);
+```
+
+### Get Import TN Order LOAs
+```PHP
+print_r($account->getImportTnOrderLoas("order_id"));
+```
+
+### Upload LOA file for an Import TN Order
+```PHP
+//todo: add reading file, add note about mimes like ruby README has
+$account->uploadImportTnOrderLoaFile("order_id", $file_contents, "application/pdf");
+```
+
+### Download LOA file for an Import TN Order
+```PHP
+//todo: Add note about getting IDs, add file write from response
+$response = $account->downloadImportTnOrderLoaFile("order_id", "file_id");
+```
+
+### Replace LOA file for an Import TN Order
+```PHP
+//todo: mimic the ruby SDK  README
+$account->replaceImportTnOrderLoaFile("order_id", "file_id", $file_contents, "application/pdf");
+```
+
+### Delete LOA file for an Import TN Order
+```PHP
+$account->deleteImportTnOrderLoaFile("order_id", "file_id");
+```
+
+### Get LOA file metadata for an Import TN Order
+```PHP
+print_r($account->getImportTnOrderLoaFileMetadata("order_id", "file_id");
+```
+
+### Update LOA file metadata for an Import TN Order
+```PHP
+$file_metadata = new \Iris\FileMetaData(array()); //todo: fill this in
+$account->updateImportTnOrderLoaFileMetadata("order_id", "file_id", $file_metadata);
+```
+
+### Delete LOA file metadata for an Import TN Order
+```PHP
+$account->deleteImportTnOrderLoaFileMetadata("order_id", "file_id");
 ```
 
 ### Check TNs Portability
