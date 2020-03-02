@@ -257,7 +257,7 @@ final class Client extends iClient
         ];
         $response = $this->request('put', $url, $options, false);
 
-        if (!is_array($response) || !isset($response['Location']))
+        if ($response->hasHeader('Location'))
         {
             return reset($response->getHeader('Location'));
         }
