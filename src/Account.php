@@ -287,8 +287,9 @@ class Account extends RestEntry {
     }
 
     public function downloadImportTnOrderLoaFile($order_id, $file_id) {
-        $url = sprintf('%s/%s/%s/%s/%s', $this->account_id, 'importtnorders', $order_id, 'loas', $file_id);
-        $response = parent::_get($url);
+        $url = sprintf('accounts/%s/%s/%s/%s/%s', $this->account_id, 'importtnorders', $order_id, 'loas', $file_id);
+        //using the request function directly in order to set $parse=false
+        $response = $this->client->request('get', $url, $options=[], $parse=false)->getBody()->getContents();
         return $response;
     }
 
