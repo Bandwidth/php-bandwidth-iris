@@ -283,7 +283,7 @@ class Account extends RestEntry {
 
     public function uploadImportTnOrderLoaFile($order_id, $file_contents, $mime_type) {
         $url = sprintf('%s/%s/%s/%s', $this->account_id, 'importTnOrders', $order_id, 'loas');
-        parent::raw_file_post($url, $file_contents, array("Content-Type" => $mime_type);
+        parent::raw_file_post($url, $file_contents, array("Content-Type" => $mime_type));
     }
 
     public function downloadImportTnOrderLoaFile($order_id, $file_id) {
@@ -294,7 +294,7 @@ class Account extends RestEntry {
 
     public function replaceImportTnOrderLoaFile($order_id, $file_id, $file_contents, $mime_type) {
         $url = sprintf('%s/%s/%s/%s/%s', $this->account_id, 'importTnOrders', $order_id, 'loas', $file_id);
-        parent::raw_file_put($url, $file_contents, array("Content-Type" => $mime_type);
+        parent::raw_file_put($url, $file_contents, array("Content-Type" => $mime_type));
     }
 
     public function deleteImportTnOrderLoaFile($order_id, $file_id) {

@@ -531,7 +531,6 @@ class AccountTest extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals("file", $response->DocumentName);
         $this->assertEquals("LOA", $response->DocumentType);
-        $this->assertEquals("LOA file list successfully returned", $response->resultMessage);
         self::$index++;
     }
 }
