@@ -232,7 +232,7 @@ final class Client extends iClient
         ];
         $response = $this->request('post', $url, $options, false);
 
-        if (!isset($response['Location']))
+        if (!is_array($response) || !isset($response['Location']))
         {
             return '';
         }
@@ -257,7 +257,7 @@ final class Client extends iClient
         ];
         $response = $this->request('put', $url, $options, false);
 
-        if ($response->hasHeader('Location'))
+        if (!is_array($response) || !isset($response['Location']))
         {
             return reset($response->getHeader('Location'));
         }

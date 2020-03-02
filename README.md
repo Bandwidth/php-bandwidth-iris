@@ -653,25 +653,44 @@ print_r($account->getImportTnOrderHistory("some_id_value")->OrderHistory[0]->Sta
 
 ### Get Import TN Order LOAs
 ```PHP
-print_r($account->getImportTnOrderLoas("order_id"));
+$response = $account->getImportTnOrderLoas("order_id");
+print_r($response->resultMessage);
+echo "\n";
+print_r($response->fileNames); //this can be a single string (if there's 1 file) or an array of strings (if there's multiple files)
 ```
 
 ### Upload LOA file for an Import TN Order
+Valid `mime_types` can be found on the [Dashboard API Reference](https://dev.bandwidth.com/numbers/apiReference.html) under `/accounts /{accountId} /importTnOrders /{orderid} /loas`
+
+Mime types are expected to be in the format `x/y`, such as `application/pdf` or `text/plain`
+
 ```PHP
-//todo: add reading file, add note about mimes like ruby README has
-$account->uploadImportTnOrderLoaFile("order_id", $file_contents, "application/pdf");
+$account->uploadImportTnOrderLoaFile("order_id", "binary_file_contents", "mime_type");
 ```
 
-### Download LOA file for an Import TN Order
 ```PHP
-//todo: Add note about getting IDs, add file write from response
+$filename = "loa.pdf";
+$file = fopen($filename, "rb") or die("Unable to open file");
+$file_contents = fread($file, filesize($filename));
+$account->uploadImportTnOrderLoaFile("order_id", $file_contents, "application/pdf");
+fclose($file);
+```
+
+### Download LOA file for an Import TN Order (bonked. come back to this)
+Note: Make sure to grab the desired file ID from the response of `$account->getImportTnOrderLoas($order_id)` in the field `$response->fileNames`
+
+```PHP
+/*
 $response = $account->downloadImportTnOrderLoaFile("order_id", "file_id");
+$file = fopen("write.pdf", "wb") or die("Unable to open file");
+fwrite($file, $response);
+fclose($file);
+*/
 ```
 
 ### Replace LOA file for an Import TN Order
 ```PHP
-//todo: mimic the ruby SDK  README
-$account->replaceImportTnOrderLoaFile("order_id", "file_id", $file_contents, "application/pdf");
+$account->replaceImportTnOrderLoaFile("order_id", "file_id", "binary_file_contents", "mime_type");
 ```
 
 ### Delete LOA file for an Import TN Order
@@ -681,12 +700,19 @@ $account->deleteImportTnOrderLoaFile("order_id", "file_id");
 
 ### Get LOA file metadata for an Import TN Order
 ```PHP
-print_r($account->getImportTnOrderLoaFileMetadata("order_id", "file_id");
+$response = $account->getImportTnOrderLoaFileMetadata("order_id", "file_id");
+print_r($response->DocumentName);
+echo "\n";
+print_r($response->DocumentType);
+
 ```
 
 ### Update LOA file metadata for an Import TN Order
 ```PHP
-$file_metadata = new \Iris\FileMetaData(array()); //todo: fill this in
+$file_metadata = new \Iris\FileMetaData(array(
+    "DocumentName" => "Updated",
+    "DocumentType" => "LOA"
+));
 $account->updateImportTnOrderLoaFileMetadata("order_id", "file_id", $file_metadata);
 ```
 
