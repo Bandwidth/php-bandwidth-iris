@@ -680,12 +680,10 @@ fclose($file);
 Note: Make sure to grab the desired file ID from the response of `$account->getImportTnOrderLoas($order_id)` in the field `$response->fileNames`
 
 ```PHP
-/*
 $response = $account->downloadImportTnOrderLoaFile("order_id", "file_id");
 $file = fopen("write.pdf", "wb") or die("Unable to open file");
 fwrite($file, $response);
 fclose($file);
-*/
 ```
 
 ### Replace LOA file for an Import TN Order
