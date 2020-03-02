@@ -282,21 +282,24 @@ class Account extends RestEntry {
     }
 
     public function uploadImportTnOrderLoaFile($order_id, $file_contents, $mime_type) {
-
+        $url = sprintf('%s/%s/%s/%s', $this->account_id, 'importTnOrders', $order_id, 'loas');
+        parent::raw_file_post($url, $file_contents, array("Content-Type" => $mime_type);
     }
 
     public function downloadImportTnOrderLoaFile($order_id, $file_id) {
-    
+        $url = sprintf('%s/%s/%s/%s/%s', $this->account_id, 'importTnOrders', $order_id, 'loas', $file_id);
+        $response = parent::_get($url);
+        return $response;
     }
 
     public function replaceImportTnOrderLoaFile($order_id, $file_id, $file_contents, $mime_type) {
-
+        $url = sprintf('%s/%s/%s/%s/%s', $this->account_id, 'importTnOrders', $order_id, 'loas', $file_id);
+        parent::raw_file_put($url, $file_contents, array("Content-Type" => $mime_type);
     }
 
     public function deleteImportTnOrderLoaFile($order_id, $file_id) {
         $url = sprintf('%s/%s/%s/%s/%s', $this->account_id, 'importTnOrders', $order_id, 'loas', $file_id);
-        $response = parent::_delete($url);
-        return $response;
+        parent::_delete($url);
     }
 
     public function getImportTnOrderLoaFileMetadata($order_id, $file_id) {
@@ -307,14 +310,12 @@ class Account extends RestEntry {
 
     public function updateImportTnOrderLoaFileMetadata($order_id, $file_id, FileMetaData $file_metadata) {
         $url = sprintf('%s/%s/%s/%s/%s/%s', $this->account_id, 'importTnOrders', $order_id, 'loas', $file_id, 'metadata');
-        $response = parent::put($url, 'FileMetaData', $file_metadata->to_array());
-        return $response;
+        parent::put($url, 'FileMetaData', $file_metadata->to_array());
     }
 
     public function deleteImportTnOrderLoaFileMetadata($order_id, $file_id) {
         $url = sprintf('%s/%s/%s/%s/%s/%s', $this->account_id, 'importTnOrders', $order_id, 'loas', $file_id, 'metadata');
-        $response = parent::_delete($url);
-        return $response;
+        parent::_delete($url);
     }
 
     public function checkTnsPortability($tns) {
