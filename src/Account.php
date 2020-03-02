@@ -275,6 +275,38 @@ class Account extends RestEntry {
         return new OrderHistoryResponse($response);
     }
 
+    public function getImportTnOrderLoas($order_id) {
+
+    }
+
+    public function uploadImportTnOrderLoaFile($order_id, $file_contents, $mime_type) {
+
+    }
+
+    public function downloadImportTnOrderLoaFile($order_id, $file_id) {
+    
+    }
+
+    public function replaceImportTnOrderLoaFile($order_id, $file_id, $file_contents, $mime_type) {
+
+    }
+
+    public function deleteImportTnOrderLoaFile($order_id, $file_id) {
+
+    }
+
+    public function getImportTnOrderLoaFileMetadata($order_id, $file_id) {
+
+    }
+
+    public function updateImportTnOrderLoaFileMetadata($order_id, $file_id, $file_metadata) {
+
+    }
+
+    public function deleteImportTnOrderLoaFileMetadata($order_id, $file_id) {
+
+    }
+
     public function checkTnsPortability($tns) {
         $url = sprintf('%s/%s', $this->account_id, 'importTnChecker');
         $payload = new ImportTnCheckerPayload(array(
