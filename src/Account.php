@@ -275,6 +275,50 @@ class Account extends RestEntry {
         return new OrderHistoryResponse($response);
     }
 
+    public function getImportTnOrderLoas($order_id) {
+        $url = sprintf('%s/%s/%s/%s', $this->account_id, 'importtnorders', $order_id, 'loas');
+        $response = parent::_get($url);
+        return new FileListResponse($response);
+    }
+
+    public function uploadImportTnOrderLoaFile($order_id, $file_contents, $mime_type) {
+        $url = sprintf('%s/%s/%s/%s', $this->account_id, 'importtnorders', $order_id, 'loas');
+        parent::raw_file_post($url, $file_contents, array("Content-Type" => $mime_type));
+    }
+
+    public function downloadImportTnOrderLoaFile($order_id, $file_id) {
+        $url = sprintf('accounts/%s/%s/%s/%s/%s', $this->account_id, 'importtnorders', $order_id, 'loas', $file_id);
+        //using the request function directly in order to set $parse=false
+        $response = $this->client->request('get', $url, $options=[], $parse=false)->getBody()->getContents();
+        return $response;
+    }
+
+    public function replaceImportTnOrderLoaFile($order_id, $file_id, $file_contents, $mime_type) {
+        $url = sprintf('%s/%s/%s/%s/%s', $this->account_id, 'importtnorders', $order_id, 'loas', $file_id);
+        parent::raw_file_put($url, $file_contents, array("Content-Type" => $mime_type));
+    }
+
+    public function deleteImportTnOrderLoaFile($order_id, $file_id) {
+        $url = sprintf('%s/%s/%s/%s/%s', $this->account_id, 'importtnorders', $order_id, 'loas', $file_id);
+        parent::_delete($url);
+    }
+
+    public function getImportTnOrderLoaFileMetadata($order_id, $file_id) {
+        $url = sprintf('%s/%s/%s/%s/%s/%s', $this->account_id, 'importtnorders', $order_id, 'loas', $file_id, 'metadata');
+        $response = parent::_get($url);
+        return new FileMetaData($response);
+    }
+
+    public function updateImportTnOrderLoaFileMetadata($order_id, $file_id, FileMetaData $file_metadata) {
+        $url = sprintf('%s/%s/%s/%s/%s/%s', $this->account_id, 'importtnorders', $order_id, 'loas', $file_id, 'metadata');
+        parent::put($url, 'FileMetaData', $file_metadata->to_array());
+    }
+
+    public function deleteImportTnOrderLoaFileMetadata($order_id, $file_id) {
+        $url = sprintf('%s/%s/%s/%s/%s/%s', $this->account_id, 'importtnorders', $order_id, 'loas', $file_id, 'metadata');
+        parent::_delete($url);
+    }
+
     public function checkTnsPortability($tns) {
         $url = sprintf('%s/%s', $this->account_id, 'importTnChecker');
         $payload = new ImportTnCheckerPayload(array(

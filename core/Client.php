@@ -232,7 +232,7 @@ final class Client extends iClient
         ];
         $response = $this->request('post', $url, $options, false);
 
-        if (!isset($response['Location']))
+        if (!is_array($response) || !isset($response['Location']))
         {
             return '';
         }

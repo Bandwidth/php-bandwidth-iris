@@ -203,6 +203,26 @@ class AccountTest extends PHPUnit_Framework_TestCase {
                         <LastDateModifier>2014-11-16T04:08:46.000Z</LastDateModifier>
                     </Note>
                 </Notes> "),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
+                <fileListResponse>
+                <fileCount>2</fileCount>
+                <fileNames>803f3cc5-beae-469e-bd65-e9891ccdffb9-1092874634747.pdf</fileNames>
+                <resultCode>0</resultCode>
+                <resultMessage>LOA file list successfully returned</resultMessage>
+            </fileListResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
+                <fileListResponse>
+                <fileCount>2</fileCount>
+                <fileNames>803f3cc5-beae-469e-bd65-e9891ccdffb9-1092874634747.pdf</fileNames>
+                <fileNames>803f3cc5-beae-469e-bd65-e9891ccdffb9-1430814967669.pdf</fileNames>
+                <resultCode>0</resultCode>
+                <resultMessage>LOA file list successfully returned</resultMessage>
+            </fileListResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
+                <FileMetaData>
+                <DocumentName>file </DocumentName>
+                <DocumentType>LOA</DocumentType>
+            </FileMetaData>"),
         ]);
 
         self::$container = [];
@@ -486,6 +506,31 @@ class AccountTest extends PHPUnit_Framework_TestCase {
         
         $this->assertEquals("This is a test note", $response->Note[0]->Description);
         $this->assertEquals("This is a second test note", $response->Note[1]->Description);
+        self::$index++;
+    }
+
+    public function testGetImportTnOrderLoas() {
+        //1 element in fileNames
+        $response = self::$account->getImportTnOrderLoas("order_id");
+
+        $this->assertEquals("803f3cc5-beae-469e-bd65-e9891ccdffb9-1092874634747.pdf", $response->fileNames);
+        $this->assertEquals("LOA file list successfully returned", $response->resultMessage);
+        self::$index++;
+
+        //2 elements in fileNames
+        $response = self::$account->getImportTnOrderLoas("order_id");
+
+        $this->assertEquals("803f3cc5-beae-469e-bd65-e9891ccdffb9-1092874634747.pdf", $response->fileNames[0]);
+        $this->assertEquals("803f3cc5-beae-469e-bd65-e9891ccdffb9-1430814967669.pdf", $response->fileNames[1]);
+        $this->assertEquals("LOA file list successfully returned", $response->resultMessage);
+        self::$index++;
+    }
+
+    public function testGetImportTnOrderLoaFileMetadata() {
+        $response = self::$account->getImportTnOrderLoaFileMetadata("order_id", "file_id");
+
+        $this->assertEquals("file", $response->DocumentName);
+        $this->assertEquals("LOA", $response->DocumentType);
         self::$index++;
     }
 }
