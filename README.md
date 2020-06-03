@@ -18,6 +18,7 @@ PHP Client library for Bandwidth's Phone Number Dashboard (AKA: Dashboard, Iris)
 | 2.1.0 | Added `importTnOrders`, `removeImportedTnOrders`, `inserviceNumbers`, and `importTnChecker` endpoints |
 | 2.2.0 | Added `csrs` endpoints |
 | 2.3.0 | Added `loas` endpoints for ImportTnOrders |
+| 2.4.0 | Added Emergency Calling Notification, Emergeny Notification Group, Emergency Notification Endpoint, and Alternate End User Identity methods |
 
 ## Supported PHP Versions
 
@@ -827,3 +828,41 @@ $note = new \Iris\CsrNote(array(
 
 $account->updateCsrOrderNote("order_id", "note_id", $note);
 ```
+
+## Emergency Notification Recipients
+
+### Create Emergency Notification Recipient
+
+### Get Emergency Notification Recipients
+
+### Get Emergency Notification Recipient
+
+### Replace Emergency Notification Recipient
+
+### Delete Emergency Notification Recipient
+
+## Emergeny Notification Group
+
+### Create Emergency Notification Group Order
+
+### Get Emergency Notification Group Orders
+
+### Get Emergency Notification Group Order
+
+### Get Emergency Notification Groups
+
+### Get Emergency Notification Group
+
+## Emergency Notification Endpoint
+
+### Create Emergency Notification Endpoint Order
+
+### Get Emergency Notification Endpoint Orders
+
+### Get Emergency Notification Endpoint Order
+
+## Alternate End User Identiy
+
+### Get Alternate End User Information
+
+### Get Alternate Caller Information
