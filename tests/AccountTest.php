@@ -28,201 +28,21 @@ class AccountTest extends PHPUnit_Framework_TestCase {
             new Response(200, [], "<?xml version=\"1.0\"?><TNs><TotalCount>4</TotalCount><Links><first></first></Links><TelephoneNumbers><Count>2</Count><TelephoneNumber>4158714245</TelephoneNumber><TelephoneNumber>4352154439</TelephoneNumber></TelephoneNumbers></TNs>"),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Quantity><Count>4</Count></Quantity>"),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><BdrCreationResponse><Info>Your BDR archive is currently being constructed</Info> </BdrCreationResponse>"),
-            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><BillingReportsRetrievalResponse>
-                                                <BillingReportList>
-                                                    <BillingReport>
-                                                        <BillingReportId>5f8734f0-d7c3-445c-b1e2-cdbb620e4ff7</BillingReportId>
-                                                        <BillingReportKind>DIDSNAP</BillingReportKind>
-                                                        <UserId>jbm</UserId>
-                                                        <ReportStatus>PROCESSING</ReportStatus>
-                                                        <Description>The requested report archive is still being constructed, please check back later.</Description>
-                                                        <CreatedDate>2017-11-01 14:12:16</CreatedDate>
-                                                        <DateRange>
-                                                            <StartDate>2017-01-01</StartDate>
-                                                            <EndDate>2017-09-30</EndDate>
-                                                        </DateRange>
-                                                    </BillingReport>
-                                                    <BillingReport>
-                                                        <BillingReportId>7680a54a-b1f1-4d43-8af6-bf3a701ad202</BillingReportId>
-                                                        <BillingReportKind>DIDSNAP</BillingReportKind>
-                                                        <UserId>jbm</UserId>
-                                                        <ReportStatus>COMPLETE</ReportStatus>
-                                                        <Description>The requested report archive is failed</Description>
-                                                        <CreatedDate>2017-11-06 14:22:21</CreatedDate>
-                                                        <DateRange>
-                                                            <StartDate>2017-05-01</StartDate>
-                                                            <EndDate>2017-10-31</EndDate>
-                                                        </DateRange>
-                                                    </BillingReport>
-                                                </BillingReportList>
-                                            </BillingReportsRetrievalResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><BillingReportsRetrievalResponse>                                                <BillingReportList>                                                    <BillingReport>                                                        <BillingReportId>5f8734f0-d7c3-445c-b1e2-cdbb620e4ff7</BillingReportId>                                                        <BillingReportKind>DIDSNAP</BillingReportKind>                                                        <UserId>jbm</UserId>                                                        <ReportStatus>PROCESSING</ReportStatus>                                                        <Description>The requested report archive is still being constructed, please check back later.</Description>                                                        <CreatedDate>2017-11-01 14:12:16</CreatedDate>                                                        <DateRange>                                                            <StartDate>2017-01-01</StartDate>                                                            <EndDate>2017-09-30</EndDate>                                                        </DateRange>                                                    </BillingReport>                                                    <BillingReport>                                                        <BillingReportId>7680a54a-b1f1-4d43-8af6-bf3a701ad202</BillingReportId>                                                        <BillingReportKind>DIDSNAP</BillingReportKind>                                                        <UserId>jbm</UserId>                                                        <ReportStatus>COMPLETE</ReportStatus>                                                        <Description>The requested report archive is failed</Description>                                                        <CreatedDate>2017-11-06 14:22:21</CreatedDate>                                                        <DateRange>                                                            <StartDate>2017-05-01</StartDate>                                                            <EndDate>2017-10-31</EndDate>                                                        </DateRange>                                                    </BillingReport>                                                </BillingReportList>                                            </BillingReportsRetrievalResponse>"),
             new Response(201, ['Location' => 'https://api.test.inetwork.com:443/v1.0/accounts/9500249/billingreports/a12b456c8-abcd-1a3b-a1b2-0a2b4c6d8e0f2'], '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><BillingReportCreationResponse><ReportStatus>RECEIVED</ReportStatus><Description>The report archive is currently being constructed.</Description></BillingReportCreationResponse>'),
             new Response(200, ['Location' => 'https://api.test.inetwork.com:443/v1.0/accounts/9500249/billingreports/a12b456c8-abcd-1a3b-a1b2-0a2b4c6d8e0f2/file'], '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><BillingReportRetrievalResponse><ReportStatus>COMPLETED</ReportStatus><Description>The report archive is constructed.</Description></BillingReportRetrievalResponse>'),
             new Response(200, ['Content-Type' => 'application/zip'], 'zipcontent'),
-            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
-                    <ImportTnOrderResponse>
-                            <CustomerOrderId>SJM000001</CustomerOrderId>
-                            <OrderCreateDate>2018-01-20T02:59:54.000Z</OrderCreateDate>
-                            <AccountId>9900012</AccountId>
-                            <CreatedByUser>smckinnon</CreatedByUser>
-                            <OrderId>b05de7e6-0cab-4c83-81bb-9379cba8efd0</OrderId>
-                            <LastModifiedDate>2018-01-20T02:59:54.000Z</LastModifiedDate>
-                            <SiteId>202</SiteId>
-                            <SipPeerId>520565</SipPeerId>
-                            <Subscriber>
-                                <Name>ABC Inc.</Name>
-                                <ServiceAddress>
-                                    <HouseNumber>11235</HouseNumber>
-                                    <StreetName>Back</StreetName>
-                                    <City>Denver</City>
-                                    <StateCode>CO</StateCode>
-                                    <Zip>27541</Zip>
-                                    <County>Canyon</County>
-                                </ServiceAddress>
-                            </Subscriber>
-                            <LoaAuthorizingPerson>The Authguy</LoaAuthorizingPerson>
-                            <TelephoneNumbers>
-                                <TelephoneNumber>9199918388</TelephoneNumber>
-                                <TelephoneNumber>4158714245</TelephoneNumber>
-                                <TelephoneNumber>4352154439</TelephoneNumber>
-                                <TelephoneNumber>4352154466</TelephoneNumber>
-                            </TelephoneNumbers>
-                            <ProcessingStatus>PROCESSING</ProcessingStatus>
-                            <Errors/>
-                    </ImportTnOrderResponse>"),
-            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
-                <RemoveImportedTnOrderResponse>
-                        <CustomerOrderId>SJM000001</CustomerOrderId>
-                        <OrderCreateDate>2018-01-20T02:59:54.000Z</OrderCreateDate>
-                        <AccountId>9900012</AccountId>
-                        <CreatedByUser>smckinnon</CreatedByUser>
-                        <OrderId>b05de7e6-0cab-4c83-81bb-9379cba8efd0</OrderId>
-                        <LastModifiedDate>2018-01-20T02:59:54.000Z</LastModifiedDate>
-                        <TelephoneNumbers>
-                            <TelephoneNumber>9199918388</TelephoneNumber>
-                            <TelephoneNumber>4158714245</TelephoneNumber>
-                            <TelephoneNumber>4352154439</TelephoneNumber>
-                            <TelephoneNumber>4352154466</TelephoneNumber>
-                        </TelephoneNumbers>
-                        <ProcessingStatus>PROCESSING</ProcessingStatus>
-                        <Errors/>
-                </RemoveImportedTnOrderResponse>"),
-            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
-                <TNs>
-                    <TotalCount>2</TotalCount>
-                    <Links>
-                        <first>link</first>
-                    </Links>
-                    <TelephoneNumbers>
-                        <Count>2</Count>
-                        <TelephoneNumber>8043024183</TelephoneNumber>
-                        <TelephoneNumber>8042121778</TelephoneNumber>
-                    </TelephoneNumbers>
-                </TNs>"),
-            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
-                <ImportTnCheckerResponse>
-                    <ImportTnCheckerPayload>
-                        <TelephoneNumbers>
-                            <TelephoneNumber>3032281000</TelephoneNumber>
-                        </TelephoneNumbers>
-                        <ImportTnErrors>
-                            <ImportTnError>
-                                <Code>19006</Code>
-                                <Description>Bandwidth numbers cannot be imported by this account at this time.</Description>
-                                <TelephoneNumbers>
-                                    <TelephoneNumber>4109235436</TelephoneNumber>
-                                    <TelephoneNumber>4104685864</TelephoneNumber>
-                                </TelephoneNumbers>
-                            </ImportTnError>
-                        </ImportTnErrors>
-                    </ImportTnCheckerPayload>
-                </ImportTnCheckerResponse>"),
-            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
-				<CsrResponse>
-					<OrderId>4f5b3804-3d0d-49de-a133-d4b67ad6fa11</OrderId>
-					<Status>RECEIVED</Status>
-					<AccountNumber>123456789ABC</AccountNumber>
-					<AccountTelephoneNumber>9196191234</AccountTelephoneNumber>
-					<EndUserName>Bandwidth User</EndUserName>
-					<AuthorizingUserName>Auth Bandwidth User</AuthorizingUserName>
-					<CustomerCode>123</CustomerCode>
-					<EndUserPIN>123ABC</EndUserPIN>
-					<EndUserPassword>supersecretpassword123</EndUserPassword>
-					<AddressLine1>900 Main Campus Drive</AddressLine1>
-					<City>Raleigh</City>
-					<State>NC</State>
-					<ZIPCode>27606</ZIPCode>
-					<TypeOfService>business</TypeOfService>
-				</CsrResponse>"),
-            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
-				<CsrResponse>
-					<OrderId>4f5b3804-3d0d-49de-a133-d4b67ad6fa11</OrderId>
-					<Status>RECEIVED</Status>
-					<AccountNumber>123456789ABC</AccountNumber>
-					<AccountTelephoneNumber>9196191234</AccountTelephoneNumber>
-					<EndUserName>Bandwidth User</EndUserName>
-					<AuthorizingUserName>Auth Bandwidth User</AuthorizingUserName>
-					<CustomerCode>123</CustomerCode>
-					<EndUserPIN>123ABC</EndUserPIN>
-					<EndUserPassword>supersecretpassword123</EndUserPassword>
-					<AddressLine1>900 Main Campus Drive</AddressLine1>
-					<City>Raleigh</City>
-					<State>NC</State>
-					<ZIPCode>27606</ZIPCode>
-					<TypeOfService>business</TypeOfService>
-				</CsrResponse>"),
-            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
-				<CsrResponse>
-					<OrderId>4f5b3804-3d0d-49de-a133-d4b67ad6fa11</OrderId>
-					<Status>RECEIVED</Status>
-					<AccountNumber>123456789ABC</AccountNumber>
-					<AccountTelephoneNumber>9196191234</AccountTelephoneNumber>
-					<EndUserName>Bandwidth User</EndUserName>
-					<AuthorizingUserName>Auth Bandwidth User</AuthorizingUserName>
-					<CustomerCode>123</CustomerCode>
-					<EndUserPIN>123ABC</EndUserPIN>
-					<EndUserPassword>supersecretpassword123</EndUserPassword>
-					<AddressLine1>900 Main Campus Drive</AddressLine1>
-					<City>Raleigh</City>
-					<State>NC</State>
-					<ZIPCode>27606</ZIPCode>
-					<TypeOfService>business</TypeOfService>
-				</CsrResponse>"),
-            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
-                <Notes>
-                    <Note>
-                        <Id>87037</Id>
-                        <UserId>jbm</UserId>
-                        <Description>This is a test note</Description>
-                        <LastDateModifier>2014-11-16T04:01:10.000Z</LastDateModifier>
-                    </Note>
-                    <Note>
-                        <Id>87039</Id>
-                        <UserId>smckinnon</UserId>
-                        <Description>This is a second test note</Description>
-                        <LastDateModifier>2014-11-16T04:08:46.000Z</LastDateModifier>
-                    </Note>
-                </Notes> "),
-            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
-                <fileListResponse>
-                <fileCount>2</fileCount>
-                <fileNames>803f3cc5-beae-469e-bd65-e9891ccdffb9-1092874634747.pdf</fileNames>
-                <resultCode>0</resultCode>
-                <resultMessage>LOA file list successfully returned</resultMessage>
-            </fileListResponse>"),
-            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
-                <fileListResponse>
-                <fileCount>2</fileCount>
-                <fileNames>803f3cc5-beae-469e-bd65-e9891ccdffb9-1092874634747.pdf</fileNames>
-                <fileNames>803f3cc5-beae-469e-bd65-e9891ccdffb9-1430814967669.pdf</fileNames>
-                <resultCode>0</resultCode>
-                <resultMessage>LOA file list successfully returned</resultMessage>
-            </fileListResponse>"),
-            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
-                <FileMetaData>
-                <DocumentName>file </DocumentName>
-                <DocumentType>LOA</DocumentType>
-            </FileMetaData>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>                    <ImportTnOrderResponse>                            <CustomerOrderId>SJM000001</CustomerOrderId>                            <OrderCreateDate>2018-01-20T02:59:54.000Z</OrderCreateDate>                            <AccountId>9900012</AccountId>                            <CreatedByUser>smckinnon</CreatedByUser>                            <OrderId>b05de7e6-0cab-4c83-81bb-9379cba8efd0</OrderId>                            <LastModifiedDate>2018-01-20T02:59:54.000Z</LastModifiedDate>                            <SiteId>202</SiteId>                            <SipPeerId>520565</SipPeerId>                            <Subscriber>                                <Name>ABC Inc.</Name>                                <ServiceAddress>                                    <HouseNumber>11235</HouseNumber>                                    <StreetName>Back</StreetName>                                    <City>Denver</City>                                    <StateCode>CO</StateCode>                                    <Zip>27541</Zip>                                    <County>Canyon</County>                                </ServiceAddress>                            </Subscriber>                            <LoaAuthorizingPerson>The Authguy</LoaAuthorizingPerson>                            <TelephoneNumbers>                                <TelephoneNumber>9199918388</TelephoneNumber>                                <TelephoneNumber>4158714245</TelephoneNumber>                                <TelephoneNumber>4352154439</TelephoneNumber>                                <TelephoneNumber>4352154466</TelephoneNumber>                            </TelephoneNumbers>                            <ProcessingStatus>PROCESSING</ProcessingStatus>                            <Errors/>                    </ImportTnOrderResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>                <RemoveImportedTnOrderResponse>                        <CustomerOrderId>SJM000001</CustomerOrderId>                        <OrderCreateDate>2018-01-20T02:59:54.000Z</OrderCreateDate>                        <AccountId>9900012</AccountId>                        <CreatedByUser>smckinnon</CreatedByUser>                        <OrderId>b05de7e6-0cab-4c83-81bb-9379cba8efd0</OrderId>                        <LastModifiedDate>2018-01-20T02:59:54.000Z</LastModifiedDate>                        <TelephoneNumbers>                            <TelephoneNumber>9199918388</TelephoneNumber>                            <TelephoneNumber>4158714245</TelephoneNumber>                            <TelephoneNumber>4352154439</TelephoneNumber>                            <TelephoneNumber>4352154466</TelephoneNumber>                        </TelephoneNumbers>                        <ProcessingStatus>PROCESSING</ProcessingStatus>                        <Errors/>                </RemoveImportedTnOrderResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>                <TNs>                    <TotalCount>2</TotalCount>                    <Links>                        <first>link</first>                    </Links>                    <TelephoneNumbers>                        <Count>2</Count>                        <TelephoneNumber>8043024183</TelephoneNumber>                        <TelephoneNumber>8042121778</TelephoneNumber>                    </TelephoneNumbers>                </TNs>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>                <ImportTnCheckerResponse>                    <ImportTnCheckerPayload>                        <TelephoneNumbers>                            <TelephoneNumber>3032281000</TelephoneNumber>                        </TelephoneNumbers>                        <ImportTnErrors>                            <ImportTnError>                                <Code>19006</Code>                                <Description>Bandwidth numbers cannot be imported by this account at this time.</Description>                                <TelephoneNumbers>                                    <TelephoneNumber>4109235436</TelephoneNumber>                                    <TelephoneNumber>4104685864</TelephoneNumber>                                </TelephoneNumbers>                            </ImportTnError>                        </ImportTnErrors>                    </ImportTnCheckerPayload>                </ImportTnCheckerResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>				<CsrResponse>					<OrderId>4f5b3804-3d0d-49de-a133-d4b67ad6fa11</OrderId>					<Status>RECEIVED</Status>					<AccountNumber>123456789ABC</AccountNumber>					<AccountTelephoneNumber>9196191234</AccountTelephoneNumber>					<EndUserName>Bandwidth User</EndUserName>					<AuthorizingUserName>Auth Bandwidth User</AuthorizingUserName>					<CustomerCode>123</CustomerCode>					<EndUserPIN>123ABC</EndUserPIN>					<EndUserPassword>supersecretpassword123</EndUserPassword>					<AddressLine1>900 Main Campus Drive</AddressLine1>					<City>Raleigh</City>					<State>NC</State>					<ZIPCode>27606</ZIPCode>					<TypeOfService>business</TypeOfService>				</CsrResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>				<CsrResponse>					<OrderId>4f5b3804-3d0d-49de-a133-d4b67ad6fa11</OrderId>					<Status>RECEIVED</Status>					<AccountNumber>123456789ABC</AccountNumber>					<AccountTelephoneNumber>9196191234</AccountTelephoneNumber>					<EndUserName>Bandwidth User</EndUserName>					<AuthorizingUserName>Auth Bandwidth User</AuthorizingUserName>					<CustomerCode>123</CustomerCode>					<EndUserPIN>123ABC</EndUserPIN>					<EndUserPassword>supersecretpassword123</EndUserPassword>					<AddressLine1>900 Main Campus Drive</AddressLine1>					<City>Raleigh</City>					<State>NC</State>					<ZIPCode>27606</ZIPCode>					<TypeOfService>business</TypeOfService>				</CsrResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>				<CsrResponse>					<OrderId>4f5b3804-3d0d-49de-a133-d4b67ad6fa11</OrderId>					<Status>RECEIVED</Status>					<AccountNumber>123456789ABC</AccountNumber>					<AccountTelephoneNumber>9196191234</AccountTelephoneNumber>					<EndUserName>Bandwidth User</EndUserName>					<AuthorizingUserName>Auth Bandwidth User</AuthorizingUserName>					<CustomerCode>123</CustomerCode>					<EndUserPIN>123ABC</EndUserPIN>					<EndUserPassword>supersecretpassword123</EndUserPassword>					<AddressLine1>900 Main Campus Drive</AddressLine1>					<City>Raleigh</City>					<State>NC</State>					<ZIPCode>27606</ZIPCode>					<TypeOfService>business</TypeOfService>				</CsrResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>                <Notes>                    <Note>                        <Id>87037</Id>                        <UserId>jbm</UserId>                        <Description>This is a test note</Description>                        <LastDateModifier>2014-11-16T04:01:10.000Z</LastDateModifier>                    </Note>                    <Note>                        <Id>87039</Id>                        <UserId>smckinnon</UserId>                        <Description>This is a second test note</Description>                        <LastDateModifier>2014-11-16T04:08:46.000Z</LastDateModifier>                    </Note>                </Notes> "),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>                <fileListResponse>                <fileCount>2</fileCount>                <fileNames>803f3cc5-beae-469e-bd65-e9891ccdffb9-1092874634747.pdf</fileNames>                <resultCode>0</resultCode>                <resultMessage>LOA file list successfully returned</resultMessage>            </fileListResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>                <fileListResponse>                <fileCount>2</fileCount>                <fileNames>803f3cc5-beae-469e-bd65-e9891ccdffb9-1092874634747.pdf</fileNames>                <fileNames>803f3cc5-beae-469e-bd65-e9891ccdffb9-1430814967669.pdf</fileNames>                <resultCode>0</resultCode>                <resultMessage>LOA file list successfully returned</resultMessage>            </fileListResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>                <FileMetaData>                <DocumentName>file </DocumentName>                <DocumentType>LOA</DocumentType>            </FileMetaData>"),
         ]);
 
         self::$container = [];
