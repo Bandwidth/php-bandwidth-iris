@@ -353,4 +353,78 @@ class AccountTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals("LOA", $response->DocumentType);
         self::$index++;
     }
+
+    public function testGetAlternateEndUserInformation() {
+
+        self::$index++;
+    }
+
+    public function testGetAlternateCallerInformation() {
+
+        self::$index++;
+    }
+
+    public function testCreateEmergencyNotificationEndpointOrder() {
+
+        self::$index++;
+    }
+
+    public function testGetEmergencyNotificationEndpointOrders() {
+
+        self::$index++;
+    }
+
+    public function testGetEmergencyNotificationEndpointOrder() {
+
+        self::$index++;
+    }
+
+    public function testCreateEmergencyNotificationGroupOrder() {
+
+        self::$index++;
+    }
+
+    public function testGetEmergencyNotificationGroupOrders() {
+        self::$index++;
+    }
+
+    public function testGetEmergencyNotificationGroupOrder() {
+
+        self::$index++;
+    }
+
+    public function testGetEmergencyNotificationGroups() {
+
+        self::$index++;
+    }
+
+    public function testGetEmergencyNotificationGroup() {
+
+        self::$index++;
+    }
+
+    public function testCreateEmergencyNotificationRecipient() {
+
+        self::$index++;
+    }
+
+    public function testGetEmergencyNotificationRecipients() {
+
+        self::$index++;
+    }
+
+    public function testGetEmergencyNotificationRecipient() {
+
+        self::$index++;
+    }
+
+    public function testReplaceEmergencyNotificationRecipient() {
+
+        self::$index++;
+    }
+
+    public function testDeleteEmergencyNotificationRecipient() {
+
+        self::$index++;
+    }
 }
