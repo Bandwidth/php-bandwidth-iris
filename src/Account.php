@@ -470,7 +470,7 @@ class Account extends RestEntry {
     public function getEmergencyNotificationRecipients($filters = array()) {
         $url = sprintf('%s/%s', $this->account_id, 'emergencyNotificationRecipients');
         $data = parent::_get($url, $filters);
-        $return $data;
+        return $data;
     }
 
     public function getEmergencyNotificationRecipient($id) {
