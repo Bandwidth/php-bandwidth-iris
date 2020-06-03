@@ -441,7 +441,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testCreateEmergencyNotificationRecipient() {
-        $data = array();
+        $data = new \Iris\EmergencyNotificationRecipient(array());
         $response = self::$account->createEmergencyNotificationRecipient($data);
         $this->assertEquals("63865500-0904-46b1-9b4f-7bd237a26363", $response['Identifier']);
 
@@ -463,7 +463,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testReplaceEmergencyNotificationRecipient() {
-        $data = array();
+        $data = new \Iris\EmergencyNotificationRecipient(array());
         $response = self::$account->replaceEmergencyNotificationRecipient("id", $data);
         $this->assertEquals("63865500-0904-46b1-9b4f-7bd237a26363", $response['Identifier']);
 
