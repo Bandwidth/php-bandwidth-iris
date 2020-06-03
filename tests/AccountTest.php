@@ -48,9 +48,9 @@ class AccountTest extends PHPUnit_Framework_TestCase {
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><EmergencyNotificationEndpointOrderResponse>    <EmergencyNotificationEndpointOrder>        <OrderId>3e9a852e-2d1d-4e2d-84c3-87223a78cb70</OrderId>        <OrderCreatedDate>2020-01-23T18:34:17.284Z</OrderCreatedDate>        <CreatedBy>jgilmore</CreatedBy>        <ProcessingStatus>COMPLETED</ProcessingStatus>        <CustomerOrderId>ALG-31233884</CustomerOrderId>        <EmergencyNotificationEndpointAssociations>            <EmergencyNotificationGroup>                <Identifier>3e9a852e-2d1d-4e2d-84c3-04595ba2eb93</Identifier>            </EmergencyNotificationGroup>            <AddedAssociations>                <EepToEngAssociations>                    <EepTns>                        <TelephoneNumber>2248838829</TelephoneNumber>                        <TelephoneNumber>4052397735</TelephoneNumber>                    </EepTns>                    <EepAeuiIds>                        <Identifier>Fred992834</Identifier>                        <Identifier>Bob00359</Identifier>                    </EepAeuiIds>                </EepToEngAssociations>                <ErrorList />            </AddedAssociations>        </EmergencyNotificationEndpointAssociations>    </EmergencyNotificationEndpointOrder></EmergencyNotificationEndpointOrderResponse>"),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><EmergencyNotificationEndpointOrderResponse>    <Links>        <first> -- link to first page of results -- </first>        <next> -- link to next page of results -- </next>    </Links>    <EmergencyNotificationEndpointOrders>        <EmergencyNotificationEndpointOrder>            <OrderId>3e9a852e-2d1d-4e2d-84c3-87223a78cb70</OrderId>            <OrderCreatedDate>2020-01-23T18:34:17.284Z</OrderCreatedDate>            <CreatedBy>jgilmore</CreatedBy>            <ProcessingStatus>COMPLETED</ProcessingStatus>            <CustomerOrderId>ALG-31233884</CustomerOrderId>            <EmergencyNotificationEndpointAssociations>                <EmergencyNotificationGroup>                    <Identifier>3e9a852e-2d1d-4e2d-84c3-04595ba2eb93</Identifier>                </EmergencyNotificationGroup>                <AddedAssociations>                    <EepToEngAssociations>                        <EepTns>                            <TelephoneNumber>2248838829</TelephoneNumber>                            <TelephoneNumber>4052397735</TelephoneNumber>                        </EepTns>                        <EepAeuiIds>                            <Identifier>Fred992834</Identifier>                            <Identifier>Bob00359</Identifier>                        </EepAeuiIds>                    </EepToEngAssociations>                    <ErrorList />                </AddedAssociations>            </EmergencyNotificationEndpointAssociations>        </EmergencyNotificationEndpointOrder>    </EmergencyNotificationEndpointOrders></EmergencyNotificationEndpointOrderResponse>"),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><EmergencyNotificationEndpointOrderResponse>    <EmergencyNotificationEndpointOrder>        <OrderId>3e9a852e-2d1d-4e2d-84c3-87223a78cb70</OrderId>        <OrderCreatedDate>2020-01-23T18:34:17.284Z</OrderCreatedDate>        <CreatedBy>jgilmore</CreatedBy>        <ProcessingStatus>COMPLETED</ProcessingStatus>        <CustomerOrderId>ALG-31233884</CustomerOrderId>        <EmergencyNotificationEndpointAssociations>            <EmergencyNotificationGroup>                <Identifier>3e9a852e-2d1d-4e2d-84c3-04595ba2eb93</Identifier>            </EmergencyNotificationGroup>            <AddedAssociations>                <EepToEngAssociations>                    <EepTns>                        <TelephoneNumber>2248838829</TelephoneNumber>                        <TelephoneNumber>4052397735</TelephoneNumber>                    </EepTns>                    <EepAeuiIds>                        <Identifier>Fred992834</Identifier>                        <Identifier>Bob00359</Identifier>                    </EepAeuiIds>                </EepToEngAssociations>                <ErrorList />            </AddedAssociations>        </EmergencyNotificationEndpointAssociations>    </EmergencyNotificationEndpointOrder></EmergencyNotificationEndpointOrderResponse>"),
-            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><EmergencyNotificationGroupOrderResponse>    <OrderId>900b3646-18df-4626-b237-3a8de648ebf6</OrderId>    <OrderCreatedDate>2020-04-29T15:27:16.151</OrderCreatedDate>    <CreatedBy>systemUser</CreatedBy>    <ProcessingStatus>PROCESSING</ProcessingStatus>    <CustomerOrderId>UbOxhMnp</CustomerOrderId>    <AddedEmergencyNotificationGroup>        <Identifier>52897b97-3592-43fe-aa3f-857cf96671ee</Identifier>        <Description>JgHzUzIchD</Description>        <AddedEmergencyNotificationRecipients>            <EmergencyNotificationRecipient>                <Identifier>c7f74671edd8410d9a4c0f8e985e0a</Identifier>            </EmergencyNotificationRecipient>            <EmergencyNotificationRecipient>                <Identifier>74ac30535b414d29bc36d50572f553</Identifier>            </EmergencyNotificationRecipient>            <EmergencyNotificationRecipient>                <Identifier>b910df3245ce4192aee052f583259f</Identifier>            </EmergencyNotificationRecipient>        </AddedEmergencyNotificationRecipients>    </AddedEmergencyNotificationGroup></EmergencyNotificationGroupOrderResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><EmergencyNotificationGroupOrderResponse> <EmergencyNotificationGroup>   <OrderId>900b3646-18df-4626-b237-3a8de648ebf6</OrderId>    <OrderCreatedDate>2020-04-29T15:27:16.151</OrderCreatedDate>    <CreatedBy>systemUser</CreatedBy>    <ProcessingStatus>PROCESSING</ProcessingStatus>    <CustomerOrderId>UbOxhMnp</CustomerOrderId>    <AddedEmergencyNotificationGroup>        <Identifier>52897b97-3592-43fe-aa3f-857cf96671ee</Identifier>        <Description>JgHzUzIchD</Description>        <AddedEmergencyNotificationRecipients>            <EmergencyNotificationRecipient>                <Identifier>c7f74671edd8410d9a4c0f8e985e0a</Identifier>            </EmergencyNotificationRecipient>            <EmergencyNotificationRecipient>                <Identifier>74ac30535b414d29bc36d50572f553</Identifier>            </EmergencyNotificationRecipient>            <EmergencyNotificationRecipient>                <Identifier>b910df3245ce4192aee052f583259f</Identifier>            </EmergencyNotificationRecipient>        </AddedEmergencyNotificationRecipients>    </AddedEmergencyNotificationGroup></EmergencyNotificationGroup></EmergencyNotificationGroupOrderResponse>"),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><EmergencyNotificationGroupOrderResponse><Links><first>Link=&lt;http://localhost:8080/v1.0/accounts/12346371/emergencyNotificationGroupOrders&gt;;rel=\"first\";</first>  </Links>  <EmergencyNotificationGroupOrders> <EmergencyNotificationGroupOrder><OrderId>092815dc-9ced-4d67-a070-a80eb243b914</OrderId><OrderCreatedDate>2020-04-29T15:40:01.449Z</OrderCreatedDate><CreatedBy>systemUser</CreatedBy><ProcessingStatus>COMPLETED</ProcessingStatus><CustomerOrderId>QTWeKMys</CustomerOrderId><AddedEmergencyNotificationGroup>  <Identifier>6daa55e1-e499-4cf0-9f3d-9524215f1bee</Identifier>  <Description>enr test description 3</Description>  <AddedEmergencyNotificationRecipients> <EmergencyNotificationRecipient><Identifier>44f203915ca249b7b69bbc084af09a</Identifier><Description>TestDesc SEHsbDMM</Description><Type>SMS</Type><Sms>  <TelephoneNumber>15638765448</TelephoneNumber></Sms> </EmergencyNotificationRecipient>  </AddedEmergencyNotificationRecipients></AddedEmergencyNotificationGroup> </EmergencyNotificationGroupOrder> <EmergencyNotificationGroupOrder><OrderId>89b4e0a1-2789-43fb-b948-38d368159142</OrderId><OrderCreatedDate>2020-04-29T15:39:59.325Z</OrderCreatedDate><CreatedBy>systemUser</CreatedBy><ProcessingStatus>COMPLETED</ProcessingStatus><CustomerOrderId>SDWupQpf</CustomerOrderId><AddedEmergencyNotificationGroup>  <Identifier>b49fa543-5bb3-4b9d-9213-96c8b63e77f5</Identifier>  <Description>enr test description 2</Description>  <AddedEmergencyNotificationRecipients> <EmergencyNotificationRecipient><Identifier>c719e060a6ba4212a2c0642b87a784</Identifier><Description>TestDesc zscxcAGG</Description><Type>SMS</Type><Sms>  <TelephoneNumber>15678765448</TelephoneNumber></Sms> </EmergencyNotificationRecipient> <EmergencyNotificationRecipient><Identifier>93ad72dfe59c4992be6f8aa625466d</Identifier><Description>TestDesc RTflsKBz</Description><Type>TTS</Type><Tts>  <TelephoneNumber>17678765449</TelephoneNumber></Tts> </EmergencyNotificationRecipient>  </AddedEmergencyNotificationRecipients></AddedEmergencyNotificationGroup> </EmergencyNotificationGroupOrder> <EmergencyNotificationGroupOrder><OrderId>247d1425-4247-4b27-99d8-83ce30038b14</OrderId><OrderCreatedDate>2020-04-29T15:39:57.058Z</OrderCreatedDate><CreatedBy>systemUser</CreatedBy><ProcessingStatus>COMPLETED</ProcessingStatus><CustomerOrderId>vgshuNMB</CustomerOrderId><AddedEmergencyNotificationGroup>  <Identifier>69a3d588-f314-42ca-8726-faa824bdf4be</Identifier>  <Description>eng test description</Description>  <AddedEmergencyNotificationRecipients> <EmergencyNotificationRecipient><Identifier>aab78f87074940f1aaaf1c9658be4b</Identifier><Description>enr test description</Description><Type>EMAIL</Type><EmailAddress>testEmail@gmail.com</EmailAddress> </EmergencyNotificationRecipient> <EmergencyNotificationRecipient><Identifier>852e9eee161b4da6823c91173b05c4</Identifier><Description>TestDesc WkHqpnNH</Description><Type>TTS</Type><Tts>  <TelephoneNumber>15678765449</TelephoneNumber></Tts> </EmergencyNotificationRecipient>  </AddedEmergencyNotificationRecipients></AddedEmergencyNotificationGroup> </EmergencyNotificationGroupOrder>  </EmergencyNotificationGroupOrders></EmergencyNotificationGroupOrderResponse>"),
-            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><EmergencyNotificationGroupOrderResponse><OrderId>900b3646-18df-4626-b237-3a8de648ebf6</OrderId>    <OrderCreatedDate>2020-04-29T15:27:16.151</OrderCreatedDate>    <CreatedBy>systemUser</CreatedBy>    <ProcessingStatus>PROCESSING</ProcessingStatus>    <CustomerOrderId>UbOxhMnp</CustomerOrderId>    <AddedEmergencyNotificationGroup>        <Identifier>52897b97-3592-43fe-aa3f-857cf96671ee</Identifier>        <Description>JgHzUzIchD</Description>        <AddedEmergencyNotificationRecipients>            <EmergencyNotificationRecipient>                <Identifier>c7f74671edd8410d9a4c0f8e985e0a</Identifier>            </EmergencyNotificationRecipient>            <EmergencyNotificationRecipient>                <Identifier>74ac30535b414d29bc36d50572f553</Identifier>            </EmergencyNotificationRecipient>            <EmergencyNotificationRecipient>                <Identifier>b910df3245ce4192aee052f583259f</Identifier>            </EmergencyNotificationRecipient>        </AddedEmergencyNotificationRecipients>    </AddedEmergencyNotificationGroup></EmergencyNotificationGroupOrderResponse>"),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><EmergencyNotificationGroupOrderResponse><EmergencyNotificationGroup><OrderId>900b3646-18df-4626-b237-3a8de648ebf6</OrderId>    <OrderCreatedDate>2020-04-29T15:27:16.151</OrderCreatedDate>    <CreatedBy>systemUser</CreatedBy>    <ProcessingStatus>PROCESSING</ProcessingStatus>    <CustomerOrderId>UbOxhMnp</CustomerOrderId>    <AddedEmergencyNotificationGroup>        <Identifier>52897b97-3592-43fe-aa3f-857cf96671ee</Identifier>        <Description>JgHzUzIchD</Description>        <AddedEmergencyNotificationRecipients>            <EmergencyNotificationRecipient>                <Identifier>c7f74671edd8410d9a4c0f8e985e0a</Identifier>            </EmergencyNotificationRecipient>            <EmergencyNotificationRecipient>                <Identifier>74ac30535b414d29bc36d50572f553</Identifier>            </EmergencyNotificationRecipient>            <EmergencyNotificationRecipient>                <Identifier>b910df3245ce4192aee052f583259f</Identifier>            </EmergencyNotificationRecipient>        </AddedEmergencyNotificationRecipients>    </AddedEmergencyNotificationGroup></EmergencyNotificationGroup></EmergencyNotificationGroupOrderResponse>"),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><EmergencyNotificationGroupsResponse>    <Links>        <first> -- link to first page of results -- </first>        <next> -- link to next page of results -- </next>    </Links>    <EmergencyNotificationGroups>        <EmergencyNotificationGroup>            <Identifier>63865500-0904-46b1-9b4f-7bd237a26363</Identifier>            <CreatedDate>2020-01-23T18:34:17.284Z</CreatedDate>            <ModifiedBy>jgilmore</ModifiedBy>            <ModifiedDate>2020-01-23T18:34:17.284Z</ModifiedDate>            <Description>This is a description of the emergency notification group.</Description>            <EmergencyNotificationRecipients>                <EmergencyNotificationRecipient>                    <Identifier>63865500-0904-46b1-9b4f-7bd237a26363</Identifier>                </EmergencyNotificationRecipient>                <EmergencyNotificationRecipient>                    <Identifier>ef47eb61-e3b1-449d-834b-0fbc5a11da30</Identifier>                </EmergencyNotificationRecipient>            </EmergencyNotificationRecipients>        </EmergencyNotificationGroup>        <EmergencyNotificationGroup>            <Identifier>29477382-23947-23c-2349-aa8238b22743</Identifier>            <CreatedDate>2020-01-23T18:36:51.987Z</CreatedDate>            <ModifiedBy>jgilmore</ModifiedBy>            <ModifiedDate>2020-01-23T18:36:51.987Z</ModifiedDate>            <Description>This is a description of the emergency notification group.</Description>            <EmergencyNotificationRecipients>                <EmergencyNotificationRecipient>                    <Identifier>37742335-8722-3abc-8722-e2434f123a4d</Identifier>                </EmergencyNotificationRecipient>            </EmergencyNotificationRecipients>        </EmergencyNotificationGroup>    </EmergencyNotificationGroups>g</EmergencyNotificationGroupsResponse>"),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><EmergencyNotificationGroupsResponse>    <EmergencyNotificationGroup>        <Identifier>63865500-0904-46b1-9b4f-7bd237a26363</Identifier>        <CreatedDate>2020-01-23T18:34:17.284Z</CreatedDate>        <ModifiedBy>jgilmore</ModifiedBy>        <ModifiedDate>2020-01-23T18:34:17.284Z</ModifiedDate>        <Description>This is a description of the emergency notification group.</Description>        <EmergencyNotificationRecipients>            <EmergencyNotificationRecipient>                <Identifier>63865500-0904-46b1-9b4f-7bd237a26363</Identifier>            </EmergencyNotificationRecipient>            <EmergencyNotificationRecipient>                <Identifier>ef47eb61-e3b1-449d-834b-0fbc5a11da30</Identifier>            </EmergencyNotificationRecipient>        </EmergencyNotificationRecipients>    </EmergencyNotificationGroup></EmergencyNotificationGroupsResponse>"),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><EmergencyNotificationRecipientsResponse>    <EmergencyNotificationRecipient>        <Identifier> 63865500-0904-46b1-9b4f-7bd237a26363 </Identifier>        <CreatedDate>2020-03-18T21:26:47.403Z</CreatedDate>        <LastModifiedDate>2020-03-18T21:26:47.403Z</LastModifiedDate>        <ModifiedByUser>jgilmore</ModifiedByUser>        <Description> This is a description of the emergency notification recipient. </Description>        <Type>CALLBACK</Type>        <Callback>            <Url>https://foo.bar/baz</Url>            <Credentials>                <Username>jgilmore</Username>            </Credentials>        </Callback>    </EmergencyNotificationRecipient></EmergencyNotificationRecipientsResponse>"),
@@ -370,16 +370,14 @@ class AccountTest extends PHPUnit_Framework_TestCase {
 
     public function testGetAlternateEndUserInformation() {
         $response = self::$account->getAlternateEndUserInformation();
-
-        print_r($response);
+        $this->assertEquals("DavidAcid", $response['AlternateEndUserIdentifiers']['AlternateEndUserIdentifier'][0]['Identifier']);
 
         self::$index++;
     }
 
     public function testGetAlternateCallerInformation() {
         $response = self::$account->getAlternateCallerInformation("123");
-
-        print_r($response);
+        $this->assertEquals("DavidAcid", $response["Identifier"]);
 
         self::$index++;
     }
@@ -387,24 +385,21 @@ class AccountTest extends PHPUnit_Framework_TestCase {
     public function testCreateEmergencyNotificationEndpointOrder() {
         $data = array();
         $response = self::$account->createEmergencyNotificationEndpointOrder($data);
-
-        print_r($response);
+        $this->assertEquals("3e9a852e-2d1d-4e2d-84c3-87223a78cb70", $response["OrderId"]);
 
         self::$index++;
     }
 
     public function testGetEmergencyNotificationEndpointOrders() {
         $response = self::$account->getEmergencyNotificationEndpointOrders();
-
-        print_r($response);
+        $this->assertEquals("3e9a852e-2d1d-4e2d-84c3-87223a78cb70", $response['EmergencyNotificationEndpointOrders']['EmergencyNotificationEndpointOrder']["OrderId"]);
 
         self::$index++;
     }
 
     public function testGetEmergencyNotificationEndpointOrder() {
         $response = self::$account->getEmergencyNotificationEndpointOrder("id");
-
-        print_r($response);
+        $this->assertEquals("3e9a852e-2d1d-4e2d-84c3-87223a78cb70", $response["OrderId"]);
 
         self::$index++;
     }
@@ -412,39 +407,35 @@ class AccountTest extends PHPUnit_Framework_TestCase {
     public function testCreateEmergencyNotificationGroupOrder() {
         $data = array();
         $response = self::$account->createEmergencyNotificationGroupOrder($data);
-
-        print_r($response);
+        $this->assertEquals("900b3646-18df-4626-b237-3a8de648ebf6", $response["OrderId"]);
 
         self::$index++;
     }
 
     public function testGetEmergencyNotificationGroupOrders() {
         $response = self::$account->getEmergencyNotificationGroupOrders();
+        $this->assertEquals("092815dc-9ced-4d67-a070-a80eb243b914", $response['EmergencyNotificationGroupOrders']['EmergencyNotificationGroupOrder'][0]['OrderId']);
 
-        print_r($response);
         self::$index++;
     }
 
     public function testGetEmergencyNotificationGroupOrder() {
         $response = self::$account->getEmergencyNotificationGroupOrder("id");
-
-        print_r($response);
+        $this->assertEquals("900b3646-18df-4626-b237-3a8de648ebf6", $response["OrderId"]);
 
         self::$index++;
     }
 
     public function testGetEmergencyNotificationGroups() {
         $response = self::$account->getEmergencyNotificationGroups();
-
-        print_r($response);
+        $this->assertEquals("63865500-0904-46b1-9b4f-7bd237a26363", $response['EmergencyNotificationGroups']['EmergencyNotificationGroup'][0]['Identifier']);
 
         self::$index++;
     }
 
     public function testGetEmergencyNotificationGroup() {
         $response = self::$account->getEmergencyNotificationGroup("id");
-
-        print_r($response);
+        $this->assertEquals("63865500-0904-46b1-9b4f-7bd237a26363", $response['Identifier']);
 
         self::$index++;
     }
@@ -452,24 +443,21 @@ class AccountTest extends PHPUnit_Framework_TestCase {
     public function testCreateEmergencyNotificationRecipient() {
         $data = array();
         $response = self::$account->createEmergencyNotificationRecipient($data);
-
-        print_r($response);
+        $this->assertEquals("63865500-0904-46b1-9b4f-7bd237a26363", $response['Identifier']);
 
         self::$index++;
     }
 
     public function testGetEmergencyNotificationRecipients() {
         $response = self::$account->getEmergencyNotificationRecipients();
-
-        print_r($response);
+        $this->assertEquals("63865500-0904-46b1-9b4f-7bd237a26363", $response['EmergencyNotificationRecipients']['EmergencyNotificationRecipient'][0]['Identifier']);
 
         self::$index++;
     }
 
     public function testGetEmergencyNotificationRecipient() {
         $response = self::$account->getEmergencyNotificationRecipient("id");
-
-        print_r($response);
+        $this->assertEquals("63865500-0904-46b1-9b4f-7bd237a26363", $response['Identifier']);
 
         self::$index++;
     }
@@ -477,8 +465,8 @@ class AccountTest extends PHPUnit_Framework_TestCase {
     public function testReplaceEmergencyNotificationRecipient() {
         $data = array();
         $response = self::$account->replaceEmergencyNotificationRecipient("id", $data);
+        $this->assertEquals("63865500-0904-46b1-9b4f-7bd237a26363", $response['Identifier']);
 
-        print_r($response);
         self::$index++;
     }
 }
