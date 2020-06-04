@@ -411,79 +411,78 @@ class Account extends RestEntry {
         $url = sprintf('%s/%s/%s', $this->account_id, 'aeuis', $acid);
         $data = parent::_get($url);
         return $data['AlternateEndUserIdentifier'];
-        //continue here
     }
 
     public function createEmergencyNotificationEndpointOrder($order) {
         $url = sprintf('%s/%s', $this->account_id, 'emergencyNotificationEndpointOrders');
         $data = parent::post($url, 'EmergencyNotificationEndpointOrder', $order);
-        return new EmergencyNotificationEndpointOrder($data);
+        return $data['EmergencyNotificationEndpointOrder'];
     }
 
     public function getEmergencyNotificationEndpointOrders($filters = array()) {
         $url = sprintf('%s/%s', $this->account_id, 'emergencyNotificationEndpointOrders');
         $data = parent::_get($url, $filters);
-        return new EmergencyNotificationEndpointOrders($data);
+        return $data;
     }
 
     public function getEmergencyNotificationEndpointOrder($id) {
         $url = sprintf('%s/%s/%s', $this->account_id, 'emergencyNotificationEndpointOrders', $id);
         $data = parent::_get($url);
-        return new EmergencyNotificationEndpointOrder($data);
+        return $data['EmergencyNotificationEndpointOrder'];
     }
 
     public function createEmergencyNotificationGroupOrder($order) {
         $url = sprintf('%s/%s', $this->account_id, 'emergencyNotificationGroupOrders');
         $data = parent::post($url, 'EmergencyNotificationGroupOrder', $order);
-        return new EmergencyNotificationGroupOrder($data);
+        return $data['EmergencyNotificationGroup'];
     }
 
     public function getEmergencyNotificationGroupOrders($filters = array()) {
         $url = sprintf('%s/%s', $this->account_id, 'emergencyNotificationGroupOrders');
         $data = parent::_get($url, $filters);
-        return new EmergencyNotificationGroupOrders($data);
+        return $data;
     }
 
     public function getEmergencyNotificationGroupOrder($id) {
         $url = sprintf('%s/%s/%s', $this->account_id, 'emergencyNotificationGroupOrders', $id);
         $data = parent::_get($url);
-        return new EmergencyNotificationGroupOrder($data);
+        return $data['EmergencyNotificationGroup'];
     }
 
     public function getEmergencyNotificationGroups($filters = array()) {
         $url = sprintf('%s/%s', $this->account_id, 'emergencyNotificationGroups');
         $data = parent::_get($url, $filters);
-        return new EmergencyNotificationGroups($data);
+        return $data;
     }
 
     public function getEmergencyNotificationGroup($id) {
         $url = sprintf('%s/%s/%s', $this->account_id, 'emergencyNotificationGroups', $id);
         $data = parent::_get($url);
-        return new EmergencyNotificationGroup($data);
+        return $data['EmergencyNotificationGroup'];
     }
 
-    public function createEmergencyNotificationRecipient(EmergencyNotificationRecipient $recipient) {
+    public function createEmergencyNotificationRecipient($recipient) {
         $url = sprintf('%s/%s', $this->account_id, 'emergencyNotificationRecipients');
-        $data = parent::post($url, 'EmergencyNotificationRecipient', $recipient->to_array());
-        return new EmergencyNotificationRecipient($data);
+        $data = parent::post($url, 'EmergencyNotificationRecipient', $recipient);
+        return $data['EmergencyNotificationRecipient'];
     }
 
     public function getEmergencyNotificationRecipients($filters = array()) {
         $url = sprintf('%s/%s', $this->account_id, 'emergencyNotificationRecipients');
         $data = parent::_get($url, $filters);
-        return new EmergencyNotificationRecipients($data);
+        return $data;
     }
 
     public function getEmergencyNotificationRecipient($id) {
         $url = sprintf('%s/%s/%s', $this->account_id, 'emergencyNotificationRecipients', $id);
         $data = parent::_get($url);
-        return new EmergencyNotificationRecipient($data);
+        return $data['EmergencyNotificationRecipient'];
     }
 
-    public function replaceEmergencyNotificationRecipient($id, EmergencyNotificationRecipient $recipient) {
+    public function replaceEmergencyNotificationRecipient($id, $recipient) {
         $url = sprintf('%s/%s/%s', $this->account_id, 'emergencyNotificationRecipients', $id);
-        $data = parent::put($url, 'EmergencyNotificationRecipient', $recipient->to_array());
-        return new EmergencyNotificationRecipient($data);
+        $data = parent::put($url, 'EmergencyNotificationRecipient', $recipient);
+        return $data['EmergencyNotificationRecipient'];
     }
 
     public function deleteEmergencyNotificationRecipient($id) {
