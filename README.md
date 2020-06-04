@@ -833,36 +833,122 @@ $account->updateCsrOrderNote("order_id", "note_id", $note);
 
 ### Create Emergency Notification Recipient
 
+```php
+$data = array(
+  "Description" => "Email to Bldg. 3 Front Desk",
+  "Type" => "EMAIL",
+  "EmailAddress" => "foo@bar.com"
+);
+$response = $account->createEmergencyNotificationRecipient($data);
+```
+
 ### Get Emergency Notification Recipients
+
+```php
+$response = $account->getEmergencyNotificationRecipients();
+```
 
 ### Get Emergency Notification Recipient
 
+```php
+$response = $account->getEmergencyNotificationRecipient("id");
+```
+
 ### Replace Emergency Notification Recipient
 
+```php
+$data = array(
+  "Description" => "Email to Bldg. 3 Front Desk",
+  "Type" => "EMAIL",
+  "EmailAddress" => "foo@bar.com"
+);
+$response = $account->replaceEmergencyNotificationRecipient("id", $data);
+```
+
 ### Delete Emergency Notification Recipient
+
+```php
+$account->deleteEmergencyNotificationRecipient("id");
+```
 
 ## Emergeny Notification Group
 
 ### Create Emergency Notification Group Order
 
+```php
+$data = array(
+  "CustomerOrderId" => "value",
+  "AddedEmergenyNotificationGroup" => array(
+    "EmergencyNotificationRecipient" => array(
+      "Identifier" => "123"
+    )
+  )
+);
+$response = $account->createEmergencyNotificationGroupOrder($data);
+```
+
 ### Get Emergency Notification Group Orders
+
+```php
+$response = $account->getEmergencyNotificationGroupOrders();
+```
 
 ### Get Emergency Notification Group Order
 
+```php
+$response = $account->getEmergencyNotificationGroupOrder("id");
+```
+
 ### Get Emergency Notification Groups
 
+```php
+$response = $account->getEmergencyNotificationGroups();
+```
+
 ### Get Emergency Notification Group
+
+```php
+$response = $account->getEmergencyNotificationGroup("id");
+```
 
 ## Emergency Notification Endpoint
 
 ### Create Emergency Notification Endpoint Order
 
+```php
+$data = array(
+  "CustomerOrderId" => "123",
+  "EmergencyNotificationEndpointAssociations" => array(
+    "EmergenyNotificationGroup" => array(
+      "Identifier" => "456"
+    )
+  )
+);
+$response = $account->createEmergencyNotificationEndpointOrder($data);
+```
+
 ### Get Emergency Notification Endpoint Orders
 
+```php
+$response = $account->getEmergencyNotificationEndpointOrders();
+```
+
 ### Get Emergency Notification Endpoint Order
+
+```php
+$response = $account->getEmergencyNotificationEndpointOrder("id");
+```
 
 ## Alternate End User Identiy
 
 ### Get Alternate End User Information
 
+```php
+$response = $account->getAlternateEndUserInformation();
+```
+
 ### Get Alternate Caller Information
+
+```php
+$response = $account->getAlternateCallerInformation("id");
+```
