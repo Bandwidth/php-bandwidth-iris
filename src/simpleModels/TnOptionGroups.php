@@ -25,7 +25,8 @@ class TnOptionGroup {
         "CallingNameDisplay" => array("type" => "string"),
         "Protected" => array("type" => "string"),
         "Sms" => array("type" => "string"),
-        "FinalDestinationURI " => array("type" => "string")
+        "FinalDestinationURI " => array("type" => "string"),
+        "PortOutPasscode" => array("type" => "string")
     );
     public function __construct($data) {
         $this->set_data($data);

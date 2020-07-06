@@ -147,6 +147,10 @@ final class Client extends iClient
             $client_options['handler'] = $options['handler'];
         }
 
+        $options['headers'] = array(
+            'User-Agent' => 'PHP-Bandwidth-Iris'
+        );
+
         $this->client = new \GuzzleHttp\Client($options);
     }
 

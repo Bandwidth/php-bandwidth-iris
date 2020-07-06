@@ -19,6 +19,7 @@ PHP Client library for Bandwidth's Phone Number Dashboard (AKA: Dashboard, Iris)
 | 2.2.0 | Added `csrs` endpoints |
 | 2.3.0 | Added `loas` endpoints for ImportTnOrders |
 | 2.4.0 | Added Emergency Calling Notification, Emergeny Notification Group, Emergency Notification Endpoint, and Alternate End User Identity methods |
+| 2.5.0 | Added `PortOutPasscode` for TnOption orders |
 
 ## Supported PHP Versions
 
@@ -589,20 +590,77 @@ $billingReport->file(['stream' => true, 'sink' => $outFile]);
 
 ## TN Options
 
-### Create New TN Options (Async request)
+### Get TN Option Orders
+```PHP
+$tnoptions = $account->tnoptions();
+$response = $tnoptions->getList();
+print_r($response[0]->OrderId);
+```
+
+### GET TN Option Order
+```PHP
+$tnoptions = $account->tnoptions();
+$response = $tnoptions->tnoption("order_id");
+print_r($response->OrderCreateDate);
+```
+
+### Get TN Option Order (error)
+```PHP
+$tnoptions = $account->tnoptions();
+$response = $tnoptions->tnoption("error_order_id");
+print_r($response->ErrorList->Error->Description); //note: Error could be an array or a single object
+//depending on how many errors are returned
+```
+
+### Create Portout Passcode
 ```PHP
 $tnoptions = $account->tnoptions();
 $data = array(
     "TnOptionGroups" => array(
         "TnOptionGroup" => array(
-            "CallForward" => "<FORWARD_NUMBER>",
+            "PortOutPasscode" => "12abd38",
             "TelephoneNumbers" => array(
-                "TelephoneNumber" => "<UPDATE_NUMBER>"
+                "TelephoneNumber" => "2018551020"
             )
         ),
     )
 );
-$tnoptions->create($data);
+$response = $tnoptions->create($data);
+print_r($response->OrderCreateDate);
+```
+
+### Create Call Forward Number
+```PHP
+$tnoptions = $account->tnoptions();
+$data = array(
+    "TnOptionGroups" => array(
+        "TnOptionGroup" => array(
+            "CallForward" => "2018551022",
+            "TelephoneNumbers" => array(
+                "TelephoneNumber" => "2018551020"
+            )
+        ),
+    )
+);
+$response = $tnoptions->create($data);
+print_r($response->OrderCreateDate);
+```
+
+### Enable SMS
+```PHP
+$tnoptions = $account->tnoptions();
+$data = array(
+    "TnOptionGroups" => array(
+        "TnOptionGroup" => array(
+            "Sms" => "on",
+            "TelephoneNumbers" => array(
+                "TelephoneNumber" => "2018551020"
+            )
+        ),
+    )
+);
+$response = $tnoptions->create($data);
+print_r($response->OrderCreateDate);
 ```
 
 ## Hosted Messaging Functions
