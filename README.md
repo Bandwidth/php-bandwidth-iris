@@ -367,6 +367,14 @@ $portin->set_metadata('test.txt', $meta_new);
 $portin->delete_metadata('test.txt');
 ```
 
+#### PortIn File Management: Grab filename
+```PHP
+$response = $portin->loas_send('./hello.txt', array("Content-Type" => "text/plain"));
+$tmp = explode("/", $response);
+$id = end($tmp);
+print_r($id);
+```
+
 ## Rate Centers
 ### List Ratecenters
 ```PHP
