@@ -26,6 +26,8 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
 			new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><LnpOrderResponse>    <ProcessingStatus>SUBMITTED</ProcessingStatus>    <RequestedFocDate>2015-06-03T15:30:00Z</RequestedFocDate>    <LoaAuthorizingPerson>Joe Blow</LoaAuthorizingPerson>    <Subscriber>        <SubscriberType>BUSINESS</SubscriberType>        <BusinessName>Company</BusinessName>        <ServiceAddress>            <HouseNumber>123</HouseNumber>            <StreetName>EZ Street</StreetName>            <City>Raleigh</City>            <StateCode>NC</StateCode>            <Zip>27615</Zip>            <County>Wake</County>            <Country>United States</Country>            <AddressType>Service</AddressType>        </ServiceAddress>    </Subscriber>    <BillingTelephoneNumber>9193491234</BillingTelephoneNumber>       <NewBillingTelephoneNumber>9175131245</NewBillingTelephoneNumber>     <ListOfPhoneNumbers>        <PhoneNumber>9193491234</PhoneNumber>    </ListOfPhoneNumbers>    <PON>BWC1433343996123</PON>    <AccountId>9500249</AccountId>    <SiteId>2297</SiteId>    <PeerId>500655</PeerId>    <LosingCarrierName>Test Losing Carrier L3</LosingCarrierName>    <VendorName>Bandwidth CLEC</VendorName>    <OrderCreateDate>2015-06-03T15:06:35.533Z</OrderCreateDate>    <LastModifiedDate>2015-06-03T15:06:36.234Z</LastModifiedDate>    <userId>System</userId>    <LastModifiedBy>System</LastModifiedBy>    <PartialPort>false</PartialPort>    <Immediately>false</Immediately>    <Triggered>false</Triggered></LnpOrderResponse>"),
 			new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><OrderHistoryWrapper>    <OrderHistory>        <OrderDate>2015-06-03T15:06:35.765Z</OrderDate>        <Note>LOA required</Note>        <Author>byo_dev</Author>        <Status>PENDING_DOCUMENTS</Status>    </OrderHistory>    <OrderHistory>        <OrderDate>2015-06-03T15:06:36.234Z</OrderDate>        <Note>Order has been created</Note>        <Author>System</Author>        <Status>SUBMITTED</Status>        <Difference>LoaDate : \"\" --&gt; Wed Jun 03 15:06:35 UTC 2015</Difference>    </OrderHistory></OrderHistoryWrapper>"),
 			new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Quantity><Count>4</Count></Quantity>"),
+			new Response(200),
+			new Response(200, ["Location" => "filename"], ""),
         ]);
 
         self::$container = [];
@@ -275,5 +277,10 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
         self::$index++;
     }
 
+    public function testLoasSend() {
+        $portin = self::$portins->portin("");
+        $response = $portin->loas_send('./tests/test.txt', array("Content-Type" => "text/plain"));
+        $this->assertEquals("filename", $response);
+    }
 
 }
