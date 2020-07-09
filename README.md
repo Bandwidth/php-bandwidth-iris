@@ -20,6 +20,7 @@ PHP Client library for Bandwidth's Phone Number Dashboard (AKA: Dashboard, Iris)
 | 2.3.0 | Added `loas` endpoints for ImportTnOrders |
 | 2.4.0 | Added Emergency Calling Notification, Emergeny Notification Group, Emergency Notification Endpoint, and Alternate End User Identity methods |
 | 2.5.0 | Added `PortOutPasscode` for TnOption orders |
+| 2.5.1 | Fixed grabbing of response header for file uploads |
 
 ## Supported PHP Versions
 
@@ -364,6 +365,14 @@ $meta_new = array(
 );
 $portin->set_metadata('test.txt', $meta_new);
 $portin->delete_metadata('test.txt');
+```
+
+#### PortIn File Management: Grab filename
+```PHP
+$response = $portin->loas_send('./hello.txt', array("Content-Type" => "text/plain"));
+$tmp = explode("/", $response);
+$id = end($tmp);
+print_r($id);
 ```
 
 ## Rate Centers
