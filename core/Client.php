@@ -238,7 +238,8 @@ final class Client extends iClient
 
         if ($response->hasHeader('Location'))
         {
-            return reset($response->getHeader('Location'));
+            $header = $response->getHeader('Location');
+            return reset($header);
         }
         return '';
     }
