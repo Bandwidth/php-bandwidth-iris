@@ -138,7 +138,7 @@ final class Client extends iClient
         }
 
         $options['auth'] = [$login, $password];
-        $options['base_uri'] = $options['url'] ?: 'https://api.inetwork.com/v1.0';
+        $options['base_uri'] = $options['url'] ?: 'https://dashboard.bandwidth.com/api';
         unset($options['url']);
         $options['base_uri'] = rtrim($options['base_uri'], '/') . '/';
 
