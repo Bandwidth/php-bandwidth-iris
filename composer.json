@@ -4,13 +4,13 @@
     "description": "Bandwidth's Iris SDK for PHP",
     "keywords": ["iris","sdk","php"],
     "homepage": "http://dev.bandwidth.com",
-    "reference": "v2.5.3",
+    "reference": "v3.0.0",
     "license": "MIT",
     "authors": [
     ],
     "require": {
         "php": ">=5.5",
-        "guzzlehttp/guzzle": "~6.0"
+        "guzzlehttp/guzzle": "~7.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.7"
