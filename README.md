@@ -21,16 +21,16 @@ PHP Client library for Bandwidth's Phone Number Dashboard (AKA: Dashboard, Iris)
 | 2.4.0 | Added Emergency Calling Notification, Emergeny Notification Group, Emergency Notification Endpoint, and Alternate End User Identity methods |
 | 2.5.0 | Added `PortOutPasscode` for TnOption orders |
 | 2.5.1 | Fixed grabbing of response header for file uploads |
-| 3.0.0 | Updated to guzzle 7 |
+| 3.0.0 | Updated to guzzle 7. This version no longer supports verisons of PHP less than 7.2. Older versions of this package will still work on PHP versions less than 7.2 |
 
 ## Supported PHP Versions
 
 | Version                        | Support Level            |
 |:-------------------------------|:-------------------------|
-| 5.5 | Supported |
-| 5.6 | Supported |
-| 7.0 | Supported |
-| 7.1 | Supported |
+| 5.5 | Unsupported |
+| 5.6 | Unsupported |
+| 7.0 | Unsupported |
+| 7.1 | Unsupported |
 | 7.2 | Supported |
 | 7.3 | Supported |
 
