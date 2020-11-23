@@ -493,7 +493,12 @@ class Account extends RestEntry {
     public function getApplications() {
         $url = sprintf('%s/%s', $this->account_id, 'applications');
         $data = parent::_get($url);
-        return $data['ApplicationList'];
+        $response = $data['ApplicationList']['Application'];
+        if (array_values($response) == $response) {
+            return $response;
+        } else {
+            return [$response];
+        }
     }
     
     public function getApplication($id) {
@@ -522,6 +527,11 @@ class Account extends RestEntry {
     public function getApplicationSippeers($id) {
         $url = sprintf('%s/%s/%s/%s', $this->account_id, 'applications', $id, 'associatedsippeers');
         $data = parent::_get($url);
-        return $data['AssociatedSipPeers']['AssociatedSipPeer'];
+        $response = $data['AssociatedSipPeers']['AssociatedSipPeer'];
+        if (array_values($response) == $response) {
+            return $response;
+        } else {
+            return [$response];
+        }
     }
 }

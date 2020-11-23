@@ -58,11 +58,13 @@ class AccountTest extends PHPUnit_Framework_TestCase {
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><EmergencyNotificationRecipientsResponse>    <EmergencyNotificationRecipient>        <Identifier> 63865500-0904-46b1-9b4f-7bd237a26363 </Identifier>        <CreatedDate>2020-03-18T21:26:47.403Z</CreatedDate>        <LastModifiedDate>2020-04-01T18:32:22.316Z</LastModifiedDate>        <ModifiedByUser>jgilmore</ModifiedByUser>        <Description> This is a description of the emergency notification recipient. </Description>        <Type>CALLBACK</Type>        <Callback>            <Url>https://foo.bar/baz</Url>            <Credentials>                <Username>jgilmore</Username>            </Credentials>        </Callback>    </EmergencyNotificationRecipient></EmergencyNotificationRecipientsResponse>"),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><EmergencyNotificationRecipientsResponse>    <EmergencyNotificationRecipient>        <Identifier> 63865500-0904-46b1-9b4f-7bd237a26363 </Identifier>        <CreatedDate>2020-03-18T21:26:47.403Z</CreatedDate>        <LastModifiedDate>2020-04-01T18:32:22.316Z</LastModifiedDate>        <ModifiedByUser>jgilmore</ModifiedByUser>        <Description> This is a description of the emergency notification recipient. </Description>        <Type>CALLBACK</Type>        <Callback>            <Url>https://foo.bar/baz</Url>            <Credentials>                <Username>jgilmore</Username>            </Credentials>        </Callback>    </EmergencyNotificationRecipient></EmergencyNotificationRecipientsResponse>"),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ApplicationProvisioningResponse>    <ApplicationList>        <Application>            <ApplicationId>2cfcb382-161c-46d4-8c67-87ca09a72c85</ApplicationId>            <ServiceType>Messaging-V2</ServiceType>            <AppName>app1</AppName>            <MsgCallbackUrl>http://a.com</MsgCallbackUrl>        </Application>        <Application>            <ApplicationId>0cb0112b-5998-4c81-999a-0d3fb5e3f8e2</ApplicationId>            <ServiceType>Voice-V2</ServiceType>            <AppName>app2</AppName>            <CallInitiatedCallbackUrl>http://b.com</CallInitiatedCallbackUrl>            <CallbackCreds>                <UserId>15jPWZmXdm</UserId>            </CallbackCreds>            <CallInitiatedFallbackUrl>https://fallback.com</CallInitiatedFallbackUrl>            <CallInitiatedFallbackMethod>POST</CallInitiatedFallbackMethod>            <CallInitiatedFallbackCreds>                <UserId>login2</UserId>            </CallInitiatedFallbackCreds>            <CallbackTimeout>20</CallbackTimeout>        </Application>    </ApplicationList></ApplicationProvisioningResponse>            "),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ApplicationProvisioningResponse>    <ApplicationList>        <Application>            <ApplicationId>0cb0112b-5998-4c81-999a-0d3fb5e3f8e2</ApplicationId>            <ServiceType>Voice-V2</ServiceType>            <AppName>app2</AppName>            <CallInitiatedCallbackUrl>http://b.com</CallInitiatedCallbackUrl>            <CallbackCreds>                <UserId>15jPWZmXdm</UserId>            </CallbackCreds>            <CallInitiatedFallbackUrl>https://fallback.com</CallInitiatedFallbackUrl>            <CallInitiatedFallbackMethod>POST</CallInitiatedFallbackMethod>            <CallInitiatedFallbackCreds>                <UserId>login2</UserId>            </CallInitiatedFallbackCreds>            <CallbackTimeout>20</CallbackTimeout>        </Application>    </ApplicationList></ApplicationProvisioningResponse>            "),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ApplicationProvisioningResponse>    <Application>        <ApplicationId>e5a9e103-097e-4ec4-87a0-50109fb7b4b1</ApplicationId>        <ServiceType>Messaging-V2</ServiceType>        <AppName>qMmmTT</AppName>        <MsgCallbackUrl>http://example.com</MsgCallbackUrl>        <CallbackCreds>            <UserId>15jPWZmXdm</UserId>        </CallbackCreds>    </Application></ApplicationProvisioningResponse>            "),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ApplicationProvisioningResponse>    <Application>        <ApplicationId>d4d1b41d-4c05-47d0-838a-34e4f14e4e3e</ApplicationId>        <ServiceType>Messaging-V2</ServiceType>        <AppName>EBVICs</AppName>        <MsgCallbackUrl>http://example.com</MsgCallbackUrl>        <CallbackCreds>            <UserId>15jPWZmXdm</UserId>        </CallbackCreds>    </Application></ApplicationProvisioningResponse>            "),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ApplicationProvisioningResponse>    <Application>        <ApplicationId>e5a9e103-097e-4ec4-87a0-50109fb7b4b1</ApplicationId>        <ServiceType>Voice-V2</ServiceType>        <AppName>EBVICs</AppName>        <CallInitiatedCallbackUrl>https://example2.com</CallInitiatedCallbackUrl>        <CallInitiatedMethod>GET</CallInitiatedMethod>        <CallStatusCallbackUrl>https://example3.com</CallStatusCallbackUrl>        <CallStatusMethod>GET</CallStatusMethod>    </Application></ApplicationProvisioningResponse>            "),
             new Response(200, []),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><AssociatedSipPeersResponse>    <AssociatedSipPeers>        <AssociatedSipPeer>            <SiteId>482</SiteId>            <SiteName>site_e867f</SiteName>            <PeerId>500018</PeerId>            <PeerName>sippeer-e867f</PeerName>        </AssociatedSipPeer>        <AssociatedSipPeer>            <SiteId>483</SiteId>            <SiteName>site_e867d</SiteName>            <PeerId>500019</PeerId>            <PeerName>sippeer-e867d</PeerName>        </AssociatedSipPeer>    </AssociatedSipPeers></AssociatedSipPeersResponse>            "),
+            new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><AssociatedSipPeersResponse>    <AssociatedSipPeers>        <AssociatedSipPeer>            <SiteId>482</SiteId>            <SiteName>site_e867f</SiteName>            <PeerId>500018</PeerId>            <PeerName>sippeer-e867f</PeerName>        </AssociatedSipPeer>        </AssociatedSipPeers></AssociatedSipPeersResponse>            "),
         ]);
 
         self::$container = [];
@@ -481,7 +483,17 @@ class AccountTest extends PHPUnit_Framework_TestCase {
         
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
         $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/applications", (string) self::$container[self::$index]['request']->getUri());
-        $this->assertEquals("0cb0112b-5998-4c81-999a-0d3fb5e3f8e2", $response['Application'][1]['ApplicationId']);
+        $this->assertEquals("0cb0112b-5998-4c81-999a-0d3fb5e3f8e2", $response[1]['ApplicationId']);
+
+        self::$index++;
+    }
+
+    public function testGetApplicationsOneResponse() {
+        $response = self::$account->getApplications();
+        
+        $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/applications", (string) self::$container[self::$index]['request']->getUri());
+        $this->assertEquals("0cb0112b-5998-4c81-999a-0d3fb5e3f8e2", $response[0]['ApplicationId']);
 
         self::$index++;
     }
@@ -528,6 +540,16 @@ class AccountTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testGetApplicationSippeers() {
+        $response = self::$account->getApplicationSippeers("123");
+
+        $this->assertEquals('site_e867f', $response[0]['SiteName']);
+        $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());
+        $this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/applications/123/associatedsippeers", (string) self::$container[self::$index]['request']->getUri());
+
+        self::$index++;
+    }
+
+    public function testGetApplicationSippeersOneResponse() {
         $response = self::$account->getApplicationSippeers("123");
 
         $this->assertEquals('site_e867f', $response[0]['SiteName']);
