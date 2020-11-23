@@ -489,4 +489,39 @@ class Account extends RestEntry {
         $url = sprintf('%s/%s/%s', $this->account_id, 'emergencyNotificationRecipients', $id);
         parent::_delete($url);
     }
+    
+    public function getApplications() {
+        $url = sprintf('%s/%s', $this->account_id, 'applications');
+        $data = parent::_get($url);
+        return $data['ApplicationList'];
+    }
+    
+    public function getApplication($id) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'applications', $id);
+        $data = parent::_get($url);
+        return $data['Application'];
+    }
+
+    public function createApplication($application) {
+        $url = sprintf('%s/%s', $this->account_id, 'applications');
+        $data = parent::post($url, 'Application', $application);
+        return $data['Application'];
+    }
+
+    public function updateApplication($id, $application) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'applications', $id);
+        $data = parent::put($url, 'Application', $application);
+        return $data['Application'];
+    }
+
+    public function deleteApplication($id) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'applications', $id);
+        $data = parent::_delete($url);
+    }
+
+    public function getApplicationSippeers($id) {
+        $url = sprintf('%s/%s/%s/%s', $this->account_id, 'applications', $id, 'associatedsippeers');
+        $data = parent::_get($url);
+        return $data['AssociatedSipPeers']['AssociatedSipPeer'];
+    }
 }
