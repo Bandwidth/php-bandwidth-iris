@@ -1020,3 +1020,56 @@ $response = $account->getAlternateEndUserInformation();
 ```php
 $response = $account->getAlternateCallerInformation("id");
 ```
+
+## Application Management
+
+### Get Applications
+
+```php
+$response = $account->getApplications();
+print_r($response);
+```
+
+### Get Application
+
+```php
+$response = $account->getApplication("id");
+print_r($response);
+```
+
+### Create Application
+
+```php
+$data = array(
+    'ServiceType' => 'Messaging-V2',
+    'AppName' => 'sample',
+    'MsgCallbackUrl' => 'https://test.com'
+);
+$response = $account->createApplication($data);
+print_r($response);
+```
+
+### Update Application
+
+```php
+$data = array(
+    'ServiceType' => 'Messaging-V2',
+    'AppName' => 'sample',
+    'MsgCallbackUrl' => 'https://test2.com'
+);
+$response = $account->updateApplication("id", $data);
+print_r($response);
+```
+
+### Delete Application
+
+```php
+$account->deleteApplication("id");
+```
+
+### Get Application SipPeers
+
+```php
+$response = $account->getApplicationSippeers("id");
+print_r($response);
+```
