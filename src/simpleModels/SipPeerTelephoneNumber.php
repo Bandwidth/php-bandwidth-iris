@@ -10,7 +10,8 @@ class SipPeerTelephoneNumber {
         "CallForward" => array("type" => "string"),
         "NumberFormat" => array("type" => "string"),
         "RPIDFormat" => array("type" => "string"),
-        "RewriteUser" => array("type" => "string")
+        "RewriteUser" => array("type" => "string"),
+        "MessagingSettings" => array("type" => "\Iris\MessageSettings")
     );
 
     public function __construct($data) {
