@@ -104,7 +104,7 @@ class Portout extends RestEntry {
         "Triggered" => array("type" => "string"),
         "BillingType" => array("type" => "string"),
         "PortOutStatus" =>  array("type" => "string"),
-        "ActualFocDate" =>  array("type" => "string")
+        "ActualFocDate" =>  array("type" => "string"),
         "SPID" =>  array("type" => "string")
     );
 
