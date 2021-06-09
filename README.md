@@ -24,6 +24,8 @@ PHP Client library for Bandwidth's Phone Number Dashboard (AKA: Dashboard, Iris)
 | 3.0.0 | Updated to guzzle 7. This version no longer supports verisons of PHP less than 7.2. Older versions of this package will still work on PHP versions less than 7.2 |
 | 3.1.0 | Added application management |
 | 3.2.0 | Update SipPeerTelephoneNumber to enable/disabe SMS |
+| 3.3.0 | Added PortOutStatus, ActualFocDate, and SPID to the portout model |
+| 3.3.1 | Updated the portins update method to clear the ActualFocDate field |
 
 ## Supported PHP Versions
 
