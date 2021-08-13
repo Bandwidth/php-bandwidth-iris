@@ -250,4 +250,288 @@ class Account extends RestEntry {
     public function get_rest_client() {
       return $this->client;
     }
+
+    public function getImportTnOrders($filters = array()) {
+        $url = sprintf('%s/%s', $this->account_id, 'importTnOrders');
+        $response = parent::_get($url, $filters);
+        return new ImportTnOrderResponse($response);
+    }
+
+    public function createImportTnOrder(ImportTnOrder $order) {
+        $url = sprintf('%s/%s', $this->account_id, 'importTnOrders');
+        $data = parent::post($url, 'ImportTnOrder', $order->to_array());
+        return new ImportTnOrderResponse($data);
+    }
+
+    public function getImportTnOrder($id) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'importTnOrders', $id);
+        $response = parent::_get($url);
+        return new ImportTnOrder($response);
+    }
+
+    public function getImportTnOrderHistory($id) {
+        $url = sprintf('%s/%s/%s/%s', $this->account_id, 'importTnOrders', $id, 'history');
+        $response = parent::_get($url);
+        return new OrderHistoryResponse($response);
+    }
+
+    public function getImportTnOrderLoas($order_id) {
+        $url = sprintf('%s/%s/%s/%s', $this->account_id, 'importtnorders', $order_id, 'loas');
+        $response = parent::_get($url);
+        return new FileListResponse($response);
+    }
+
+    public function uploadImportTnOrderLoaFile($order_id, $file_contents, $mime_type) {
+        $url = sprintf('%s/%s/%s/%s', $this->account_id, 'importtnorders', $order_id, 'loas');
+        parent::raw_file_post($url, $file_contents, array("Content-Type" => $mime_type));
+    }
+
+    public function downloadImportTnOrderLoaFile($order_id, $file_id) {
+        $url = sprintf('accounts/%s/%s/%s/%s/%s', $this->account_id, 'importtnorders', $order_id, 'loas', $file_id);
+        //using the request function directly in order to set $parse=false
+        $response = $this->client->request('get', $url, $options=[], $parse=false)->getBody()->getContents();
+        return $response;
+    }
+
+    public function replaceImportTnOrderLoaFile($order_id, $file_id, $file_contents, $mime_type) {
+        $url = sprintf('%s/%s/%s/%s/%s', $this->account_id, 'importtnorders', $order_id, 'loas', $file_id);
+        parent::raw_file_put($url, $file_contents, array("Content-Type" => $mime_type));
+    }
+
+    public function deleteImportTnOrderLoaFile($order_id, $file_id) {
+        $url = sprintf('%s/%s/%s/%s/%s', $this->account_id, 'importtnorders', $order_id, 'loas', $file_id);
+        parent::_delete($url);
+    }
+
+    public function getImportTnOrderLoaFileMetadata($order_id, $file_id) {
+        $url = sprintf('%s/%s/%s/%s/%s/%s', $this->account_id, 'importtnorders', $order_id, 'loas', $file_id, 'metadata');
+        $response = parent::_get($url);
+        return new FileMetaData($response);
+    }
+
+    public function updateImportTnOrderLoaFileMetadata($order_id, $file_id, FileMetaData $file_metadata) {
+        $url = sprintf('%s/%s/%s/%s/%s/%s', $this->account_id, 'importtnorders', $order_id, 'loas', $file_id, 'metadata');
+        parent::put($url, 'FileMetaData', $file_metadata->to_array());
+    }
+
+    public function deleteImportTnOrderLoaFileMetadata($order_id, $file_id) {
+        $url = sprintf('%s/%s/%s/%s/%s/%s', $this->account_id, 'importtnorders', $order_id, 'loas', $file_id, 'metadata');
+        parent::_delete($url);
+    }
+
+    public function checkTnsPortability($tns) {
+        $url = sprintf('%s/%s', $this->account_id, 'importTnChecker');
+        $payload = new ImportTnCheckerPayload(array(
+            "TelephoneNumbers" => array(
+                "TelephoneNumber" => $tns
+        )));
+        $data = parent::post($url, 'ImportTnCheckerPayload', $payload->to_array());
+        return new ImportTnCheckerResponse($data);
+    }
+
+    public function getInserviceNumbers($filters = array()) {
+        $url = sprintf('%s/%s', $this->account_id, 'inserviceNumbers');
+        $response = parent::_get($url, $filters);
+        return new InserviceTns($response);
+    }
+
+    public function checkInserviceNumber($tn) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'inserviceNumbers', $tn);
+        $response = parent::_get($url);
+        return $response;
+    }
+
+    public function getRemoveImportedTnOrders($filters = array()) {
+        $url = sprintf('%s/%s', $this->account_id, 'removeImportedTnOrders');
+        $response = parent::_get($url, $filters);
+        return new RemoveImportedTnOrderSummaryResponse($response);
+    }
+
+    public function createRemoveImportedTnOrder(RemoveImportedTnOrder $order) {
+        $url = sprintf('%s/%s', $this->account_id, 'removeImportedTnOrders');
+        $data = parent::post($url, 'RemoveImportedTnOrder', $order->to_array());
+        return new RemoveImportedTnOrderResponse($data);
+    }
+
+    public function getRemoveImportedTnOrder($id) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'removeImportedTnOrders', $id);
+        $response = parent::_get($url);
+        return new RemoveImportedTnOrder($response);
+    }
+
+    public function getRemoveImportedTnOrderHistory($id) {
+        $url = sprintf('%s/%s/%s/%s', $this->account_id, 'removeImportedTnOrders', $id, 'history');
+        $response = parent::_get($url);
+        return new OrderHistoryResponse($response);
+    }
+
+    public function createCsrOrder(Csr $order) {
+        $url = sprintf('%s/%s', $this->account_id, 'csrs');
+        $data = parent::post($url, 'Csr', $order->to_array());
+        return new CsrResponse($data);  
+    }
+
+    public function getCsrOrder($id) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'csrs', $id);
+        $response = parent::_get($url);
+        return new CsrResponse($response);
+    }
+
+    public function replaceCsrOrder($id, Csr $order) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'csrs', $id);
+        $response = parent::put($url, 'Csr', $order->to_array());
+        return new CsrResponse($response);
+    }
+
+    public function getCsrOrderNotes($id) {
+        $url = sprintf('%s/%s/%s/%s', $this->account_id, 'csrs', $id, 'notes');
+        $response = parent::_get($url);
+        return new CsrNotesList($response);
+    }
+
+    public function addNoteToCsr($id, CsrNote $note) {
+        $url = sprintf('%s/%s/%s/%s', $this->account_id, 'csrs', $id, 'notes');
+        $data = parent::post($url, 'Note', $note->to_array());
+        return $data;
+    }
+
+    public function updateCsrOrderNote($orderId, $noteId, CsrNote $note) {
+        $url = sprintf('%s/%s/%s/%s/%s', $this->account_id, 'csrs', $orderId, 'notes', $noteId);
+        $data = parent::put($url, 'Note', $note->to_array());
+        return $data;
+    }
+
+    public function getAlternateEndUserInformation($filters = array()) {
+        $url = sprintf('%s/%s', $this->account_id, 'aeuis');
+        $data = parent::_get($url, $filters);
+        return $data;
+    }
+
+    public function getAlternateCallerInformation($acid) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'aeuis', $acid);
+        $data = parent::_get($url);
+        return $data['AlternateEndUserIdentifier'];
+    }
+
+    public function createEmergencyNotificationEndpointOrder($order) {
+        $url = sprintf('%s/%s', $this->account_id, 'emergencyNotificationEndpointOrders');
+        $data = parent::post($url, 'EmergencyNotificationEndpointOrder', $order);
+        return $data['EmergencyNotificationEndpointOrder'];
+    }
+
+    public function getEmergencyNotificationEndpointOrders($filters = array()) {
+        $url = sprintf('%s/%s', $this->account_id, 'emergencyNotificationEndpointOrders');
+        $data = parent::_get($url, $filters);
+        return $data;
+    }
+
+    public function getEmergencyNotificationEndpointOrder($id) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'emergencyNotificationEndpointOrders', $id);
+        $data = parent::_get($url);
+        return $data['EmergencyNotificationEndpointOrder'];
+    }
+
+    public function createEmergencyNotificationGroupOrder($order) {
+        $url = sprintf('%s/%s', $this->account_id, 'emergencyNotificationGroupOrders');
+        $data = parent::post($url, 'EmergencyNotificationGroupOrder', $order);
+        return $data['EmergencyNotificationGroup'];
+    }
+
+    public function getEmergencyNotificationGroupOrders($filters = array()) {
+        $url = sprintf('%s/%s', $this->account_id, 'emergencyNotificationGroupOrders');
+        $data = parent::_get($url, $filters);
+        return $data;
+    }
+
+    public function getEmergencyNotificationGroupOrder($id) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'emergencyNotificationGroupOrders', $id);
+        $data = parent::_get($url);
+        return $data['EmergencyNotificationGroup'];
+    }
+
+    public function getEmergencyNotificationGroups($filters = array()) {
+        $url = sprintf('%s/%s', $this->account_id, 'emergencyNotificationGroups');
+        $data = parent::_get($url, $filters);
+        return $data;
+    }
+
+    public function getEmergencyNotificationGroup($id) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'emergencyNotificationGroups', $id);
+        $data = parent::_get($url);
+        return $data['EmergencyNotificationGroup'];
+    }
+
+    public function createEmergencyNotificationRecipient($recipient) {
+        $url = sprintf('%s/%s', $this->account_id, 'emergencyNotificationRecipients');
+        $data = parent::post($url, 'EmergencyNotificationRecipient', $recipient);
+        return $data['EmergencyNotificationRecipient'];
+    }
+
+    public function getEmergencyNotificationRecipients($filters = array()) {
+        $url = sprintf('%s/%s', $this->account_id, 'emergencyNotificationRecipients');
+        $data = parent::_get($url, $filters);
+        return $data;
+    }
+
+    public function getEmergencyNotificationRecipient($id) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'emergencyNotificationRecipients', $id);
+        $data = parent::_get($url);
+        return $data['EmergencyNotificationRecipient'];
+    }
+
+    public function replaceEmergencyNotificationRecipient($id, $recipient) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'emergencyNotificationRecipients', $id);
+        $data = parent::put($url, 'EmergencyNotificationRecipient', $recipient);
+        return $data['EmergencyNotificationRecipient'];
+    }
+
+    public function deleteEmergencyNotificationRecipient($id) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'emergencyNotificationRecipients', $id);
+        parent::_delete($url);
+    }
+    
+    public function getApplications() {
+        $url = sprintf('%s/%s', $this->account_id, 'applications');
+        $data = parent::_get($url);
+        $response = $data['ApplicationList']['Application'];
+        if (array_values($response) == $response) {
+            return $response;
+        } else {
+            return [$response];
+        }
+    }
+    
+    public function getApplication($id) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'applications', $id);
+        $data = parent::_get($url);
+        return $data['Application'];
+    }
+
+    public function createApplication($application) {
+        $url = sprintf('%s/%s', $this->account_id, 'applications');
+        $data = parent::post($url, 'Application', $application);
+        return $data['Application'];
+    }
+
+    public function updateApplication($id, $application) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'applications', $id);
+        $data = parent::put($url, 'Application', $application);
+        return $data['Application'];
+    }
+
+    public function deleteApplication($id) {
+        $url = sprintf('%s/%s/%s', $this->account_id, 'applications', $id);
+        $data = parent::_delete($url);
+    }
+
+    public function getApplicationSippeers($id) {
+        $url = sprintf('%s/%s/%s/%s', $this->account_id, 'applications', $id, 'associatedsippeers');
+        $data = parent::_get($url);
+        $response = $data['AssociatedSipPeers']['AssociatedSipPeer'];
+        if (array_values($response) == $response) {
+            return $response;
+        } else {
+            return [$response];
+        }
+    }
 }

@@ -11,7 +11,8 @@ class Subscriber {
         "ServiceAddress" => array("type" => "\Iris\ServiceAddress"),
         "FirstName" => array("type" => "string"),
         "LastName" => array("type" => "string"),
-        "MiddleInitial" => array("type" => "string")
+        "MiddleInitial" => array("type" => "string"),
+        "Name" => array("type" => "string")
     );
 
     public function __construct($data) {

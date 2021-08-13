@@ -102,7 +102,10 @@ class Portout extends RestEntry {
         "ListOfPhoneNumbers" => array("type" => "\Iris\Phones"),
         "SiteId" => array("type" => "string"),
         "Triggered" => array("type" => "string"),
-        "BillingType" => array("type" => "string")
+        "BillingType" => array("type" => "string"),
+        "PortOutStatus" =>  array("type" => "string"),
+        "ActualFocDate" =>  array("type" => "string"),
+        "SPID" =>  array("type" => "string")
     );
 
     public function __construct($parent, $data) {

@@ -77,6 +77,7 @@ final class TnOption extends RestEntry{
         "CreatedByUser" => array("type" => "string"),
         "ErrorList" => array("type" => "\Iris\ErrorList"),
         "TnOptionGroups" => array("type" => "\Iris\TnOptionGroups"),
+        "PortOutPasscode" => array("type" => "string")
     );
 
 
