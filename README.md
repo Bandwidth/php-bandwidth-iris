@@ -26,6 +26,7 @@ PHP Client library for Bandwidth's Phone Number Dashboard (AKA: Dashboard, Iris)
 | 3.2.0 | Update SipPeerTelephoneNumber to enable/disabe SMS |
 | 3.3.0 | Added PortOutStatus, ActualFocDate, and SPID to the portout model |
 | 3.3.1 | Updated the portins update method to clear the ActualFocDate field |
+| 3.3.2 | Updated the portins set_activation_status method use a PUT method |
 
 ## Supported PHP Versions
 
