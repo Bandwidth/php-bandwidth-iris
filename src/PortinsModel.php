@@ -193,7 +193,7 @@ class Portin extends RestEntry {
     public function set_activation_status($data) {
         $obj = new \Iris\ActivationStatus($data);
         $url = sprintf('%s/%s', $this->get_id(), 'activationStatus');
-        $res = parent::post($url, "ActivationStatus", $obj->to_array());
+        $res = parent::put($url, "ActivationStatus", $obj->to_array());
         return new ActivationStatus($res['ActivationStatus']);
     }
 
