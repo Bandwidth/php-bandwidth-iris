@@ -5,3 +5,4 @@ config.php
 /bin
 composer.lock
 .idea/
+.DS_Store

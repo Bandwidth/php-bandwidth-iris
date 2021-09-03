@@ -76,7 +76,6 @@ class Disconnect extends RestEntry {
         "name" => [ "type" => "string" ],
         "CustomerOrderId" => [ "type" => "string" ],
         "DisconnectTelephoneNumberOrderType" => [ "type" => "\Iris\TelephoneNumberList" ],
-        "OrderStatus" => [ "type" => "string" ],
         "OrderCreateDate" => [ "type" => "string" ],
 
     );
