@@ -24,10 +24,11 @@ class SubscriptionsNew extends \PHPUnit\Framework\TestCase {
                     "Username" => "username",
                     "Password" => "password"
                 ]
-            ]
+            ],
+            "PublicKey" => "testkey"
         ], false);
 
-        $json = '{"OrderType":"portins","OrderId":"98939562-90b0-40e9-8335-5526432d9741","EmailSubscription":{"Email":"test@test.com","DigestRequested":"DAILY"},"CallbackCredentials":{"BasicAuthentication":{"Username":"username","Password":"password"}}}';
+        $json = '{"OrderType":"portins","OrderId":"98939562-90b0-40e9-8335-5526432d9741","EmailSubscription":{"Email":"test@test.com","DigestRequested":"DAILY"},"CallbackCredentials":{"BasicAuthentication":{"Username":"username","Password":"password"}},"PublicKey":"testkey"}';
 		$this->assertEquals($json, json_encode($subscription->to_array()));
 
     }
