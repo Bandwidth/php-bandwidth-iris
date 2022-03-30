@@ -1,8 +1,4 @@
 <?php
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Middleware;
 
 class SubscriptionsNew extends \PHPUnit\Framework\TestCase {
     public static $container;
