@@ -18,7 +18,7 @@ class DldaTnGroup {
 
     protected $fields = array(
         "TelephoneNumbers" => array("type" => "\Iris\Phones"),
-        "AccountType" => array("type" => "string"),
+        "SubscriberType" => array("type" => "string"),
         "ListingType" => array("type" => "string"),
         "ListAddress" => array("type" => "string"),
         "ListingName" => array("type" => "\Iris\ListingName"),
