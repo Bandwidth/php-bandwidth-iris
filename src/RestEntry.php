@@ -13,7 +13,7 @@ abstract class RestEntry{
     {
         if (!$client)
         {
-            $this->client = new GuzzleClient(\Iris\Config::REST_LOGIN, \Iris\Config::REST_PASS, Array('url' => \Iris\Config::REST_URL));
+            $this->client = new Client(\Iris\Config::REST_LOGIN, \Iris\Config::REST_PASS, Array('url' => \Iris\Config::REST_URL));
         }
         else
         {
