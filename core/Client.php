@@ -124,6 +124,12 @@ abstract class iClient
 
 final class Client extends iClient
 {
+
+    /**
+     * Store the last response body string 
+     */
+    protected $lastResponseBody = null;
+
     public function __construct($login, $password, $options = [])
     {
         if (empty($login) || empty($password))
@@ -132,7 +138,7 @@ final class Client extends iClient
         }
 
         $options['auth'] = [$login, $password];
-        $options['base_uri'] = $options['url'] ?: 'https://api.inetwork.com/v1.0';
+        $options['base_uri'] = $options['url'] ?: 'https://dashboard.bandwidth.com/api';
         unset($options['url']);
         $options['base_uri'] = rtrim($options['base_uri'], '/') . '/';
 
@@ -140,6 +146,10 @@ final class Client extends iClient
         if(isset($options['handler'])) {
             $client_options['handler'] = $options['handler'];
         }
+
+        $options['headers'] = array(
+            'User-Agent' => 'PHP-Bandwidth-Iris'
+        );
 
         $this->client = new \GuzzleHttp\Client($options);
     }
@@ -226,11 +236,12 @@ final class Client extends iClient
         ];
         $response = $this->request('post', $url, $options, false);
 
-        if (!isset($response['Location']))
+        if ($response->hasHeader('Location'))
         {
-            return '';
+            $header = $response->getHeader('Location');
+            return reset($header);
         }
-        return $response['Location'];
+        return '';
     }
 
     /**
@@ -270,6 +281,7 @@ final class Client extends iClient
      */
     public function request($method, $url, $options = [], $parse = true)
     {
+        $this->lastResponseBody = null;
         try
         {
             $response = $this->client->request($method, ltrim($url, '/'), $options);
@@ -283,6 +295,14 @@ final class Client extends iClient
         {
             $this->parseExceptionResponse($e);
         }
+    }
+
+    /**
+     * Returns the XML string received in the last response.
+     * @return string $lastResponseBody
+     */
+    public function getLastResponseBody() {
+        return $this->lastResponseBody;
     }
 
     /**
@@ -335,6 +355,7 @@ final class Client extends iClient
         }
 
         $responseBody = (string) $response->getBody();
+        $this->lastResponseBody = $responseBody;
 
         if (!$responseBody)
         {
@@ -387,6 +408,17 @@ final class Client extends iClient
             throw new ResponseException(
                 (string) $doc->Error->Description,
                 (int) $doc->Error->Code
+            );
+        }
+
+        if (isset($doc) &&
+            isset($doc->Errors) &&
+            isset($doc->Errors->Description) &&
+            isset($doc->Errors->Code))
+        {
+            throw new ResponseException(
+                (string) $doc->Errors->Description,
+                (int) $doc->Errors->Code
             );
         }
 

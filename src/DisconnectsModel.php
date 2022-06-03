@@ -40,7 +40,7 @@ class Disconnects extends RestEntry{
 
     /**
      * Create new disconnect
-     * @param type $data
+     * @param array $data
      * @return \Iris\Disconnect
      */
     public function create($data, $save = true) {
@@ -76,7 +76,6 @@ class Disconnect extends RestEntry {
         "name" => [ "type" => "string" ],
         "CustomerOrderId" => [ "type" => "string" ],
         "DisconnectTelephoneNumberOrderType" => [ "type" => "\Iris\TelephoneNumberList" ],
-        "OrderStatus" => [ "type" => "string" ],
         "OrderCreateDate" => [ "type" => "string" ],
 
     );
@@ -84,7 +83,7 @@ class Disconnect extends RestEntry {
     /**
      * Constructor
      * @param type $parent
-     * @param type $data
+     * @param array $data
      */
     public function __construct($parent, $data)
     {

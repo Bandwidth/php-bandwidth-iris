@@ -10,6 +10,7 @@ class ServiceAddress {
         "HouseNumber" => array("type" => "string", "required" => true),
         "StreetName" => array("type" => "string", "required" => true),
         "StateCode" => array("type" => "string", "required" => true),
+        "State" => array("type" => "string"),
         "Zip" => array("type" => "string"),
         "Country" => array("type" => "string"),
         "County" =>  array("type" => "string"),
@@ -21,6 +22,7 @@ class ServiceAddress {
         "AddressLine2" => array("type" => "string"),
         "PlusFour" => array("type" => "string"),
         "AddressType" => array("type" => "string"),
+        "UnparsedAddress" => array("type" => "string")
     );
 
     public function __construct($data) {

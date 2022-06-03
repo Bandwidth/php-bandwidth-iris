@@ -12,15 +12,30 @@ PHP Client library for Bandwidth's Phone Number Dashboard (AKA: Dashboard, Iris)
 | 2.0.3 | Fixed HTTP request for `set_tn_options` to the correct XML object |
 | 2.0.4 | Added `localVanity` to `availableNumbers` |
 | 2.0.5 | Added `NewBillingTelephoneNumber` to `Portins` model |
+| 2.0.6 | Build `ReportsModel` functionality |
+| 2.0.7 | Fixed error handling for Errors fields |
+| 2.0.8 | Fixed rate center check |
+| 2.1.0 | Added `importTnOrders`, `removeImportedTnOrders`, `inserviceNumbers`, and `importTnChecker` endpoints |
+| 2.2.0 | Added `csrs` endpoints |
+| 2.3.0 | Added `loas` endpoints for ImportTnOrders |
+| 2.4.0 | Added Emergency Calling Notification, Emergeny Notification Group, Emergency Notification Endpoint, and Alternate End User Identity methods |
+| 2.5.0 | Added `PortOutPasscode` for TnOption orders |
+| 2.5.1 | Fixed grabbing of response header for file uploads |
+| 3.0.0 | Updated to guzzle 7. This version no longer supports verisons of PHP less than 7.2. Older versions of this package will still work on PHP versions less than 7.2 |
+| 3.1.0 | Added application management |
+| 3.2.0 | Update SipPeerTelephoneNumber to enable/disabe SMS |
+| 3.3.0 | Added PortOutStatus, ActualFocDate, and SPID to the portout model |
+| 3.3.1 | Updated the portins update method to clear the ActualFocDate field |
+| 3.3.2 | Updated the portins set_activation_status method use a PUT method |
 
 ## Supported PHP Versions
 
 | Version                        | Support Level            |
 |:-------------------------------|:-------------------------|
-| 5.5 | Supported |
-| 5.6 | Supported |
-| 7.0 | Supported |
-| 7.1 | Supported |
+| 5.5 | Unsupported |
+| 5.6 | Unsupported |
+| 7.0 | Unsupported |
+| 7.1 | Unsupported |
 | 7.2 | Supported |
 | 7.3 | Supported |
 
@@ -42,8 +57,8 @@ $client = new \Iris\Client($login, $password, ['url' => 'https://dashboard.bandw
 ## Run tests
 
 ```bash
-$ composer install
-$ php ./bin/phpunit --bootstrap ./vendor/autoload.php tests/
+composer install
+php ./bin/phpunit --bootstrap ./vendor/autoload.php tests/
 ```
 =======
 ## Examples
@@ -127,7 +142,7 @@ $disconnect = $account->disconnects()->create([
             "TelephoneNumber" => [ "9192755378", "9192755703" ]
         ]
     ]
-]]);
+]);
 ```
 
 ### Get Disconnect
@@ -358,6 +373,14 @@ $portin->set_metadata('test.txt', $meta_new);
 $portin->delete_metadata('test.txt');
 ```
 
+#### PortIn File Management: Grab filename
+```PHP
+$response = $portin->loas_send('./hello.txt', array("Content-Type" => "text/plain"));
+$tmp = explode("/", $response);
+$id = end($tmp);
+print_r($id);
+```
+
 ## Rate Centers
 ### List Ratecenters
 ```PHP
@@ -578,4 +601,480 @@ $zipStream = $billingReport->file();
 ```PHP
 $outFile = '/tmp/report.zip';
 $billingReport->file(['stream' => true, 'sink' => $outFile]);
+```
+
+## TN Options
+
+### Get TN Option Orders
+```PHP
+$tnoptions = $account->tnoptions();
+$response = $tnoptions->getList();
+print_r($response[0]->OrderId);
+```
+
+### GET TN Option Order
+```PHP
+$tnoptions = $account->tnoptions();
+$response = $tnoptions->tnoption("order_id");
+print_r($response->OrderCreateDate);
+```
+
+### Get TN Option Order (error)
+```PHP
+$tnoptions = $account->tnoptions();
+$response = $tnoptions->tnoption("error_order_id");
+print_r($response->ErrorList->Error->Description); //note: Error could be an array or a single object
+//depending on how many errors are returned
+```
+
+### Create Portout Passcode
+```PHP
+$tnoptions = $account->tnoptions();
+$data = array(
+    "TnOptionGroups" => array(
+        "TnOptionGroup" => array(
+            "PortOutPasscode" => "12abd38",
+            "TelephoneNumbers" => array(
+                "TelephoneNumber" => "2018551020"
+            )
+        ),
+    )
+);
+$response = $tnoptions->create($data);
+print_r($response->OrderCreateDate);
+```
+
+### Create Call Forward Number
+```PHP
+$tnoptions = $account->tnoptions();
+$data = array(
+    "TnOptionGroups" => array(
+        "TnOptionGroup" => array(
+            "CallForward" => "2018551022",
+            "TelephoneNumbers" => array(
+                "TelephoneNumber" => "2018551020"
+            )
+        ),
+    )
+);
+$response = $tnoptions->create($data);
+print_r($response->OrderCreateDate);
+```
+
+### Enable SMS
+```PHP
+$tnoptions = $account->tnoptions();
+$data = array(
+    "TnOptionGroups" => array(
+        "TnOptionGroup" => array(
+            "Sms" => "on",
+            "TelephoneNumbers" => array(
+                "TelephoneNumber" => "2018551020"
+            )
+        ),
+    )
+);
+$response = $tnoptions->create($data);
+print_r($response->OrderCreateDate);
+```
+
+## Hosted Messaging Functions
+
+### Get Import TN Orders
+```PHP
+$resp = $account->getImportTnOrders(array(
+    "createdDateFrom" => "2013-10-22T00:00:00.000Z",
+    "createdDateTo" => "2013-10-25T00:00:00.000Z"
+));
+
+print_r($resp->ImportTnOrderSummary[0]->OrderId);
+```
+
+### Create Import TN Order
+```PHP
+$importTnOrder = new \Iris\ImportTnOrder(array(
+    "CustomerOrderId" => "id",
+    "TelephoneNumbers" => array(
+        "TelephoneNumber" => array("5554443333")
+    ),
+    "SiteId" => "12345",
+    "Subscriber" => array(
+        "Name" => "Company INC",
+        "ServiceAddress" => array(
+            "HouseNumber" => "1",
+            "StreetName" => "Street",
+            "City" => "City",
+            "StateCode" => "XY",
+            "Zip" => "54345",
+            "County" => "County"
+        )
+    ),
+    "LoaAuthorizingPerson" => "Test Person"
+));
+
+print_r($account->createImportTnOrder($importTnOrder)->ImportTnOrder->OrderId);
+```
+
+### Get Import TN Order By ID
+```PHP
+print_r($account->getImportTnOrder("some_id_value")->ProcessingStatus);
+```
+
+### Get Import TN Order History
+```PHP
+print_r($account->getImportTnOrderHistory("some_id_value")->OrderHistory[0]->Status);
+```
+
+### Get Import TN Order LOAs
+```PHP
+$response = $account->getImportTnOrderLoas("order_id");
+print_r($response->resultMessage);
+echo "\n";
+print_r($response->fileNames); //this can be a single string (if there's 1 file) or an array of strings (if there's multiple files)
+```
+
+### Upload LOA file for an Import TN Order
+Valid `mime_types` can be found on the [Dashboard API Reference](https://dev.bandwidth.com/numbers/apiReference.html) under `/accounts /{accountId} /importTnOrders /{orderid} /loas`
+
+Mime types are expected to be in the format `x/y`, such as `application/pdf` or `text/plain`
+
+```PHP
+$account->uploadImportTnOrderLoaFile("order_id", "binary_file_contents", "mime_type");
+```
+
+```PHP
+$filename = "loa.pdf";
+$file = fopen($filename, "rb") or die("Unable to open file");
+$file_contents = fread($file, filesize($filename));
+$account->uploadImportTnOrderLoaFile("order_id", $file_contents, "application/pdf");
+fclose($file);
+```
+
+### Download LOA file for an Import TN Order (bonked. come back to this)
+Note: Make sure to grab the desired file ID from the response of `$account->getImportTnOrderLoas($order_id)` in the field `$response->fileNames`
+
+```PHP
+$response = $account->downloadImportTnOrderLoaFile("order_id", "file_id");
+$file = fopen("write.pdf", "wb") or die("Unable to open file");
+fwrite($file, $response);
+fclose($file);
+```
+
+### Replace LOA file for an Import TN Order
+```PHP
+$account->replaceImportTnOrderLoaFile("order_id", "file_id", "binary_file_contents", "mime_type");
+```
+
+### Delete LOA file for an Import TN Order
+```PHP
+$account->deleteImportTnOrderLoaFile("order_id", "file_id");
+```
+
+### Get LOA file metadata for an Import TN Order
+```PHP
+$response = $account->getImportTnOrderLoaFileMetadata("order_id", "file_id");
+print_r($response->DocumentName);
+echo "\n";
+print_r($response->DocumentType);
+
+```
+
+### Update LOA file metadata for an Import TN Order
+```PHP
+$file_metadata = new \Iris\FileMetaData(array(
+    "DocumentName" => "Updated",
+    "DocumentType" => "LOA"
+));
+$account->updateImportTnOrderLoaFileMetadata("order_id", "file_id", $file_metadata);
+```
+
+### Delete LOA file metadata for an Import TN Order
+```PHP
+$account->deleteImportTnOrderLoaFileMetadata("order_id", "file_id");
+```
+
+### Check TNs Portability
+```PHP
+print_r($account->checkTnsPortability(array("5554443333", "5553334444"))->ImportTnCheckerPayload);
+```
+
+### Get In Service Numbers
+```PHP
+print_r($account->getInserviceNumbers(array("areacode" => "919"))->TelephoneNumbers->Count);
+```
+
+### Check In Service Number
+```PHP
+print_r($account->checkInserviceNumber("5554443333"));
+```
+
+### Get Remove Imported TN Orders
+```PHP
+$resp = $account->getRemoveImportedTnOrders(array(
+    "createdDateFrom" => "2013-10-22T00:00:00.000Z",
+    "createdDateTo" => "2013-10-25T00:00:00.000Z"
+));
+
+print_r($resp->RemoveImportedTnOrderSummary[0]->OrderStatus);
+```
+
+### Create A Remove Imported TN Order
+```PHP
+$removeImportedTnOrder = new \Iris\RemoveImportedTnOrder(array(
+    "CustomerOrderId" => "custom string",
+    "TelephoneNumbers" => array(
+        "TelephoneNumber" => array("5554443333", "5553332222")
+    )
+));
+
+print_r($account->createRemoveImportedTnOrder($removeImportedTnOrder)->Location);
+```
+
+### Get Removed Imported TN Order
+```PHP
+print_r($account->getRemoveImportedTnOrder("some_id_value")->ProcessingStatus);
+```
+
+### Get Removed Imported TN Order History
+```PHP
+print_r($account->getRemoveImportedTnOrderHistory("some_id_value")->OrderHistory[0]->Status);
+```
+
+## CSR
+
+### Create CSR Order
+
+```PHP
+$csrOrder = new \Iris\Csr(array(
+    "CustomerOrderId" => "order id",
+    "WorkingOrBillingTelephoneNumber" => "5554443333"
+));
+
+$response = $account->createCsrOrder($csrOrder);
+print_r($response->OrderId);
+```
+
+### Replace CSR Order
+
+```PHP
+$csrOrder = new \Iris\Csr(array(
+    "CustomerOrderId" => "order id",
+    "WorkingOrBillingTelephoneNumber" => "5554443333"
+));
+
+$response = $account->replaceCsrOrder("order_id", $csrOrder);
+print_r($response->OrderId);
+```
+
+### Get CSR Order
+
+```PHP
+$response = $account->getCsrOrder("order_id");
+print_r($response->OrderId);
+```
+
+### Get CSR Order Notes
+
+```PHP
+$response = $account->getCsrOrderNotes("order_id");
+print_r($response->Note[0]->Description);
+```
+
+### Add CSR Order Note
+
+```PHP
+$note = new \Iris\CsrNote(array(
+    "UserId" => "id",
+    "Description" => "description"
+));
+
+$account->addNoteToCsr("order_id", $note);
+```
+
+### Update CSR Order Note
+
+```PHP
+$note = new \Iris\CsrNote(array(
+    "UserId" => "id",
+    "Description" => "description"
+));
+
+$account->updateCsrOrderNote("order_id", "note_id", $note);
+```
+
+## Emergency Notification Recipients
+
+### Create Emergency Notification Recipient
+
+```php
+$data = array(
+  "Description" => "Email to Bldg. 3 Front Desk",
+  "Type" => "EMAIL",
+  "EmailAddress" => "foo@bar.com"
+);
+$response = $account->createEmergencyNotificationRecipient($data);
+```
+
+### Get Emergency Notification Recipients
+
+```php
+$response = $account->getEmergencyNotificationRecipients();
+```
+
+### Get Emergency Notification Recipient
+
+```php
+$response = $account->getEmergencyNotificationRecipient("id");
+```
+
+### Replace Emergency Notification Recipient
+
+```php
+$data = array(
+  "Description" => "Email to Bldg. 3 Front Desk",
+  "Type" => "EMAIL",
+  "EmailAddress" => "foo@bar.com"
+);
+$response = $account->replaceEmergencyNotificationRecipient("id", $data);
+```
+
+### Delete Emergency Notification Recipient
+
+```php
+$account->deleteEmergencyNotificationRecipient("id");
+```
+
+## Emergeny Notification Group
+
+### Create Emergency Notification Group Order
+
+```php
+$data = array(
+  "CustomerOrderId" => "value",
+  "AddedEmergenyNotificationGroup" => array(
+    "EmergencyNotificationRecipient" => array(
+      "Identifier" => "123"
+    )
+  )
+);
+$response = $account->createEmergencyNotificationGroupOrder($data);
+```
+
+### Get Emergency Notification Group Orders
+
+```php
+$response = $account->getEmergencyNotificationGroupOrders();
+```
+
+### Get Emergency Notification Group Order
+
+```php
+$response = $account->getEmergencyNotificationGroupOrder("id");
+```
+
+### Get Emergency Notification Groups
+
+```php
+$response = $account->getEmergencyNotificationGroups();
+```
+
+### Get Emergency Notification Group
+
+```php
+$response = $account->getEmergencyNotificationGroup("id");
+```
+
+## Emergency Notification Endpoint
+
+### Create Emergency Notification Endpoint Order
+
+```php
+$data = array(
+  "CustomerOrderId" => "123",
+  "EmergencyNotificationEndpointAssociations" => array(
+    "EmergenyNotificationGroup" => array(
+      "Identifier" => "456"
+    )
+  )
+);
+$response = $account->createEmergencyNotificationEndpointOrder($data);
+```
+
+### Get Emergency Notification Endpoint Orders
+
+```php
+$response = $account->getEmergencyNotificationEndpointOrders();
+```
+
+### Get Emergency Notification Endpoint Order
+
+```php
+$response = $account->getEmergencyNotificationEndpointOrder("id");
+```
+
+## Alternate End User Identiy
+
+### Get Alternate End User Information
+
+```php
+$response = $account->getAlternateEndUserInformation();
+```
+
+### Get Alternate Caller Information
+
+```php
+$response = $account->getAlternateCallerInformation("id");
+```
+
+## Application Management
+
+### Get Applications
+
+```php
+$response = $account->getApplications();
+print_r($response);
+```
+
+### Get Application
+
+```php
+$response = $account->getApplication("id");
+print_r($response);
+```
+
+### Create Application
+
+```php
+$data = array(
+    'ServiceType' => 'Messaging-V2',
+    'AppName' => 'sample',
+    'MsgCallbackUrl' => 'https://test.com'
+);
+$response = $account->createApplication($data);
+print_r($response);
+```
+
+### Update Application
+
+```php
+$data = array(
+    'ServiceType' => 'Messaging-V2',
+    'AppName' => 'sample',
+    'MsgCallbackUrl' => 'https://test2.com'
+);
+$response = $account->updateApplication("id", $data);
+print_r($response);
+```
+
+### Delete Application
+
+```php
+$account->deleteApplication("id");
+```
+
+### Get Application SipPeers
+
+```php
+$response = $account->getApplicationSippeers("id");
+print_r($response);
 ```

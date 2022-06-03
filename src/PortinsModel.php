@@ -122,8 +122,17 @@ class Portin extends RestEntry {
     }
 
     public function update() {
+        $set = isset($this->ActualFocDate);
+        if ($set) {
+            $actualFocDate = $this->ActualFocDate;
+            $this->ActualFocDate = null; //need to clear this since the API doesn't accept this value when set
+        }
         $data = parent::put($this->get_id(), "LnpOrderSupp", $this->to_array());
         $this->set_data($data);
+
+        if ($set) {
+            $this->ActualFocDate = $actualFocDate;
+        }
     }
 
     public function delete() {
@@ -184,7 +193,7 @@ class Portin extends RestEntry {
     public function set_activation_status($data) {
         $obj = new \Iris\ActivationStatus($data);
         $url = sprintf('%s/%s', $this->get_id(), 'activationStatus');
-        $res = parent::post($url, "ActivationStatus", $obj->to_array());
+        $res = parent::put($url, "ActivationStatus", $obj->to_array());
         return new ActivationStatus($res['ActivationStatus']);
     }
 
