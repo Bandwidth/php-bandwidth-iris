@@ -26,7 +26,12 @@ class TnOptionGroup {
         "Protected" => array("type" => "string"),
         "Sms" => array("type" => "string"),
         "FinalDestinationURI " => array("type" => "string"),
-        "PortOutPasscode" => array("type" => "string")
+        "PortOutPasscode" => array("type" => "string"),
+        "NNID" => array("type" => "string"),
+        "ESPID" => array("type" => "string"),
+        "A2pSettings" => array("type" => "\Iris\A2pSettings"),
+        "OriginationRoutePlan" => array("type" => "\Iris\OriginationRoutePlan"),
+        "PindropEnabled" => array("type" => "string")
     );
     public function __construct($data) {
         $this->set_data($data);
