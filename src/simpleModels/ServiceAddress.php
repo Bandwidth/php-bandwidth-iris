@@ -22,7 +22,7 @@ class ServiceAddress {
         "AddressLine2" => array("type" => "string"),
         "PlusFour" => array("type" => "string"),
         "AddressType" => array("type" => "string"),
-        "UnparsedAddress" => array("type" => "string")
+        "UnparsedAddress" => array("type" => "string") // Note that UnparsedAddress is Read-Only!
     );
 
     public function __construct($data) {
