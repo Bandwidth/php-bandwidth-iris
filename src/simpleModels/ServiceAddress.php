@@ -22,7 +22,7 @@ class ServiceAddress {
         "AddressLine2" => array("type" => "string"),
         "PlusFour" => array("type" => "string"),
         "AddressType" => array("type" => "string"),
-        // Note that UnparsedAddress is Read-Only.
+        // Note that UnparsedAddress is Read-Only. Additionally, UnparsedAddress cannot be used to automatically populate the ServiceAddress fields with the correct information.
         "UnparsedAddress" => array("type" => "string")
     );
 
