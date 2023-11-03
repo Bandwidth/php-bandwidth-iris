@@ -106,7 +106,8 @@ class Portin extends RestEntry {
         "ListOfPhoneNumbers" => array("type" => "\Iris\Phones"),
         "SiteId" => array("type" => "string"),
         "Triggered" => array("type" => "string"),
-        "BillingType" => array("type" => "string")
+        "BillingType" => array("type" => "string"),
+        "TargetRespOrgId" => array("type" => "string")
     );
 
     public function __construct($parent, $data) {
