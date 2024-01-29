@@ -68,7 +68,7 @@ class Disconnect extends RestEntry {
         "CountOfTNs" => [ "type" => "string" ],
         "userId" => [ "type" => "string" ],
         "lastModifiedDate" => [ "type" => "string" ],
-        "OrderId" => [ "type" => "string" ],
+        "orderId" => [ "type" => "string" ],
         "OrderType" => [ "type" => "string" ],
         "OrderDate" => [ "type" => "string" ],
         "OrderStatus" => [ "type" => "string" ],
