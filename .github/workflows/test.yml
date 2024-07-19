@@ -31,7 +31,6 @@ jobs:
         run: composer install
 
       - name: Test
-        env:
         run: ./vendor/bin/phpunit tests
 
       - uses: Bandwidth/build-notify-slack-action@v1.0.0
