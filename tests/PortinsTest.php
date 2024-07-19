@@ -5,12 +5,14 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Middleware;
 
-class PortinsTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class PortinsTest extends TestCase {
 	public static $container;
     public static $portins;
     public static $index = 0;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         $mock = new MockHandler([
 			new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><LnpOrderResponse><OrderId>d28b36f7-fa96-49eb-9556-a40fca49f7c6</OrderId><Status><Code>201</Code><Description>Order request received. Please use the order id to check the status of your order later.</Description></Status><ProcessingStatus>PENDING_DOCUMENTS</ProcessingStatus><LoaAuthorizingPerson>John Doe</LoaAuthorizingPerson><Subscriber><SubscriberType>BUSINESS</SubscriberType><BusinessName>Acme Corporation</BusinessName><ServiceAddress><HouseNumber>1623</HouseNumber><StreetName>Brockton Ave #1</StreetName><City>Los Angeles</City><StateCode>CA</StateCode><Zip>90025</Zip><Country>USA</Country></ServiceAddress></Subscriber><BillingTelephoneNumber>6882015002</BillingTelephoneNumber><NewBillingTelephoneNumber>9175131245</NewBillingTelephoneNumber><ListOfPhoneNumbers><PhoneNumber>6882015025</PhoneNumber><PhoneNumber>6882015026</PhoneNumber></ListOfPhoneNumbers><Triggered>false</Triggered><BillingType>PORTIN</BillingType></LnpOrderResponse>"),
 			new Response(200),
@@ -203,7 +205,7 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
 		]);
 
 		$this->assertEquals("6052609021", $status->ActivatedTelephoneNumbersList->TelephoneNumber[0]);
-		$this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
+		$this->assertEquals("PUT", self::$container[self::$index]['request']->getMethod());
 		$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/portins/d28b36f7-fa96-49eb-9556-a40fca49f7c6/activationStatus", self::$container[self::$index]['request']->getUri());
 		self::$index++;
 	}
@@ -279,7 +281,7 @@ class PortinsTest extends PHPUnit_Framework_TestCase {
 
     public function testLoasSend() {
         $portin = self::$portins->portin("");
-        $response = $portin->loas_send('./tests/test.txt', array("Content-Type" => "text/plain"));
+        $response = $portin->loas_send('./tests/fixtures/loa_test.txt', array("Content-Type" => "text/plain"));
         $this->assertEquals("filename", $response);
     }
 

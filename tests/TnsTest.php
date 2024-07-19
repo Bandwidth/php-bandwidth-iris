@@ -4,12 +4,14 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Middleware;
 
-class TnsTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class TnsTest extends TestCase {
     public static $container;
     public static $tns;
     public static $index = 0;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         $mock = new MockHandler([
 			new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><TelephoneNumbersResponse>    <TelephoneNumberCount>2</TelephoneNumberCount>    <Links>        <first>Link=&lt;https://api.test.inetwork.com:443/v1.0/tns?size=500&amp;page=1&gt;;rel=\"first\";</first>    </Links>    <TelephoneNumbers>        <TelephoneNumber>            <City>CHESAPEAKE</City>            <Lata>252</Lata>            <State>VA</State>            <FullNumber>7576768750</FullNumber>            <Tier>0</Tier>            <VendorId>49</VendorId>            <VendorName>Bandwidth CLEC</VendorName>            <RateCenter>NRFOLKZON1</RateCenter>            <Status>PortInPendingFoc</Status>            <AccountId>9500249</AccountId>            <LastModified>2015-06-03T15:10:13.000Z</LastModified>        </TelephoneNumber>        <TelephoneNumber>            <City>AGOURA</City>            <Lata>730</Lata>            <State>CA</State>            <FullNumber>8183386247</FullNumber>            <Tier>0</Tier>            <VendorId>49</VendorId>            <VendorName>Bandwidth CLEC</VendorName>            <RateCenter>AGOURA    </RateCenter>            <Status>Inservice</Status>            <AccountId>9500249</AccountId>            <LastModified>2015-05-30T14:40:54.000Z</LastModified>        </TelephoneNumber>    </TelephoneNumbers></TelephoneNumbersResponse>"),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><TelephoneNumberResponse>    <TelephoneNumber>7576768750</TelephoneNumber>    <Status>PortInPendingFoc</Status>    <LastModifiedDate>2015-06-03T15:10:13.000Z</LastModifiedDate>    <OrderCreateDate>2015-06-03T15:10:12.808Z</OrderCreateDate>    <OrderId>98939562-90b0-40e9-8335-5526432d9741</OrderId>    <OrderType>PORT_NUMBER_ORDER</OrderType>    <SiteId>2297</SiteId>    <AccountId>9500249</AccountId></TelephoneNumberResponse>"),

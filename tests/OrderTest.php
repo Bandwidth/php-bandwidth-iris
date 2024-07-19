@@ -5,12 +5,14 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Middleware;
 
-class OrderTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class OrderTest extends TestCase {
     public static $container;
     public static $account;
     public static $index = 0;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         $mock = new MockHandler([
 			new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ResponseSelectWrapper>    <ListOrderIdUserIdDate>        <TotalCount>2</TotalCount>        <Links>            <first>Link=&lt;https://api.test.inetwork.com:443/v1.0/accounts/9500249/orders?page=1&amp;size=300&gt;;rel=\"first\";</first>        </Links>        <OrderIdUserIdDate>            <CountOfTNs>0</CountOfTNs>            <CustomerOrderId>123456789</CustomerOrderId>            <userId>byo_dev</userId>            <lastModifiedDate>2015-06-13T16:14:46.017Z</lastModifiedDate>            <OrderDate>2015-06-13T16:14:45.956Z</OrderDate>            <OrderType>new_number</OrderType>            <orderId>016c1aef-a873-4a90-8374-60771cba9452</orderId>            <OrderStatus>FAILED</OrderStatus>        </OrderIdUserIdDate>        <OrderIdUserIdDate>            <CountOfTNs>0</CountOfTNs>            <CustomerOrderId>123456789</CustomerOrderId>            <userId>byo_dev</userId>            <lastModifiedDate>2015-06-13T16:32:04.216Z</lastModifiedDate>            <OrderDate>2015-06-13T16:32:04.181Z</OrderDate>            <OrderType>new_number</OrderType>            <orderId>77659f47-d527-42ad-bf72-34b6841016ac</orderId>            <OrderStatus>FAILED</OrderStatus>        </OrderIdUserIdDate>    </ListOrderIdUserIdDate></ResponseSelectWrapper>"),
 			new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ResponseSelectWrapper>    <ListOrderIdUserIdDate>        <TotalCount>1</TotalCount>        <Links>            <first>Link=&lt;https://api.test.inetwork.com:443/v1.0/accounts/9500249/orders?page=1&amp;size=300&gt;;rel=\"first\";</first>        </Links>        <OrderIdUserIdDate>            <CountOfTNs>0</CountOfTNs>            <CustomerOrderId>123456789</CustomerOrderId>            <userId>byo_dev</userId>            <lastModifiedDate>2015-06-13T16:14:46.017Z</lastModifiedDate>            <OrderDate>2015-06-13T16:14:45.956Z</OrderDate>            <OrderType>new_number</OrderType>            <orderId>016c1aef-a873-4a90-8374-60771cba9452</orderId>            <OrderStatus>FAILED</OrderStatus>        </OrderIdUserIdDate>    </ListOrderIdUserIdDate></ResponseSelectWrapper>"),

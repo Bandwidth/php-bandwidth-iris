@@ -5,12 +5,14 @@
 // use GuzzleHttp\Psr7\Response;
 // use GuzzleHttp\Middleware;
 //
-// class PortoutsTest extends PHPUnit_Framework_TestCase {
+// use PHPUnit\Framework\TestCase;
+//
+// class PortoutsTest extends TestCase {
 // 	public static $container;
 //     public static $portouts;
 //     public static $index = 0;
 //
-//     public static function setUpBeforeClass() {
+//     public static function setUpBeforeClass(): void {
 //         $mock = new MockHandler([
 //         ]);
 //

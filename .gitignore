@@ -6,3 +6,4 @@ config.php
 composer.lock
 .idea/
 .DS_Store
+.phpunit.result.cache

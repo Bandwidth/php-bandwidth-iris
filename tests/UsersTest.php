@@ -4,13 +4,15 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Middleware;
 
-class UsersTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class UsersTest extends TestCase {
     public static $container;
     public static $client;
     public static $account;
     public static $index = 0;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         $mock = new MockHandler([
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><UsersResponse><Users><User><Username>byo_dev</Username><FirstName>test</FirstName><LastName>test</LastName><EmailAddress>jsommerset@bandwidth.com</EmailAddress><TelephoneNumber>5413637598</TelephoneNumber><Roles><Role><RoleName>ROLE_USER</RoleName><Permissions><Permission><PermissionName>UPDATE</PermissionName></Permission><Permission><PermissionName>VIEW</PermissionName></Permission></Permissions></Role><Role><RoleName>ROLE_BDR</RoleName><Permissions><Permission><PermissionName>UPDATE</PermissionName></Permission><Permission><PermissionName>VIEW</PermissionName></Permission></Permissions></Role><Role><RoleName>ROLE_API_HISTORY</RoleName><Permissions><Permission><PermissionName>UPDATE</PermissionName></Permission><Permission><PermissionName>VIEW</PermissionName></Permission></Permissions></Role><Role><RoleName>ROLE_API_SITE</RoleName><Permissions><Permission><PermissionName>UPDATE</PermissionName></Permission><Permission><PermissionName>VIEW</PermissionName></Permission></Permissions></Role><Role><RoleName>ROLE_API_SEARCH</RoleName><Permissions><Permission><PermissionName>VIEW</PermissionName></Permission></Permissions></Role><Role><RoleName>ROLE_API_ORDERING</RoleName><Permissions><Permission><PermissionName>UPDATE</PermissionName></Permission><Permission><PermissionName>VIEW</PermissionName></Permission></Permissions></Role><Role><RoleName>ROLE_API_PROFILE</RoleName><Permissions><Permission><PermissionName>UPDATE</PermissionName></Permission><Permission><PermissionName>VIEW</PermissionName></Permission></Permissions></Role><Role><RoleName>ROLE_API_LNP</RoleName><Permissions><Permission><PermissionName>UPDATE</PermissionName></Permission><Permission><PermissionName>VIEW</PermissionName></Permission></Permissions></Role><Role><RoleName>ROLE_API_ACCOUNT</RoleName><Permissions><Permission><PermissionName>VIEW</PermissionName></Permission></Permissions></Role><Role><RoleName>ROLE_API_DLDA</RoleName><Permissions><Permission><PermissionName>UPDATE</PermissionName></Permission><Permission><PermissionName>VIEW</PermissionName></Permission></Permissions></Role><Role><RoleName>ROLE_API_CNAMLIDB</RoleName><Permissions><Permission><PermissionName>UPDATE</PermissionName></Permission><Permission><PermissionName>VIEW</PermissionName></Permission></Permissions></Role></Roles></User></Users></UsersResponse>"),
             new Response(200, [], ""),

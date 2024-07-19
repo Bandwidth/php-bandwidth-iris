@@ -13,12 +13,12 @@
         "guzzlehttp/guzzle": "~7.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.7"
-    },
-    "config": {
-        "bin-dir": "bin"
+        "phpunit/phpunit": "^9"
     },
     "autoload": {
+        "psr-4": {
+            "BandwidthLib\\": "src/"
+        },
         "classmap": [
             "src/",
             "core/"

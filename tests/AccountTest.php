@@ -5,12 +5,14 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Middleware;
 
-class AccountTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class AccountTest extends TestCase {
     public static $container;
     public static $account;
     public static $index = 0;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         $mock = new MockHandler([
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?> <LineOptionOrderResponse><LineOptions> <CompletedNumbers><TelephoneNumber>2013223685</TelephoneNumber> </CompletedNumbers><Errors><Error><TelephoneNumber>5209072452</TelephoneNumber> <ErrorCode>5071</ErrorCode><Description>Telephone number is not available on the system.</Description></Error> <Error><TelephoneNumber>5209072451</TelephoneNumber> <ErrorCode>13518</ErrorCode><Description>CNAM for telephone number is applied at the Location level and it is notapplicable at the TN level.</Description> </Error></Errors> </LineOptions></LineOptionOrderResponse>"),
             new Response(200, [], "<?xml version=\"1.0\"?> <SearchResult><ResultCount>1</ResultCount> <TelephoneNumberDetailList><TelephoneNumberDetail> <City>KNIGHTDALE</City> <LATA>426</LATA> <RateCenter>KNIGHTDALE</RateCenter> <State>NC</State> <FullNumber>9192956932</FullNumber> <Tier>0</Tier><VendorId>49</VendorId> <VendorName>Bandwidth CLEC</VendorName></TelephoneNumberDetail> </TelephoneNumberDetailList></SearchResult>"),
@@ -74,6 +76,8 @@ class AccountTest extends PHPUnit_Framework_TestCase {
 
         $client = new Iris\Client("test", "test", Array('url' => 'https://api.test.inetwork.com/v1.0', 'handler' => $handler));
         self::$account = new Iris\Account(9500249, $client);
+
+        return;
     }
 
     public function testLineOption() {
@@ -124,6 +128,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
      * @expectedExceptionCode 4000
      */
     public function testAvailableNumbersError() {
+        $this->expectException(Iris\ResponseException::class);
         $response = self::$account->availableNumbers();
 
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());

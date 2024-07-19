@@ -4,12 +4,14 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Middleware;
 
-class CoveredRateCenterTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class CoveredRateCenterTest extends TestCase {
     public static $container;
     public static $rcs;
     public static $index = 0;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         $mock = new MockHandler([
 			new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?> <CoveredRateCenters><TotalCount>18</TotalCount> <Links><first>Link=&lt;https://dashboard.bandwidth.com/api/coveredRateCenters?npa=310&amp;size=10&amp;e mbed=Cities&amp;embed=ZipCodes&amp;embed=NpaNxxX&amp;page=1&gt;;rel=\"first\";</first><next>Link=&lt;https://dashboard.bandwidth.com/api/coveredRateCenters?npa=310&amp;size=10&amp;e mbed=Cities&amp;embed=ZipCodes&amp;embed=NpaNxxX&amp; page=5&gt;;rel=\"next\";</next></Links> <CoveredRateCenter><Name>AVALON</Name><Abbreviation>AVALON</Abbreviation> <State>CA</State><Lata>730</Lata> <AvailableNumberCount>1</AvailableNumberCount> <ZipCodes><ZipCode>90731</ZipCode> </ZipCodes><Cities><City>SAN PEDRO</City> </Cities><Tiers> <Tier>0</Tier></Tiers> <NpaNxxXs><NpaNxxX>3105100</NpaNxxX> <NpaNxxX>3105101</NpaNxxX> <NpaNxxX>3109498</NpaNxxX> <NpaNxxX>3109499</NpaNxxX> <NpaNxxX>4242260</NpaNxxX></NpaNxxXs><Id>1</Id> </CoveredRateCenter> <CoveredRateCenter><Name>BEVERLY HILLS</Name> <Abbreviation>BEVERLYHLS</Abbreviation> <State>CA</State><Lata>730</Lata><AvailableNumberCount>25</AvailableNumberCount> <ZipCodes><ZipCode>90013</ZipCode> <ZipCode>90014</ZipCode> <ZipCode>90015</ZipCode><ZipCode>91504</ZipCode><ZipCode>91505</ZipCode> </ZipCodes><Cities><City>BEVERLY HILLS</City> <City>BURBANK</City> <City>GARDENA</City> <City>LOS ANGELES</City> <City>SHERMAN OAKS</City> <City>SUN VALLEY</City> <City>VAN NUYS</City></Cities> <Tiers><Tier>0</Tier> </Tiers><NpaNxxXs> <NpaNxxX>3102010</NpaNxxX><NpaNxxX>3102011</NpaNxxX><NpaNxxX>3102012</NpaNxxX><NpaNxxX>4247777</NpaNxxX> <NpaNxxX>4247778</NpaNxxX> <NpaNxxX>4247779</NpaNxxX></NpaNxxXs><Id>3</Id> </CoveredRateCenter></CoveredRateCenters>"),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?> <CoveredRateCenters><CoveredRateCenter><Name>AVALON</Name><Abbreviation>AVALON</Abbreviation> <State>CA</State><Lata>730</Lata> <AvailableNumberCount>1</AvailableNumberCount> <ZipCodes><ZipCode>90731</ZipCode> </ZipCodes><Cities><City>SAN PEDRO</City> </Cities><Tiers> <Tier>0</Tier></Tiers> <NpaNxxXs><NpaNxxX>3105100</NpaNxxX> <NpaNxxX>3105101</NpaNxxX> <NpaNxxX>3109498</NpaNxxX> <NpaNxxX>3109499</NpaNxxX> <NpaNxxX>4242260</NpaNxxX></NpaNxxXs><Id>1</Id> </CoveredRateCenter></CoveredRateCenters>"),
