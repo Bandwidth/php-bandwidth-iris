@@ -32,12 +32,6 @@ PHP Client library for Bandwidth's Phone Number Dashboard (AKA: Dashboard, Iris)
 
 | Version | Support Level            |
 |:--------|:-------------------------|
-| 5.5     | Unsupported |
-| 5.6     | Unsupported |
-| 7.0     | Unsupported |
-| 7.1     | Unsupported |
-| 7.2     | Supported |
-| 7.3     | Supported |
 | 8.0     | Supported |
 | 8.1     | Supported |
 | 8.2     | Supported |
