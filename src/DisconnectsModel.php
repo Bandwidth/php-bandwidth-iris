@@ -33,7 +33,7 @@ class Disconnects extends RestEntry{
     }
 
     public function disconnect($id, $tndetail = false) {
-        $d = new Disconnect($this, array("orderId" => $id));
+        $d = new Disconnect($this, array("OrderId" => $id));
         $d->get($tndetail);
         return $d;
     }
@@ -68,7 +68,7 @@ class Disconnect extends RestEntry {
         "CountOfTNs" => [ "type" => "string" ],
         "userId" => [ "type" => "string" ],
         "lastModifiedDate" => [ "type" => "string" ],
-        "orderId" => [ "type" => "string" ],
+        "OrderId" => [ "type" => "string" ],
         "OrderType" => [ "type" => "string" ],
         "OrderDate" => [ "type" => "string" ],
         "OrderStatus" => [ "type" => "string" ],
@@ -114,7 +114,7 @@ class Disconnect extends RestEntry {
         $data = parent::post(null, "DisconnectTelephoneNumberOrder", $this->to_array());
         $this->OrderStatus = new OrderRequestStatus($data);
         if(isset($this->OrderStatus->orderRequest)) {
-            $this->orderId = $this->OrderStatus->orderRequest->id;
+            $this->OrderId = $this->OrderStatus->orderRequest->id;
             $this->set_data($this->OrderStatus->orderRequest->to_array());
         }
     }
@@ -122,12 +122,12 @@ class Disconnect extends RestEntry {
     /**
      * Get Entity Id
      * @return type
-     * @throws Exception in case of orderId is null
+     * @throws Exception in case of OrderId is null
      */
     private function get_id() {
-        if(!isset($this->orderId))
-            throw new \Exception("You can't use this function without orderId");
-        return $this->orderId;
+        if(!isset($this->OrderId))
+            throw new \Exception("You can't use this function without OrderId");
+        return $this->OrderId;
     }
 
     /**

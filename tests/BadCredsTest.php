@@ -21,7 +21,7 @@ class BadCredsTest extends TestCase {
         $handler = HandlerStack::create($mock);
         $handler->push($history);
 
-        self::$client = new Iris\Client("test", "test", Array('url' => 'https://test.dashboard.bandwidth.com/', 'handler' => $handler));
+        self::$client = new Iris\Client("test", "test", Array('url' => 'https://api.test.inetwork.com/v1.0', 'handler' => $handler));
     }
 
     /**
@@ -30,6 +30,7 @@ class BadCredsTest extends TestCase {
      * @expectedExceptionCode 401
      */
     public function testAuthFail() {
+        $this->expectException(Iris\ResponseException::class);
         $c = new \Iris\Cities(self::$client);
         try {
             $cities = $c->getList(["state" => "NC"]);

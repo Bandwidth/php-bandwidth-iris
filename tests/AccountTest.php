@@ -128,6 +128,7 @@ class AccountTest extends TestCase {
      * @expectedExceptionCode 4000
      */
     public function testAvailableNumbersError() {
+        $this->expectException(Iris\ResponseException::class);
         $response = self::$account->availableNumbers();
 
         $this->assertEquals("GET", self::$container[self::$index]['request']->getMethod());

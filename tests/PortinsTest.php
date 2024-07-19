@@ -205,7 +205,7 @@ class PortinsTest extends TestCase {
 		]);
 
 		$this->assertEquals("6052609021", $status->ActivatedTelephoneNumbersList->TelephoneNumber[0]);
-		$this->assertEquals("POST", self::$container[self::$index]['request']->getMethod());
+		$this->assertEquals("PUT", self::$container[self::$index]['request']->getMethod());
 		$this->assertEquals("https://api.test.inetwork.com/v1.0/accounts/9500249/portins/d28b36f7-fa96-49eb-9556-a40fca49f7c6/activationStatus", self::$container[self::$index]['request']->getUri());
 		self::$index++;
 	}
@@ -281,7 +281,7 @@ class PortinsTest extends TestCase {
 
     public function testLoasSend() {
         $portin = self::$portins->portin("");
-        $response = $portin->loas_send('./tests/test.txt', array("Content-Type" => "text/plain"));
+        $response = $portin->loas_send('./tests/fixtures/loa_test.txt', array("Content-Type" => "text/plain"));
         $this->assertEquals("filename", $response);
     }
 
