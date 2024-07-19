@@ -1,0 +1,42 @@
+name: Test
+
+on:
+  schedule:
+    - cron: "0 4 * * *"
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-2022, windows-2019, ubuntu-20.04, ubuntu-22.04]
+        php-version: [8.0, 8.1, 8.2, 8.3]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+
+      - name: Install Packages
+        run: composer install
+
+      - name: Test
+        env:
+        run: ./vendor/bin/phpunit tests
+
+      - uses: Bandwidth/build-notify-slack-action@v1.0.0
+        if: failure() && !github.event.pull_request.draft
+        with:
+          job-status: ${{ job.status }}
+          slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
+          slack-channel: ${{ secrets.SLACK_CHANNEL }}

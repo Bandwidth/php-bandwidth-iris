@@ -5,12 +5,14 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Middleware;
 
-class NotesTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class NotesTest extends TestCase {
     public static $container;
     public static $notes;
     public static $index = 0;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         $mock = new MockHandler([
             new Response(200, ['Location' => 'https://api.test.inetwork.com/v1.0/accounts/9500249/disconnects/b902dee1-0585-4258-becd-5c7e51ccf5e1/notes/123']),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Notes>    <Note>        <Id>11425</Id>        <UserId>byo_dev</UserId>        <Description>Test Note</Description>        <LastDateModifier>2015-06-18T04:19:59.000Z</LastDateModifier>    </Note></Notes>"),

@@ -4,12 +4,14 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Middleware;
 
-class SubscriptionsTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class SubscriptionsTest extends TestCase {
     public static $container;
     public static $subscriptions;
     public static $index = 0;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         $mock = new MockHandler([
             new Response(201, ['Location' => 'https://api.test.inetwork.com:443/v1.0/accounts/9500249/sunscriptions/2489']),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><SubscriptionsResponse><Subscriptions><Subscription><SubscriptionId>1</SubscriptionId><OrderType>orders</OrderType><OrderId>8684b1c8-7d41-4877-bfc2-6bd8ea4dc89f</OrderId><EmailSubscription><Email>test@test</Email><DigestRequested>NONE</DigestRequested></EmailSubscription></Subscription></Subscriptions></SubscriptionsResponse>"),

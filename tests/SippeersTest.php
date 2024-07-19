@@ -4,12 +4,14 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Middleware;
 
-class SippeersTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class SippeersTest extends TestCase {
     public static $container;
     public static $sippeers;
     public static $index = 0;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         $mock = new MockHandler([
             new Response(201, ['Location' => 'https://api.test.inetwork.com:443/v1.0/accounts/9500249/sites/2489/sippeers/9091']),
 			new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><TNSipPeersResponse>    <SipPeers>        <SipPeer>            <PeerId>500709</PeerId>            <PeerName>Test4 Peer</PeerName>            <IsDefaultPeer>true</IsDefaultPeer>            <ShortMessagingProtocol>SMPP</ShortMessagingProtocol>            <VoiceHosts>                <Host>                    <HostName>192.168.181.94</HostName>                </Host>            </VoiceHosts>            <VoiceHostGroups/>            <SmsHosts>                <Host>                    <HostName>192.168.181.94</HostName>                </Host>            </SmsHosts>            <TerminationHosts>                <TerminationHost>                    <HostName>192.168.181.94</HostName>                    <Port>0</Port>                    <CustomerTrafficAllowed>DOMESTIC</CustomerTrafficAllowed>                    <DataAllowed>true</DataAllowed>                </TerminationHost>            </TerminationHosts>        </SipPeer>        <SipPeer>            <PeerId>500705</PeerId>            <PeerName>Test2 Peer</PeerName>            <IsDefaultPeer>false</IsDefaultPeer>            <ShortMessagingProtocol>SMPP</ShortMessagingProtocol>            <VoiceHosts>                <Host>                    <HostName>192.168.181.98</HostName>                </Host>            </VoiceHosts>            <VoiceHostGroups/>            <SmsHosts>                <Host>                    <HostName>192.168.181.98</HostName>                </Host>            </SmsHosts>            <TerminationHosts>                <TerminationHost>                    <HostName>192.168.181.98</HostName>                    <Port>0</Port>                    <CustomerTrafficAllowed>DOMESTIC</CustomerTrafficAllowed>                    <DataAllowed>true</DataAllowed>                </TerminationHost>            </TerminationHosts>        </SipPeer>    </SipPeers></TNSipPeersResponse>    "),

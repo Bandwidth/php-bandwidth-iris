@@ -1,6 +1,8 @@
 <?php
 
-class SubscriptionsNew extends \PHPUnit\Framework\TestCase {
+use PHPUnit\Framework\TestCase;
+
+class SubscriptionsNew extends TestCase {
     public static $container;
     public static $subscriptions;
     public static $index = 0;

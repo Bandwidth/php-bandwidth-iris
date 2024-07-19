@@ -4,12 +4,14 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Middleware;
 
-class SiteTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class SiteTest extends TestCase {
     public static $container;
     public static $sites;
     public static $index = 0;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         $mock = new MockHandler([
             new Response(201, ['Location' => 'https://api.test.inetwork.com:443/v1.0/accounts/9500249/sites/2489']),
 			new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><SitesResponse>    <Sites>        <Site>            <Id>2297</Id>            <Name>API Test Site</Name>        </Site>        <Site>            <Id>2301</Id>            <Name>My First Site</Name>            <Description>A Site From Node SDK Examples</Description>        </Site>    </Sites></SitesResponse>"),

@@ -4,12 +4,14 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Middleware;
 
-class OtherTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class OtherTest extends TestCase {
     public static $container;
     public static $client;
     public static $index = 0;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         $mock = new MockHandler([
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><CityResponse>    <ResultCount>618</ResultCount>    <Cities>        <City>            <RcAbbreviation>PINEHURST</RcAbbreviation>            <Name>ABERDEEN</Name>        </City>        <City>            <RcAbbreviation>JULIAN</RcAbbreviation>            <Name>ADVANCE</Name>        </City>    </Cities></CityResponse>"),
             new Response(200, [], "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><RateCenters>    <ResultCount>652</ResultCount>    <RateCenters>        <RateCenter>            <Abbreviation>AGOURA</Abbreviation>            <Name>AGOURA</Name>        </RateCenter>        <RateCenter>            <Abbreviation>ALAMITOS</Abbreviation>            <Name>ALAMITOS</Name>        </RateCenter>    </RateCenters></RateCenters>"),

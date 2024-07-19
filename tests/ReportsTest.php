@@ -5,12 +5,14 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Middleware;
 
-class ReportsTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class ReportsTest extends TestCase {
     public static $container;
     public static $reports;
     public static $index = 0;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         $mock = new MockHandler([
             //GET report
             new Response(200, [], '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ReportsResponse><Reports><Report><Name>Sample Report 1</Name><Id>100020</Id><Description>Sample Report 1 Description</Description></Report><Report><Name>Sample Report 2</Name><Id>100021</Id><Description>Sample Report 2 Description</Description></Report></Reports></ReportsResponse>'),
