@@ -2,9 +2,13 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
 /**
  *
  */
+
+#[AllowDynamicProperties]
 class Notes extends RestEntry {
     public function __construct($parent) {
         $this->parent = $parent;
@@ -53,6 +57,8 @@ class Notes extends RestEntry {
  * @property string $Description
  * @property string $LastDateModifier
  */
+
+#[AllowDynamicProperties]
 class Note extends RestEntry {
     use BaseModel;
 

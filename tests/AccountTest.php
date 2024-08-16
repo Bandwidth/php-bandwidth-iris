@@ -7,6 +7,7 @@ use GuzzleHttp\Middleware;
 
 use PHPUnit\Framework\TestCase;
 
+#[AllowDynamicProperties]
 class AccountTest extends TestCase {
     public static $container;
     public static $account;

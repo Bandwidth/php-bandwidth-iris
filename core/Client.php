@@ -6,14 +6,17 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
 use GuzzleHttp\Exception\ClientException;
 use SimpleXMLElement;
 
+#[AllowDynamicProperties]
 class ResponseException extends \Exception
 {
 
 }
 
+#[AllowDynamicProperties]
 abstract class iClient
 {
     abstract function get($url, $options);
@@ -122,6 +125,8 @@ abstract class iClient
     }
 }
 
+
+#[AllowDynamicProperties]
 final class Client extends iClient
 {
 

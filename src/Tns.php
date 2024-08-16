@@ -2,6 +2,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 final class Tns extends RestEntry {
     protected $totalsTns = null;
     
@@ -93,6 +96,7 @@ final class Tns extends RestEntry {
 }
 
 
+#[AllowDynamicProperties]
 final class Tn extends RestEntry{
     use BaseModel;
 

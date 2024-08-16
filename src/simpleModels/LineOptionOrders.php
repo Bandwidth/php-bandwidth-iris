@@ -2,6 +2,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 class TnLineOptions {
     use BaseModel;
 
@@ -14,6 +17,7 @@ class TnLineOptions {
     }
 }
 
+#[AllowDynamicProperties]
 class TnLineOption {
     use BaseModel;
 
@@ -28,6 +32,7 @@ class TnLineOption {
 }
 
 
+#[AllowDynamicProperties]
 class TnLineOptionOrderResponse {
     use BaseModel;
 
@@ -40,6 +45,7 @@ class TnLineOptionOrderResponse {
     }
 }
 
+#[AllowDynamicProperties]
 class LineOption {
     use BaseModel;
 

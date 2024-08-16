@@ -2,6 +2,9 @@
   
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 class CsrNote {
     use BaseModel;
 

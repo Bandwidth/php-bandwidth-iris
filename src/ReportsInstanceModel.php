@@ -13,6 +13,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 final class InstanceParameters {
     use BaseModel;
 
@@ -24,6 +27,8 @@ final class InstanceParameters {
     }
 }
 
+
+#[AllowDynamicProperties]
 final class InstanceParameter {
     use BaseModel;
 
@@ -36,6 +41,8 @@ final class InstanceParameter {
     }
 }
 
+
+#[AllowDynamicProperties]
 final class ReportInstance extends RestEntry{
     use BaseModel;
 

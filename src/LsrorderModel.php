@@ -13,6 +13,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 final class Lsrorders extends RestEntry{
 
     public function __construct($parent) {
@@ -52,6 +55,8 @@ final class Lsrorders extends RestEntry{
     }
 }
 
+
+#[AllowDynamicProperties]
 final class Lsrorder extends RestEntry{
     use BaseModel;
 

@@ -13,6 +13,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 final class Lidbs extends RestEntry{
 
     public function __construct($parent) {
@@ -58,6 +61,8 @@ final class Lidbs extends RestEntry{
     }
 }
 
+
+#[AllowDynamicProperties]
 final class Lidb extends RestEntry{
     use BaseModel;
 

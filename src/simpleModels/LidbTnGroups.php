@@ -2,6 +2,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 class LidbOrder {
     use BaseModel;
 
@@ -13,6 +16,8 @@ class LidbOrder {
     }
 }
 
+
+#[AllowDynamicProperties]
 class LidbTnGroups {
     use BaseModel;
 
@@ -24,6 +29,8 @@ class LidbTnGroups {
     }
 }
 
+
+#[AllowDynamicProperties]
 class LidbTnGroup {
     use BaseModel;
 

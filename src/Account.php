@@ -2,6 +2,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 class Account extends RestEntry {
     public function __construct($account_id, $client=Null, $namespace='accounts')
     {

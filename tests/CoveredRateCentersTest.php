@@ -6,7 +6,7 @@ use GuzzleHttp\Middleware;
 
 use PHPUnit\Framework\TestCase;
 
-class CoveredRateCenterTest extends TestCase {
+class CoveredRateCentersTest extends TestCase {
     public static $container;
     public static $rcs;
     public static $index = 0;

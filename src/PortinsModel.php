@@ -10,6 +10,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 class Portins extends RestEntry {
     public function __construct($account) {
         $this->parent = $account;
@@ -67,6 +70,8 @@ class Portins extends RestEntry {
     }
 }
 
+
+#[AllowDynamicProperties]
 class Portin extends RestEntry {
     use BaseModel;
 

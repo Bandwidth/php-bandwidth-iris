@@ -2,6 +2,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 class NumberPortabilityResponse {
     use BaseModel;
 
@@ -20,6 +23,8 @@ class NumberPortabilityResponse {
     }
 }
 
+
+#[AllowDynamicProperties]
 class RateCentersS {
     use BaseModel;
 
@@ -32,6 +37,8 @@ class RateCentersS {
     }
 }
 
+
+#[AllowDynamicProperties]
 class RateCenterGroup {
     use BaseModel;
 
@@ -49,6 +56,8 @@ class RateCenterGroup {
     }
 }
 
+
+#[AllowDynamicProperties]
 class SupportedLosingCarriers {
     use BaseModel;
 
@@ -61,6 +70,8 @@ class SupportedLosingCarriers {
     }
 }
 
+
+#[AllowDynamicProperties]
 class LosingCarrierTnList {
     use BaseModel;
 

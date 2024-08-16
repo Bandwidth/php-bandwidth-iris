@@ -2,6 +2,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 final class Users extends RestEntry{
     public function __construct($parent, $client=null, $namespace="")
     {
@@ -36,6 +39,7 @@ final class Users extends RestEntry{
     }
 }
 
+#[AllowDynamicProperties]
 final class User extends RestEntry {
     use BaseModel;
 

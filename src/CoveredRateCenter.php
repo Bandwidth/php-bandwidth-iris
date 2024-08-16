@@ -2,6 +2,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 final class CoveredRateCenters extends RestEntry{
     public function __construct($client)
     {
@@ -41,6 +44,7 @@ final class CoveredRateCenters extends RestEntry{
     }
 }
 
+#[AllowDynamicProperties]
 final class CoveredRateCenter extends RestEntry{
     use BaseModel;
 

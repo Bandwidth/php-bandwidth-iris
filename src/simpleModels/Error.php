@@ -2,6 +2,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 class ErrorList {
     use BaseModel;
 
@@ -13,6 +16,8 @@ class ErrorList {
     }
 }
 
+
+#[AllowDynamicProperties]
 class Error {
     use BaseModel;
 

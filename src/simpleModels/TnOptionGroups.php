@@ -2,6 +2,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 class TnOptionGroups {
     use BaseModel;
 
@@ -13,6 +16,7 @@ class TnOptionGroups {
     }
 }
 
+#[AllowDynamicProperties]
 class TnOptionGroup {
     use BaseModel;
 

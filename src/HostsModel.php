@@ -2,6 +2,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 class Hosts {
     use BaseModel;
 
@@ -15,6 +18,8 @@ class Hosts {
     }
 }
 
+
+#[AllowDynamicProperties]
 class Host {
     use BaseModel;
 

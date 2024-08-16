@@ -2,6 +2,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 class History {
     use BaseModel;
 
@@ -13,6 +16,8 @@ class History {
     }
 }
 
+
+#[AllowDynamicProperties]
 class OrderHistory {
     use BaseModel;
 

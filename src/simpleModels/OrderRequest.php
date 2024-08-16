@@ -2,6 +2,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 class OrderRequestStatus {
     use BaseModel;
 
@@ -15,6 +18,8 @@ class OrderRequestStatus {
     }
 }
 
+
+#[AllowDynamicProperties]
 class OrderRequest {
     use BaseModel;
 
