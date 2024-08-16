@@ -52,7 +52,7 @@ final class User extends RestEntry {
         "Roles" => ["type" => "\Iris\Roles"],
     ];
 
-    public function __construct($client=null, $data)
+    public function __construct($client=null, $data=[])
     {
         $this->set_data($data);
         parent::_init($client, "users");
