@@ -13,8 +13,11 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
 require_once("ReportsInstanceModel.php");
 
+#[AllowDynamicProperties]
 final class Reports extends RestEntry {
 
     public function __construct($parent) {
@@ -47,6 +50,8 @@ final class Reports extends RestEntry {
     }
 }
 
+
+#[AllowDynamicProperties]
 final class ReportValue {
     use BaseModel;
 
@@ -59,6 +64,8 @@ final class ReportValue {
     }
 }
 
+
+#[AllowDynamicProperties]
 final class ReportValues {
     use BaseModel;
 
@@ -70,6 +77,8 @@ final class ReportValues {
     }
 }
 
+
+#[AllowDynamicProperties]
 final class ReportParameter {
     use BaseModel;
 
@@ -87,6 +96,8 @@ final class ReportParameter {
     }
 }
 
+
+#[AllowDynamicProperties]
 final class ReportParameters {
     use BaseModel;
 
@@ -98,6 +109,8 @@ final class ReportParameters {
     }
 }
 
+
+#[AllowDynamicProperties]
 final class Report extends RestEntry{
     use BaseModel;
 

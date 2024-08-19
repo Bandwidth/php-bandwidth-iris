@@ -13,6 +13,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 final class Portouts extends RestEntry{
 
     public function __construct($parent) {
@@ -65,6 +68,8 @@ final class Portouts extends RestEntry{
 
 }
 
+
+#[AllowDynamicProperties]
 class Portout extends RestEntry {
     use BaseModel;
 

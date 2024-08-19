@@ -2,6 +2,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 class Roles {
     use BaseModel;
 
@@ -13,6 +16,7 @@ class Roles {
     }
 }
 
+#[AllowDynamicProperties]
 class Role {
     use BaseModel;
 
@@ -25,6 +29,7 @@ class Role {
     }
 }
 
+#[AllowDynamicProperties]
 class Permissions {
     use BaseModel;
 
@@ -36,6 +41,7 @@ class Permissions {
     }
 }
 
+#[AllowDynamicProperties]
 class Permission {
     use BaseModel;
 

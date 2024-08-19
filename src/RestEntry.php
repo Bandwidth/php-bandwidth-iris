@@ -2,6 +2,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 abstract class RestEntry{
 
     protected $client = Null;

@@ -2,6 +2,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 class DldaTnGroups {
     use BaseModel;
 
@@ -13,6 +16,8 @@ class DldaTnGroups {
     }
 }
 
+
+#[AllowDynamicProperties]
 class DldaTnGroup {
     use BaseModel;
 
@@ -29,6 +34,8 @@ class DldaTnGroup {
     }
 }
 
+
+#[AllowDynamicProperties]
 class ListingName {
     use BaseModel;
 

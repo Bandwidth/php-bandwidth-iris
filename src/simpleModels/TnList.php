@@ -2,6 +2,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 class TnList {
     use BaseModel;
 

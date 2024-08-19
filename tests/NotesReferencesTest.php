@@ -7,7 +7,7 @@ use GuzzleHttp\Middleware;
 
 use PHPUnit\Framework\TestCase;
 
-class NotesRefTest extends TestCase {
+class NotesReferencesTest extends TestCase {
     public static $container;
     public static $account;
     public static $index = 0;

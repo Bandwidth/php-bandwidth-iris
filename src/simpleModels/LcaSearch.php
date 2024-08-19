@@ -2,6 +2,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 class LcaSearch {
     use BaseModel;
 
@@ -14,6 +17,7 @@ class LcaSearch {
     }
 }
 
+#[AllowDynamicProperties]
 class NPANXX {
     use BaseModel;
 
@@ -25,6 +29,7 @@ class NPANXX {
     }
 }
 
+#[AllowDynamicProperties]
 class Location {
     use BaseModel;
 
@@ -36,6 +41,7 @@ class Location {
     }
 }
 
+#[AllowDynamicProperties]
 class LcaRateCenters {
     use BaseModel;
 

@@ -1,7 +1,9 @@
 <?php
 
 namespace Iris;
+use AllowDynamicProperties;
 
+#[AllowDynamicProperties]
 class Suggestions
 {
     public function __construct($client)

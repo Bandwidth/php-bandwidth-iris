@@ -2,6 +2,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 class Sippeers extends RestEntry {
     public function __construct($site) {
         $this->parent = $site;
@@ -45,6 +48,8 @@ class Sippeers extends RestEntry {
     }
 }
 
+
+#[AllowDynamicProperties]
 class Sippeer extends RestEntry {
     use BaseModel;
 

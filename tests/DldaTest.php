@@ -6,7 +6,7 @@ use GuzzleHttp\Middleware;
 
 use PHPUnit\Framework\TestCase;
 
-class DldasTest extends TestCase {
+class DldaTest extends TestCase {
     public static $container;
     public static $dldas;
     public static $index = 0;

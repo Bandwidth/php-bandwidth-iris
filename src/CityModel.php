@@ -2,6 +2,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 final class Cities extends RestEntry{
     public function __construct($client)
     {

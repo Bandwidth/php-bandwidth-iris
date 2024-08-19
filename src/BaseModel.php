@@ -1,7 +1,9 @@
 <?php
 
 namespace Iris;
+use AllowDynamicProperties;
 
+#[AllowDynamicProperties]
 class FieldRequiredException extends \Exception {
     public function __construct($key) {
         $this->key = $key;
@@ -9,6 +11,8 @@ class FieldRequiredException extends \Exception {
     }
 }
 
+
+#[AllowDynamicProperties]
 class FieldValidateInArrayException extends \Exception {
     public function __construct($key, $arr) {
         $this->key = $key;
@@ -17,6 +21,8 @@ class FieldValidateInArrayException extends \Exception {
     }
 }
 
+
+#[AllowDynamicProperties]
 class FieldNotExistsException extends \Exception {
     public function __construct($key) {
         $this->key = $key;

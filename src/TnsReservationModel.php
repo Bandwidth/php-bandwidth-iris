@@ -13,6 +13,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 final class TnsReservations extends RestEntry{
 
     public function __construct($parent) {
@@ -37,6 +40,8 @@ final class TnsReservations extends RestEntry{
     }
 }
 
+
+#[AllowDynamicProperties]
 final class TnsReservation extends RestEntry{
     use BaseModel;
 

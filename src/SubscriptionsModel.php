@@ -13,6 +13,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 final class Subscriptions extends RestEntry{
 
     public function __construct($parent) {
@@ -58,6 +61,8 @@ final class Subscriptions extends RestEntry{
     }
 }
 
+
+#[AllowDynamicProperties]
 final class Subscription extends RestEntry{
     use BaseModel;
 

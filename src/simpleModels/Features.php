@@ -2,6 +2,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 class Features {
     use BaseModel;
 
@@ -15,6 +18,8 @@ class Features {
     }
 }
 
+
+#[AllowDynamicProperties]
 class Feature {
     use BaseModel;
 

@@ -7,6 +7,9 @@
 
 namespace Iris;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 class Disconnects extends RestEntry{
     public function __construct($parent) {
         $this->parent = $parent;
@@ -61,6 +64,7 @@ class Disconnects extends RestEntry{
 }
 
 
+#[AllowDynamicProperties]
 class Disconnect extends RestEntry {
     use BaseModel;
 

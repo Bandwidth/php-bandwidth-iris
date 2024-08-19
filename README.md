@@ -2,32 +2,6 @@ PHP Client library for Bandwidth's Phone Number Dashboard (AKA: Dashboard, Iris)
 =========================================================
 [![Build Status](https://travis-ci.org/Bandwidth/php-bandwidth-iris.svg?branch=master)](https://travis-ci.org/Bandwidth/php-bandwidth-iris)
 
-## Release Notes
-
-| Version | Notes |
-|:---|:---|
-| 2.0.0 | Fixed incompatibilities with Bandwidth's Dashboard API Create Site function that required breaking changes. Versions less than 2.0.0 are not guaranteed to work with Bandwidth's Dashboard API. |
-| 2.0.1 | Added `ActualFocDate` to Portins model |
-| 2.0.2 | Fixed HTTP method for `set_tn_options` to `PUT` |
-| 2.0.3 | Fixed HTTP request for `set_tn_options` to the correct XML object |
-| 2.0.4 | Added `localVanity` to `availableNumbers` |
-| 2.0.5 | Added `NewBillingTelephoneNumber` to `Portins` model |
-| 2.0.6 | Build `ReportsModel` functionality |
-| 2.0.7 | Fixed error handling for Errors fields |
-| 2.0.8 | Fixed rate center check |
-| 2.1.0 | Added `importTnOrders`, `removeImportedTnOrders`, `inserviceNumbers`, and `importTnChecker` endpoints |
-| 2.2.0 | Added `csrs` endpoints |
-| 2.3.0 | Added `loas` endpoints for ImportTnOrders |
-| 2.4.0 | Added Emergency Calling Notification, Emergeny Notification Group, Emergency Notification Endpoint, and Alternate End User Identity methods |
-| 2.5.0 | Added `PortOutPasscode` for TnOption orders |
-| 2.5.1 | Fixed grabbing of response header for file uploads |
-| 3.0.0 | Updated to guzzle 7. This version no longer supports verisons of PHP less than 7.2. Older versions of this package will still work on PHP versions less than 7.2 |
-| 3.1.0 | Added application management |
-| 3.2.0 | Update SipPeerTelephoneNumber to enable/disabe SMS |
-| 3.3.0 | Added PortOutStatus, ActualFocDate, and SPID to the portout model |
-| 3.3.1 | Updated the portins update method to clear the ActualFocDate field |
-| 3.3.2 | Updated the portins set_activation_status method use a PUT method |
-
 ## Supported PHP Versions
 
 | Version | Support Level            |
