@@ -4,12 +4,13 @@ PHP Client library for Bandwidth's Phone Number Dashboard (AKA: Dashboard, Iris)
 
 ## Supported PHP Versions
 
-| Version | Support Level            |
-|:--------|:-------------------------|
-| 8.0     | Supported |
-| 8.1     | Supported |
-| 8.2     | Supported |
-| 8.3     | Supported |
+| Version | Supported? |
+|:--------|:-----------|
+| 8.0     | Supported  |
+| 8.1     | Supported  |
+| 8.2     | Supported  |
+| 8.3     | Supported  |
+| 8.4     | Supported  |
 
 ## Install
 
@@ -22,7 +23,14 @@ composer require bandwidth/iris
 ## Usage
 
 ```PHP
+// Basic Auth
 $client = new \Iris\Client($login, $password, ['url' => 'https://dashboard.bandwidth.com/api/']);
+
+// Bearer Auth with Token
+$client = new \Iris\Client(null, null, ['accessToken' => '<your_access_token>']);
+
+// Bearer Auth using Client Credentials
+$client = new \Iris\Client(null, null, ['clientId' => '<your_client_id>', 'clientSecret' => '<your_client_secret>']);
 
 ```
 

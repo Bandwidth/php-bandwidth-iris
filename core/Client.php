@@ -135,28 +135,48 @@ final class Client extends iClient
      */
     protected $lastResponseBody = null;
 
+    protected $accessToken = null;
+
+    protected $accessTokenExpiration = null;
+
+    protected $clientId = null;
+
+    protected $clientSecret = null;
+
+    protected $clientOptions = [];
+
     public function __construct($login, $password, $options = [])
     {
-        if (empty($login) || empty($password))
-        {
-            throw new \Exception("Provide login, password");
+        foreach (['accessToken', 'accessTokenExpiration', 'clientId', 'clientSecret'] as $key) {
+            if (array_key_exists($key, $options)) {
+                $this->$key = $options[$key];
+                unset($options[$key]);
+            }
         }
 
-        $options['auth'] = [$login, $password];
-        $options['base_uri'] = $options['url'] ?: 'https://dashboard.bandwidth.com/api';
+        if ($login !== null && $password !== null) {
+            $this->clientOptions['auth'] = [$login, $password];
+        }
+
+        $base = $options['base_uri'] ?? ($options['url'] ?? 'https://dashboard.bandwidth.com/api');
         unset($options['url']);
-        $options['base_uri'] = rtrim($options['base_uri'], '/') . '/';
+        $this->clientOptions['base_uri'] = rtrim($base, '/') . '/';
 
-        $client_options = array();
-        if(isset($options['handler'])) {
-            $client_options['handler'] = $options['handler'];
+        if (isset($options['handler'])) {
+            $this->clientOptions['handler'] = $options['handler'];
+            unset($options['handler']);
+        } else {
+            $this->clientOptions['handler'] = \GuzzleHttp\HandlerStack::create();
         }
 
-        $options['headers'] = array(
-            'User-Agent' => 'PHP-Bandwidth-Iris'
-        );
+        $headers = $options['headers'] ?? [];
+        $headers['User-Agent'] = 'PHP-Bandwidth-Iris';
+        unset($options['headers']);
+        $this->clientOptions['headers'] = $headers;
 
-        $this->client = new \GuzzleHttp\Client($options);
+        $this->clientOptions = array_replace($this->clientOptions, $options);
+
+        $this->client = new \GuzzleHttp\Client($this->clientOptions);
     }
 
     /**
@@ -289,6 +309,19 @@ final class Client extends iClient
         $this->lastResponseBody = null;
         try
         {
+            // Get token if we don't have one, or if it's expired, and we have client credentials
+            if ((empty($this->accessToken) || (!empty($this->accessTokenExpiration) && $this->accessTokenExpiration <= time() + 60))
+                && !empty($this->clientId) && !empty($this->clientSecret)) {
+                $this->fetchAccessToken();
+            }
+
+            // If we have a valid access token, add it to the request headers
+            if (!empty($this->accessToken) && (empty($this->accessTokenExpiration) || $this->accessTokenExpiration > time() + 60)) {
+                $options['headers'] = $options['headers'] ?? [];
+                if (empty($options['headers']['Authorization'])) {
+                    $options['headers']['Authorization'] = 'Bearer ' . $this->accessToken;
+                }
+            }
             $response = $this->client->request($method, ltrim($url, '/'), $options);
             if (!$parse)
             {
@@ -300,6 +333,23 @@ final class Client extends iClient
         {
             $this->parseExceptionResponse($e);
         }
+    }
+
+    private function fetchAccessToken()
+    {
+        $tokenUrl = 'https://api.bandwidth.com/api/v1/oauth2/token';
+        $tokenOptions = [
+            'auth' => [$this->clientId, $this->clientSecret],
+            'form_params' => [
+                'grant_type' => 'client_credentials'
+            ],
+        ];
+        $oauthClient = new \GuzzleHttp\Client($this->clientOptions);
+
+        $tokenResponse = $oauthClient->request('post', $tokenUrl, $tokenOptions);
+        $tokenData = json_decode((string)$tokenResponse->getBody(), true);
+        $this->accessToken = $tokenData['access_token'] ?? null;
+        $this->accessTokenExpiration = isset($tokenData['expires_in']) ? (time() + (int)$tokenData['expires_in']) : null;
     }
 
     /**
