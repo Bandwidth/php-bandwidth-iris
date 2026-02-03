@@ -135,28 +135,61 @@ final class Client extends iClient
      */
     protected $lastResponseBody = null;
 
+    protected $accessToken = null;
+
+    protected $accessTokenExpiration = null;
+
+    protected $clientId = null;
+
+    protected $clientSecret = null;
+
+    protected $clientOptions = [];
+
     public function __construct($login, $password, $options = [])
     {
-        if (empty($login) || empty($password))
-        {
-            throw new \Exception("Provide login, password");
+        if (!empty($login) && !empty($password)) {
+            $this->clientOptions['auth'] = [$login, $password];
         }
 
-        $options['auth'] = [$login, $password];
-        $options['base_uri'] = $options['url'] ?: 'https://dashboard.bandwidth.com/api';
+        if (!empty($options['accessToken'])) {
+            $this->accessToken = $options['accessToken'];
+            unset($options['accessToken']);
+        }
+
+        if (!empty($options['accessTokenExpiration'])) {
+            $this->accessTokenExpiration = $options['accessTokenExpiration'];
+            unset($options['accessTokenExpiration']);
+        }
+
+        if (!empty($options['clientId'])) {
+            $this->clientId = $options['clientId'];
+            unset($options['clientId']);
+        }
+
+        if (!empty($options['clientSecret'])) {
+            $this->clientSecret = $options['clientSecret'];
+            unset($options['clientSecret']);
+        }
+
+        $this->clientOptions['base_uri'] = $options['url'] ?: 'https://dashboard.bandwidth.com/api';
         unset($options['url']);
-        $options['base_uri'] = rtrim($options['base_uri'], '/') . '/';
+        $this->clientOptions['base_uri'] = rtrim($this->clientOptions['base_uri'], '/') . '/';
 
-        $client_options = array();
         if(isset($options['handler'])) {
-            $client_options['handler'] = $options['handler'];
+            $handler = clone $options['handler'];
+            $handler->push($this->oauth_middleware(), 'oauth_middleware');
+            $this->clientOptions['handler'] = $handler;
+        } else {
+            $stack = \GuzzleHttp\HandlerStack::create();
+            $stack->push($this->oauth_middleware(), 'oauth_middleware');
+            $this->clientOptions['handler'] = $stack;
         }
 
-        $options['headers'] = array(
+        $this->clientOptions['headers'] = array(
             'User-Agent' => 'PHP-Bandwidth-Iris'
         );
 
-        $this->client = new \GuzzleHttp\Client($options);
+        $this->client = new \GuzzleHttp\Client($this->clientOptions);
     }
 
     /**
@@ -300,6 +333,48 @@ final class Client extends iClient
         {
             $this->parseExceptionResponse($e);
         }
+    }
+
+    /**
+     * Middleware for adding OAuth to a request if client credentials or token is supplied
+     */
+    public function oauth_middleware()
+    {
+        return function (callable $handler) {
+            return function ($request, array $options) use ($handler) {
+                if (!empty($this->accessToken) && (empty($this->accessTokenExpiration) || $this->accessTokenExpiration > time() + 60)) {
+                    $request = $request->withHeader('Authorization', 'Bearer ' . $this->accessToken);
+                    return $handler($request, $options);
+                }
+
+                if (!empty($this->clientId) && !empty($this->clientSecret)) {
+                    $tokenUrl = 'https://api.bandwidth.com/api/v1/oauth2/token';
+                    $tokenOptions = [
+                        'auth' => [$this->clientId, $this->clientSecret],
+                        'form_params' => [
+                            'grant_type' => 'client_credentials'
+                        ],
+                    ];
+
+                    // use same handler stack but remove oauth middleware to avoid infinite loop
+                    $oauthHandler = clone $this->clientOptions['handler'];
+                    $oauthHandler->remove('oauth_middleware');
+                    $oauthClientOptions = $this->clientOptions;
+                    $oauthClientOptions['handler'] = $oauthHandler;
+                    $oauthClient = new \GuzzleHttp\Client($oauthClientOptions);
+
+                    $tokenResponse = $oauthClient->request('post', $tokenUrl, $tokenOptions);
+                    $tokenData = json_decode($tokenResponse->getBody(), true);
+                    $this->accessToken = $tokenData['access_token'];
+                    $this->accessTokenExpiration = time() + $tokenData['expires_in'];
+
+                    $request = $request->withHeader('Authorization', 'Bearer ' . $this->accessToken);
+                    return $handler($request, $options);
+                }
+
+                return $handler($request, $options);
+            };
+        };
     }
 
     /**
