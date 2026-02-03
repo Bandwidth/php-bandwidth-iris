@@ -147,47 +147,36 @@ final class Client extends iClient
 
     public function __construct($login, $password, $options = [])
     {
-        if (!empty($login) && !empty($password)) {
+        foreach (['accessToken', 'accessTokenExpiration', 'clientId', 'clientSecret'] as $key) {
+            if (array_key_exists($key, $options)) {
+                $this->$key = $options[$key];
+                unset($options[$key]);
+            }
+        }
+
+        if ($login !== null && $password !== null) {
             $this->clientOptions['auth'] = [$login, $password];
         }
 
-        if (!empty($options['accessToken'])) {
-            $this->accessToken = $options['accessToken'];
-            unset($options['accessToken']);
-        }
-
-        if (!empty($options['accessTokenExpiration'])) {
-            $this->accessTokenExpiration = $options['accessTokenExpiration'];
-            unset($options['accessTokenExpiration']);
-        }
-
-        if (!empty($options['clientId'])) {
-            $this->clientId = $options['clientId'];
-            unset($options['clientId']);
-        }
-
-        if (!empty($options['clientSecret'])) {
-            $this->clientSecret = $options['clientSecret'];
-            unset($options['clientSecret']);
-        }
-
-        $this->clientOptions['base_uri'] = $options['url'] ?: 'https://dashboard.bandwidth.com/api';
+        $base = $options['base_uri'] ?? ($options['url'] ?? 'https://dashboard.bandwidth.com/api');
         unset($options['url']);
-        $this->clientOptions['base_uri'] = rtrim($this->clientOptions['base_uri'], '/') . '/';
+        $this->clientOptions['base_uri'] = rtrim($base, '/') . '/';
 
-        if(isset($options['handler'])) {
+        if (isset($options['handler'])) {
             $handler = clone $options['handler'];
-            $handler->push($this->oauth_middleware(), 'oauth_middleware');
-            $this->clientOptions['handler'] = $handler;
+            unset($options['handler']);
         } else {
-            $stack = \GuzzleHttp\HandlerStack::create();
-            $stack->push($this->oauth_middleware(), 'oauth_middleware');
-            $this->clientOptions['handler'] = $stack;
+            $handler = \GuzzleHttp\HandlerStack::create();
         }
+        $handler->push($this->oauth_middleware(), 'oauth_middleware');
+        $this->clientOptions['handler'] = $handler;
 
-        $this->clientOptions['headers'] = array(
-            'User-Agent' => 'PHP-Bandwidth-Iris'
-        );
+        $headers = $options['headers'] ?? [];
+        $headers['User-Agent'] = 'PHP-Bandwidth-Iris';
+        unset($options['headers']);
+        $this->clientOptions['headers'] = $headers;
+
+        $this->clientOptions = array_replace($this->clientOptions, $options);
 
         $this->client = new \GuzzleHttp\Client($this->clientOptions);
     }
