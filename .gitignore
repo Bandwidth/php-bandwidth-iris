@@ -4,6 +4,7 @@ selftests/
 config.php
 /bin
 composer.lock
+composer.phar
 .idea/
 .DS_Store
 .phpunit.result.cache
