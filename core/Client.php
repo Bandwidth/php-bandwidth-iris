@@ -322,6 +322,19 @@ final class Client extends iClient
         $this->lastResponseBody = null;
         try
         {
+            // Get token if we don't have one, or if it's expired, and we have client credentials
+            if ((empty($this->accessToken) || (!empty($this->accessTokenExpiration) && $this->accessTokenExpiration <= time() + 60))
+                && !empty($this->clientId) && !empty($this->clientSecret)) {
+                $this->fetchAccessToken();
+            }
+
+            // If we have a valid access token, add it to the request headers
+            if (!empty($this->accessToken) && (empty($this->accessTokenExpiration) || $this->accessTokenExpiration > time() + 60)) {
+                $options['headers'] = $options['headers'] ?? [];
+                if (empty($options['headers']['Authorization'])) {
+                    $options['headers']['Authorization'] = 'Bearer ' . $this->accessToken;
+                }
+            }
             $response = $this->client->request($method, ltrim($url, '/'), $options);
             if (!$parse)
             {
@@ -335,6 +348,34 @@ final class Client extends iClient
         }
     }
 
+    private function fetchAccessToken()
+    {
+        $tokenUrl = 'https://api.bandwidth.com/api/v1/oauth2/token';
+        $tokenOptions = [
+            'auth' => [$this->clientId, $this->clientSecret],
+            'form_params' => [
+                'grant_type' => 'client_credentials'
+            ],
+        ];
+
+        // clone handler and remove oauth middleware to avoid recursion
+        $oauthHandler = isset($this->clientOptions['handler'])
+            ? clone $this->clientOptions['handler']
+            : \GuzzleHttp\HandlerStack::create();
+        if (method_exists($oauthHandler, 'remove')) {
+            $oauthHandler->remove('oauth_middleware');
+        }
+
+        $oauthClientOptions = $this->clientOptions;
+        $oauthClientOptions['handler'] = $oauthHandler;
+        $oauthClient = new \GuzzleHttp\Client($oauthClientOptions);
+
+        $tokenResponse = $oauthClient->request('post', $tokenUrl, $tokenOptions);
+        $tokenData = json_decode((string)$tokenResponse->getBody(), true);
+        $this->accessToken = $tokenData['access_token'] ?? null;
+        $this->accessTokenExpiration = isset($tokenData['expires_in']) ? (time() + (int)$tokenData['expires_in']) : null;
+    }
+
     /**
      * Middleware for adding OAuth to a request if client credentials or token is supplied
      */
@@ -344,34 +385,7 @@ final class Client extends iClient
             return function ($request, array $options) use ($handler) {
                 if (!empty($this->accessToken) && (empty($this->accessTokenExpiration) || $this->accessTokenExpiration > time() + 60)) {
                     $request = $request->withHeader('Authorization', 'Bearer ' . $this->accessToken);
-                    return $handler($request, $options);
                 }
-
-                if (!empty($this->clientId) && !empty($this->clientSecret)) {
-                    $tokenUrl = 'https://api.bandwidth.com/api/v1/oauth2/token';
-                    $tokenOptions = [
-                        'auth' => [$this->clientId, $this->clientSecret],
-                        'form_params' => [
-                            'grant_type' => 'client_credentials'
-                        ],
-                    ];
-
-                    // use same handler stack but remove oauth middleware to avoid infinite loop
-                    $oauthHandler = clone $this->clientOptions['handler'];
-                    $oauthHandler->remove('oauth_middleware');
-                    $oauthClientOptions = $this->clientOptions;
-                    $oauthClientOptions['handler'] = $oauthHandler;
-                    $oauthClient = new \GuzzleHttp\Client($oauthClientOptions);
-
-                    $tokenResponse = $oauthClient->request('post', $tokenUrl, $tokenOptions);
-                    $tokenData = json_decode($tokenResponse->getBody(), true);
-                    $this->accessToken = $tokenData['access_token'];
-                    $this->accessTokenExpiration = time() + $tokenData['expires_in'];
-
-                    $request = $request->withHeader('Authorization', 'Bearer ' . $this->accessToken);
-                    return $handler($request, $options);
-                }
-
                 return $handler($request, $options);
             };
         };
