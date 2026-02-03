@@ -163,13 +163,11 @@ final class Client extends iClient
         $this->clientOptions['base_uri'] = rtrim($base, '/') . '/';
 
         if (isset($options['handler'])) {
-            $handler = clone $options['handler'];
+            $this->clientOptions['handler'] = $options['handler'];
             unset($options['handler']);
         } else {
-            $handler = \GuzzleHttp\HandlerStack::create();
+            $this->clientOptions['handler'] = \GuzzleHttp\HandlerStack::create();
         }
-        $handler->push($this->oauth_middleware(), 'oauth_middleware');
-        $this->clientOptions['handler'] = $handler;
 
         $headers = $options['headers'] ?? [];
         $headers['User-Agent'] = 'PHP-Bandwidth-Iris';
@@ -346,38 +344,12 @@ final class Client extends iClient
                 'grant_type' => 'client_credentials'
             ],
         ];
-
-        // clone handler and remove oauth middleware to avoid recursion
-        $oauthHandler = isset($this->clientOptions['handler'])
-            ? clone $this->clientOptions['handler']
-            : \GuzzleHttp\HandlerStack::create();
-        if (method_exists($oauthHandler, 'remove')) {
-            $oauthHandler->remove('oauth_middleware');
-        }
-
-        $oauthClientOptions = $this->clientOptions;
-        $oauthClientOptions['handler'] = $oauthHandler;
-        $oauthClient = new \GuzzleHttp\Client($oauthClientOptions);
+        $oauthClient = new \GuzzleHttp\Client($this->clientOptions);
 
         $tokenResponse = $oauthClient->request('post', $tokenUrl, $tokenOptions);
         $tokenData = json_decode((string)$tokenResponse->getBody(), true);
         $this->accessToken = $tokenData['access_token'] ?? null;
         $this->accessTokenExpiration = isset($tokenData['expires_in']) ? (time() + (int)$tokenData['expires_in']) : null;
-    }
-
-    /**
-     * Middleware for adding OAuth to a request if client credentials or token is supplied
-     */
-    public function oauth_middleware()
-    {
-        return function (callable $handler) {
-            return function ($request, array $options) use ($handler) {
-                if (!empty($this->accessToken) && (empty($this->accessTokenExpiration) || $this->accessTokenExpiration > time() + 60)) {
-                    $request = $request->withHeader('Authorization', 'Bearer ' . $this->accessToken);
-                }
-                return $handler($request, $options);
-            };
-        };
     }
 
     /**
