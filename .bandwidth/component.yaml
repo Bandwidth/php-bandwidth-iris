@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  schemaVersion: v1.0.0
+  name: php-bandwidth-iris
+  description: PHP Library for Bandwidth's Phone Number Dashboard (AKA Dashboard, Iris)
+  annotations:
+    github.com/project-slug: Bandwidth/php-bandwidth-iris
+    organization: BW
+    costCenter: Development - Software Infra
+spec:
+  type: Infrastructure as Code
+  owner: github/band-swi
+  lifecycle: Available
