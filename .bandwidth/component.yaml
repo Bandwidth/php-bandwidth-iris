@@ -6,6 +6,7 @@ metadata:
   description: PHP Library for Bandwidth's Phone Number Dashboard (AKA Dashboard, Iris)
   annotations:
     github.com/project-slug: Bandwidth/php-bandwidth-iris
+    bandwidth.com/languages: PHP
     organization: BW
     costCenter: Development - Software Infra
 spec:
